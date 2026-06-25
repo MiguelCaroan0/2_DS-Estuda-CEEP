@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
     <title>Estuda CEEP</title>
 </head>
 
@@ -21,7 +22,6 @@
             <div class="nav-section-label">Principal</div>
 
             <a class="nav-item active">
-
                 Início
             </a>
 
@@ -59,271 +59,641 @@
         </div>
     </aside>
 
-    <!-- ── MAIN ── -->
+    <!-- ── MAIN CONTENT CONTAINER (SPA VIEWS) ── -->
     <div class="main">
-        <div class="content">
 
-            <!-- Cabeçalho -->
-            <div class="page-header">
-                <h1 class="page-title">Início</h1>
-                <div class="date-badge">SEMANA · 23 a 29 jun</div>
-            </div>
-
-            <!-- Stats rápidos -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-label">Horas esta semana</div>
-                    <div class="stat-value accent-qui">4h20</div>
-                    <div class="stat-sub">de 9h40 sugeridas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Matérias ativas</div>
-                    <div class="stat-value accent-port">6</div>
-                    <div class="stat-sub">esta semana</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Tópicos concluídos</div>
-                    <div class="stat-value accent-bio">7</div>
-                    <div class="stat-sub">de 18 no total</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Tarefas pendentes</div>
-                    <div class="stat-value accent-mat">5</div>
-                    <div class="stat-sub">2 vencem hoje</div>
-                </div>
-            </div>
-
-            <!-- ──────────────────────────────────── -->
-            <!-- SEÇÃO 1: AGENDA DE ESTUDOS          -->
-            <!-- ──────────────────────────────────── -->
-            <div class="section">
-                <div class="section-head">
-                    <h2 class="section-title">Agenda de estudos</h2>
-                    <span class="section-note">6 matérias · 9h40 sugeridas</span>
+        <!-- 1. VIEW: INÍCIO (PÁGINA INICIAL) -->
+        <div id="view-inicio" class="page-view active">
+            <div class="content">
+                <!-- Cabeçalho -->
+                <div class="page-header">
+                    <h1 class="page-title">Início</h1>
+                    <div class="date-badge">SEMANA · 23 a 29 jun</div>
                 </div>
 
-                <div class="days-week">
-                    <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
-                    <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
-                    <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
-                    <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
-                    <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
-                    <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
-                    <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
+                <!-- Stats rápidos -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-label">Horas esta semana</div>
+                        <div class="stat-value accent-qui">4h20</div>
+                        <div class="stat-sub">de 9h40 sugeridas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Matérias ativas</div>
+                        <div class="stat-value accent-port">6</div>
+                        <div class="stat-sub">esta semana</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tópicos concluídos</div>
+                        <div class="stat-value accent-bio">7</div>
+                        <div class="stat-sub">de 18 no total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tarefas pendentes</div>
+                        <div class="stat-value accent-mat">5</div>
+                        <div class="stat-sub">2 vencem hoje</div>
+                    </div>
                 </div>
 
-                <div class="subject-grid">
+                <!-- Seção: Agenda de estudos resumida -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Agenda de estudos</h2>
+                        <span class="section-note">6 matérias · 9h40 sugeridas</span>
+                    </div>
 
-                    <article class="subject-card" data-subject="mat">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">Matemática</span>
-                                <span class="subject-time">1h40 hoje</span>
-                            </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (4)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Funções quadráticas</span></li>
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Equações do 2º grau</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Gráficos de parábola</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Exercícios do ENEM</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
+                    <div class="days-week">
+                        <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
+                        <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
+                        <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
+                        <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
+                        <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
+                        <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
+                        <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
+                    </div>
 
-                    <article class="subject-card" data-subject="por">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">Português</span>
-                                <span class="subject-time">1h20 hoje</span>
+                    <div class="subject-grid">
+                        <article class="subject-card" data-subject="mat">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Matemática</span>
+                                    <span class="subject-time">1h40 hoje</span>
+                                </div>
+                                <div class="topics">
+                                    <p class="topics-label">Tópicos da semana (4)</p>
+                                    <ul class="topic-list">
+                                        <li class="topic-item done"><span class="topic-dot"></span><span>Funções quadráticas</span></li>
+                                        <li class="topic-item done"><span class="topic-dot"></span><span>Equações do 2º grau</span></li>
+                                        <li class="topic-item"><span class="topic-dot"></span><span>Gráficos de parábola</span></li>
+                                        <li class="topic-item"><span class="topic-dot"></span><span>Exercícios do ENEM</span></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (3)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Figuras de linguagem</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Redação dissertativa</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Interpretação de texto</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
 
-                    <article class="subject-card" data-subject="bio">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">Biologia</span>
-                                <span class="subject-time">1h hoje</span>
+                        <article class="subject-card" data-subject="por">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Português</span>
+                                    <span class="subject-time">1h20 hoje</span>
+                                </div>
+                                <div class="topics">
+                                    <p class="topics-label">Tópicos da semana (3)</p>
+                                    <ul class="topic-list">
+                                        <li class="topic-item done"><span class="topic-dot"></span><span>Figuras de linguagem</span></li>
+                                        <li class="topic-item"><span class="topic-dot"></span><span>Redação dissertativa</span></li>
+                                        <li class="topic-item"><span class="topic-dot"></span><span>Interpretação de texto</span></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (3)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Genética mendeliana</span></li>
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Mutações gênicas</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Engenharia genética</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
 
-                    <article class="subject-card" data-subject="qui">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">Química</span>
-                                <span class="subject-time">1h20 hoje</span>
+                        <article class="subject-card" data-subject="bio">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Biologia</span>
+                                    <span class="subject-time">1h hoje</span>
+                                </div>
+                                <div class="topics">
+                                    <p class="topics-label">Tópicos da semana (3)</p>
+                                    <ul class="topic-list">
+                                        <li class="topic-item done"><span class="topic-dot"></span><span>Genética mendeliana</span></li>
+                                        <li class="topic-item done"><span class="topic-dot"></span><span>Mutações gênicas</span></li>
+                                        <li class="topic-item"><span class="topic-dot"></span><span>Engenharia genética</span></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (3)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Estequiometria</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Soluções e concentração</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Reações de oxirredução</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="subject-card" data-subject="fis">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">Física</span>
-                                <span class="subject-time">1h20 hoje</span>
-                            </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (3)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Leis de Newton</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Cinemática vetorial</span></li>
-                                    <li class="topic-item"><span class="topic-dot"></span><span>Trabalho e energia</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="subject-card" data-subject="his">
-                        <div class="subject-tab"></div>
-                        <div class="subject-body">
-                            <div class="subject-head">
-                                <span class="subject-name">História</span>
-                                <span class="subject-time">1h hoje</span>
-                            </div>
-                            <div class="topics">
-                                <p class="topics-label">Tópicos da semana (2)</p>
-                                <ul class="topic-list">
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Era Vargas</span></li>
-                                    <li class="topic-item done"><span class="topic-dot"></span><span>Ditadura militar</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
-
+                        </article>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ──────────────────────────────────── -->
-            <!-- SEÇÃO 2: TAREFAS                    -->
-            <!-- ──────────────────────────────────── -->
-            <div class="section">
-                <div class="section-head">
-                    <h2 class="section-title">Tarefas</h2>
-                    <span class="section-note">5 pendentes · 3 concluídas</span>
+        <!-- 2. VIEW: AGENDA DE ESTUDOS -->
+        <div id="view-agenda" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Agenda de Estudos</h1>
+                        <p style="color: var(--borda-cinza); margin-top: 8px;">Organize o seu plano de estudos diário e semanal de forma automática.</p>
+                    </div>
+                    <div class="date-badge">JUNHO · Semana Atual</div>
                 </div>
 
-                <div class="tasks-section-label">Pendentes</div>
-
-                <div class="tasks-list">
-
-                    <div class="task-item">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Resolver lista de parábolas (ENEM 2022)</div>
-                            <div class="task-meta">Vence hoje · 20 questões</div>
-                        </div>
-                        <div class="task-priority priority-alta"></div>
-                        <span class="task-tag tag-mat">Mat</span>
-                    </div>
-
-                    <div class="task-item">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Escrever redação sobre mobilidade urbana</div>
-                            <div class="task-meta">Vence hoje · mín. 30 linhas</div>
-                        </div>
-                        <div class="task-priority priority-alta"></div>
-                        <span class="task-tag tag-por">Port</span>
-                    </div>
-
-                    <div class="task-item">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Exercícios de estequiometria — cap. 8</div>
-                            <div class="task-meta">Vence qui, 26 jun · pág. 112–118</div>
-                        </div>
-                        <div class="task-priority priority-media"></div>
-                        <span class="task-tag tag-qui">Qui</span>
-                    </div>
-
-                    <div class="task-item">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Resumo: Cinemática vetorial</div>
-                            <div class="task-meta">Vence sex, 27 jun · 1 página</div>
-                        </div>
-                        <div class="task-priority priority-media"></div>
-                        <span class="task-tag tag-fis">Fís</span>
-                    </div>
-
-                    <div class="task-item">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Mapa mental — Engenharia genética</div>
-                            <div class="task-meta">Vence sáb, 28 jun</div>
-                        </div>
-                        <div class="task-priority priority-baixa"></div>
-                        <span class="task-tag tag-bio">Bio</span>
-                    </div>
-
+                <div style="display: flex; gap: 12px; margin-bottom: 28px;">
+                    <button class="btn btn-primary">Plano Sugerido (IA)</button>
+                    <button class="btn btn-secondary">Importar do Google Classroom</button>
                 </div>
 
-                <div class="tasks-section-label">Concluídas</div>
-
-                <div class="tasks-list">
-
-                    <div class="task-item done">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Rever anotações — Funções quadráticas</div>
-                            <div class="task-meta">Concluída ontem</div>
-                        </div>
-                        <span class="task-tag tag-mat">Mat</span>
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Calendário da Semana</h2>
+                        <span class="section-note">Clique em um dia para planejar</span>
                     </div>
 
-                    <div class="task-item done">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Ler capítulo sobre Era Vargas</div>
-                            <div class="task-meta">Concluída seg, 23 jun</div>
-                        </div>
-                        <span class="task-tag tag-his">His</span>
+                    <div class="days-week">
+                        <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
+                        <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
+                        <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
+                        <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
+                        <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
+                        <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
+                        <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Calendário Escolar e Provas</h2>
+                        <span class="section-note">Feriados, Provas e Eventos da CEEP</span>
                     </div>
 
-                    <div class="task-item done">
-                        <div class="task-check"></div>
-                        <div class="task-body">
-                            <div class="task-title">Exercícios — Genética mendeliana</div>
-                            <div class="task-meta">Concluída seg, 23 jun</div>
-                        </div>
-                        <span class="task-tag tag-bio">Bio</span>
-                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-header-day">Seg</div>
+                        <div class="calendar-header-day">Ter</div>
+                        <div class="calendar-header-day">Qua</div>
+                        <div class="calendar-header-day">Qui</div>
+                        <div class="calendar-header-day">Sex</div>
+                        <div class="calendar-header-day">Sáb</div>
+                        <div class="calendar-header-day">Dom</div>
 
+                        <div class="calendar-cell muted"><div class="cell-num">22</div></div>
+                        <div class="calendar-cell">
+                            <div class="cell-num">23</div>
+                            <div class="cell-events"><span class="cell-event event-geral">Início Bimestre</span></div>
+                        </div>
+                        <div class="calendar-cell">
+                            <div class="cell-num">24</div>
+                            <div class="cell-events"><span class="cell-event event-por">Aula Redação</span></div>
+                        </div>
+                        <div class="calendar-cell today-cell">
+                            <div class="cell-num">25</div>
+                            <div class="cell-events">
+                                <span class="cell-event event-mat">ENEM Lista</span>
+                                <span class="cell-event event-por">Redação M.U.</span>
+                            </div>
+                        </div>
+                        <div class="calendar-cell">
+                            <div class="cell-num">26</div>
+                            <div class="cell-events"><span class="cell-event event-qui">Estequiometria</span></div>
+                        </div>
+                        <div class="calendar-cell">
+                            <div class="cell-num">27</div>
+                            <div class="cell-events"><span class="cell-event event-fis">Física Vetor</span></div>
+                        </div>
+                        <div class="calendar-cell">
+                            <div class="cell-num">28</div>
+                            <div class="cell-events"><span class="cell-event event-geral">Feriado Municipal</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
+        <!-- 3. VIEW: TAREFAS -->
+        <div id="view-tarefas" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Tarefas</h1>
+                        <p style="color: var(--borda-cinza); margin-top: 8px;">Acompanhe e gerencie as atividades escolares integradas de todas as plataformas.</p>
+                    </div>
+                    <div class="date-badge">5 PENDENTES</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; gap: 16px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary filter-btn active" data-filter="todas" style="border-color: var(--qui); color: var(--qui);">Todas</button>
+                        <button class="btn btn-secondary filter-btn" data-filter="pendentes">Pendentes</button>
+                        <button class="btn btn-secondary filter-btn" data-filter="concluidas">Concluídas</button>
+                    </div>
+                    <button class="btn btn-primary" id="btn-new-task">Adicionar Tarefa</button>
+                </div>
+
+                <div class="section">
+                    <div id="section-pending">
+                        <div class="tasks-section-label">Pendentes</div>
+                        <div class="tasks-list">
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Resolver lista de parábolas (ENEM 2022)</div>
+                                    <div class="task-meta">Vence hoje · 20 questões · Integrado do Classroom</div>
+                                </div>
+                                <div class="task-priority priority-alta"></div>
+                                <span class="task-tag tag-mat">Mat</span>
+                            </div>
+
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Escrever redação sobre mobilidade urbana</div>
+                                    <div class="task-meta">Vence hoje · mín. 30 linhas · Integrado da Redação Paraná</div>
+                                </div>
+                                <div class="task-priority priority-alta"></div>
+                                <span class="task-tag tag-por">Port</span>
+                            </div>
+
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Exercícios de estequiometria — cap. 8</div>
+                                    <div class="task-meta">Vence qui, 26 jun · pág. 112–118 · Livro Didático</div>
+                                </div>
+                                <div class="task-priority priority-media"></div>
+                                <span class="task-tag tag-qui">Qui</span>
+                            </div>
+
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Resumo: Cinemática vetorial</div>
+                                    <div class="task-meta">Vence sex, 27 jun · 1 página · Caderno de Física</div>
+                                </div>
+                                <div class="task-priority priority-media"></div>
+                                <span class="task-tag tag-fis">Fís</span>
+                            </div>
+
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Mapa mental — Engenharia genética</div>
+                                    <div class="task-meta">Vence sáb, 28 jun · Atividade de Biologia</div>
+                                </div>
+                                <div class="task-priority priority-baixa"></div>
+                                <span class="task-tag tag-bio">Bio</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="section-completed">
+                        <div class="tasks-section-label" style="margin-top: 32px;">Concluídas</div>
+                        <div class="tasks-list">
+                            <div class="task-item done">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Rever anotações — Funções quadráticas</div>
+                                    <div class="task-meta">Concluída ontem</div>
+                                </div>
+                                <span class="task-tag tag-mat">Mat</span>
+                            </div>
+
+                            <div class="task-item done">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Ler capítulo sobre Era Vargas</div>
+                                    <div class="task-meta">Concluída seg, 23 jun</div>
+                                </div>
+                                <span class="task-tag tag-his">His</span>
+                            </div>
+
+                            <div class="task-item done">
+                                <div class="task-check"></div>
+                                <div class="task-body">
+                                    <div class="task-title">Exercícios — Genética mendeliana</div>
+                                    <div class="task-meta">Concluída seg, 23 jun</div>
+                                </div>
+                                <span class="task-tag tag-bio">Bio</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. VIEW: POMODORO -->
+        <div id="view-pomodoro" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Pomodoro</h1>
+                        <p style="color: var(--borda-cinza); margin-top: 8px;">Aumente o seu foco alternando blocos de estudo concentrado com pausas relaxantes.</p>
+                    </div>
+                    <div class="date-badge">FOCO MÁXIMO</div>
+                </div>
+
+                <div class="pomodoro-container">
+                    <div class="pomodoro-modes">
+                        <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+                        <button class="mode-btn" data-mode="short">Intervalo Curto</button>
+                        <button class="mode-btn" data-mode="long">Intervalo Longo</button>
+                    </div>
+
+                    <div class="pomodoro-timer-circle" style="--progress: 100%;">
+                        <div class="timer-display">25:00</div>
+                    </div>
+
+                    <div class="pomodoro-controls">
+                        <button class="btn btn-primary" id="pomodoro-play" style="min-width: 140px;">Iniciar</button>
+                        <button class="btn btn-secondary" id="pomodoro-reset">Reiniciar</button>
+                    </div>
+                </div>
+
+                <div class="section" style="max-width: 500px; margin: 0 auto;">
+                    <div class="section-head">
+                        <h2 class="section-title">Como funciona?</h2>
+                    </div>
+                    <div style="background: var(--fundo-secundario); border: 1px solid var(--board-line); border-radius: 12px; padding: 20px; font-size: 14px; line-height: 1.6;">
+                        <ol style="margin: 0; padding-left: 20px; color: var(--borda-cinza);">
+                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Foco total:</strong> Escolha uma tarefa pendente e estude concentrado por 25 minutos.</li>
+                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Pausa curta:</strong> Relaxe e alongue-se por 5 minutos após o alarme.</li>
+                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Pausa longa:</strong> A cada 4 ciclos (pomodoros), faça uma pausa de 15 minutos.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. VIEW: HISTÓRICO -->
+        <div id="view-historico" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Histórico de Estudos</h1>
+                        <p style="color: var(--borda-cinza); margin-top: 8px;">Consulte suas estatísticas de foco e verifique seu progresso acadêmico.</p>
+                    </div>
+                    <div class="date-badge">SEMANA ATUAL</div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-label">Tempo Total</div>
+                        <div class="stat-value accent-qui">28h45</div>
+                        <div class="stat-sub">neste mês</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ciclos Pomodoro</div>
+                        <div class="stat-value accent-port">52</div>
+                        <div class="stat-sub">concluídos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Frequência</div>
+                        <div class="stat-value accent-bio">94%</div>
+                        <div class="stat-sub">presença ideal</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ofensiva</div>
+                        <div class="stat-value accent-mat">5 dias</div>
+                        <div class="stat-sub">estudando seguido</div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3 style="margin: 0 0 4px; font-size: 16px; font-weight: 700;">Distribuição Diária de Estudos</h3>
+                    <p style="margin: 0; font-size: 12px; color: var(--borda-cinza);">Horas de foco registradas por dia da semana</p>
+                    
+                    <div class="chart-container">
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar mat" style="height: 60%;"></div>
+                            <span class="chart-label">Seg</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar por" style="height: 40%;"></div>
+                            <span class="chart-label">Ter</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar bio" style="height: 85%;"></div>
+                            <span class="chart-label">Qua</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar" style="height: 50%;"></div>
+                            <span class="chart-label">Qui</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <span class="chart-label">Sex</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar" style="height: 25%;"></div>
+                            <span class="chart-label">Sáb</span>
+                        </div>
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar" style="height: 10%;"></div>
+                            <span class="chart-label">Dom</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Sessões Recentes</h2>
+                        <span class="section-note">Últimos 3 dias</span>
+                    </div>
+
+                    <div class="tasks-list">
+                        <div class="task-item done">
+                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div>
+                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Revisão de Funções e Gráficos</div>
+                                    <div class="task-meta">24 Jun, 15:30 · 2 Ciclos Pomodoro (50 min)</div>
+                                </div>
+                                <span class="task-tag tag-mat">Mat</span>
+                            </div>
+                        </div>
+
+                        <div class="task-item done">
+                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div>
+                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Fichamento de Ditadura Militar</div>
+                                    <div class="task-meta">23 Jun, 14:00 · Leitura e Resumos (1h 10min)</div>
+                                </div>
+                                <span class="task-tag tag-his">His</span>
+                            </div>
+                        </div>
+
+                        <div class="task-item done">
+                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div>
+                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Estudo Dirigido de Genética</div>
+                                    <div class="task-meta">23 Jun, 09:15 · Exercícios de Mendel (45 min)</div>
+                                </div>
+                                <span class="task-tag tag-bio">Bio</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. VIEW: MATÉRIAS -->
+        <div id="view-materias" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Matérias</h1>
+                        <p style="color: var(--borda-cinza); margin-top: 8px;">Gerencie suas disciplinas, acompanhe seu progresso de tópicos estudados e tarefas concluídas.</p>
+                    </div>
+                    <div class="date-badge">6 DISCIPLINAS</div>
+                </div>
+
+                <div class="section">
+                    <div class="subject-grid">
+                        <article class="subject-card" data-subject="mat">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Matemática</span>
+                                    <span class="subject-time">1 tarefa pendente</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>50%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar mat" style="width: 50%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Marcos Oliveira</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="subject-card" data-subject="por">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Português</span>
+                                    <span class="subject-time">1 tarefa pendente</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>33%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar por" style="width: 33%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Ana Silva</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="subject-card" data-subject="bio">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Biologia</span>
+                                    <span class="subject-time">1 tarefa pendente</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>66%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar bio" style="width: 66%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Profª. Cláudia Reis</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="subject-card" data-subject="qui">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Química</span>
+                                    <span class="subject-time">1 tarefa pendente</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>33%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar qui" style="width: 33%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Ricardo Dias</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="subject-card" data-subject="fis">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">Física</span>
+                                    <span class="subject-time">1 tarefa pendente</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>33%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar fis" style="width: 33%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. André Santos</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="subject-card" data-subject="his">
+                            <div class="subject-tab"></div>
+                            <div class="subject-body">
+                                <div class="subject-head">
+                                    <span class="subject-name">História</span>
+                                    <span class="subject-time">0 pendentes</span>
+                                </div>
+                                <div class="topics">
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                        <span>Progresso Geral</span>
+                                        <span>100%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar his" style="width: 100%;"></div>
+                                    </div>
+                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Profª. Júlia Lima</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── MODAL NOVA TAREFA ── -->
+    <div class="modal-overlay" id="modal-task">
+        <div class="modal-content">
+            <div class="modal-title">Nova Tarefa</div>
+            <form id="form-task">
+                <div class="form-group">
+                    <label class="form-label" for="task-title-input">Título da Atividade</label>
+                    <input type="text" id="task-title-input" class="form-input" placeholder="Ex: Exercícios de Gravitação" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="task-desc-input">Descrição / Prazo</label>
+                    <input type="text" id="task-desc-input" class="form-input" placeholder="Ex: Vence sexta-feira · pág. 45" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="task-subject-input">Matéria</label>
+                    <select id="task-subject-input" class="form-input" style="background: var(--fundo);">
+                        <option value="mat">Matemática</option>
+                        <option value="por">Português</option>
+                        <option value="bio">Biologia</option>
+                        <option value="qui">Química</option>
+                        <option value="fis">Física</option>
+                        <option value="his">História</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="task-priority-input">Prioridade</label>
+                    <select id="task-priority-input" class="form-input" style="background: var(--fundo);">
+                        <option value="baixa">Baixa (Verde)</option>
+                        <option value="media" selected>Média (Amarelo)</option>
+                        <option value="alta">Alta (Rosa)</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-task">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
         </div>
     </div>
 
