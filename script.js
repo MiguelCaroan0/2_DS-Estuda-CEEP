@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.add('active');
             } else if (targetId === 'materias' && (text.includes('matéria') || text.includes('materia'))) {
                 item.classList.add('active');
+            } else if (targetId === 'calendario' && (text.includes('calendário') || text.includes('calendario'))) {
+                item.classList.add('active');
+            } else if (targetId === 'professor' && text.includes('professor')) {
+                item.classList.add('active');
             }
         });
 
@@ -69,6 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 hash = '#historico';
             } else if (text.includes('matéria') || text.includes('materia')) {
                 hash = '#materias';
+            } else if (text.includes('calendário') || text.includes('calendario')) {
+                hash = '#calendario';
+            } else if (text.includes('professor')) {
+                hash = '#professor';
             }
 
             window.location.hash = hash;
@@ -207,97 +215,162 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── TIMER POMODORO ───
-    const timerDisplay = document.querySelector('.timer-display');
-    if (timerDisplay) {
-        let timerInterval;
-        let timeRemaining = 25 * 60;
-        let totalDuration = 25 * 60;
-        let isRunning = false;
-        let currentMode = 'pomodoro';
 
-        const btnPlayPause = document.getElementById('pomodoro-play');
-        const btnReset = document.getElementById('pomodoro-reset');
-        const modeButtons = document.querySelectorAll('.mode-btn');
-        const timerCircle = document.querySelector('.pomodoro-timer-circle');
+    // ─── CALENDÁRIO ESCOLAR ───
+    const calGrid = document.getElementById('school-calendar-grid');
+    const calMonthLabel = document.getElementById('cal-month-label');
 
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            const progressPercent = (timeRemaining / totalDuration) * 100;
-            if (timerCircle) {
-                timerCircle.style.setProperty('--progress', `${progressPercent}%`);
+    if (calGrid) {
+        const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        let currentYear = 2025;
+        let currentMonth = 5; // 0-indexed = Junho
+
+        // Static events keyed as "YYYY-M-D"
+        const schoolEvents = {
+            '2025-5-23': [{ label: 'Início Bimestre', type: 'event-geral' }],
+            '2025-5-24': [{ label: 'Aula Redação', type: 'event-aula' }],
+            '2025-5-25': [{ label: 'ENEM Lista Mat', type: 'event-prazo' }, { label: 'Redação M.U.', type: 'event-prazo' }],
+            '2025-5-26': [{ label: 'Prova Matemática', type: 'event-prova' }],
+            '2025-5-27': [{ label: 'Prazo Redação PR', type: 'event-prazo' }],
+            '2025-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
+            '2025-6-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
+            '2025-6-8':  [{ label: 'Física: Vetores', type: 'event-aula' }],
+            '2025-6-13': [{ label: 'Recesso — Jul', type: 'event-recesso' }],
+            '2025-6-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+        };
+
+        function renderCalendar(year, month) {
+            // Remove old cells (keep 7 header cells)
+            while (calGrid.children.length > 7) {
+                calGrid.removeChild(calGrid.lastChild);
+            }
+            calMonthLabel.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            // Convert Sunday=0 to Monday=0 offset
+            const offset = (firstDay === 0) ? 6 : firstDay - 1;
+
+            const today = new Date();
+
+            // Blank cells
+            for (let i = 0; i < offset; i++) {
+                const blank = document.createElement('div');
+                blank.className = 'calendar-cell muted';
+                blank.innerHTML = '<div class="cell-num"></div>';
+                calGrid.appendChild(blank);
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const cell = document.createElement('div');
+                const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+                cell.className = 'calendar-cell' + (isToday ? ' today-cell' : '');
+
+                const key = `${year}-${month}-${d}`;
+                const events = schoolEvents[key] || [];
+                const eventsHtml = events.map(ev => `<span class="cell-event ${ev.type}">${ev.label}</span>`).join('');
+
+                cell.innerHTML = `<div class="cell-num">${d}</div><div class="cell-events">${eventsHtml}</div>`;
+                calGrid.appendChild(cell);
             }
         }
 
-        function startTimer() {
-            if (isRunning) return;
-            isRunning = true;
-            btnPlayPause.textContent = 'Pausar';
-            btnPlayPause.classList.remove('btn-primary');
-            btnPlayPause.classList.add('btn-secondary');
+        renderCalendar(currentYear, currentMonth);
 
-            timerInterval = setInterval(() => {
-                if (timeRemaining > 0) {
-                    timeRemaining--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    alert('Tempo de foco concluído! Faça uma pausa.');
-                    resetTimer();
-                }
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            if (!isRunning) return;
-            isRunning = false;
-            clearInterval(timerInterval);
-            btnPlayPause.textContent = 'Iniciar';
-            btnPlayPause.classList.remove('btn-secondary');
-            btnPlayPause.classList.add('btn-primary');
-        }
-
-        function resetTimer() {
-            pauseTimer();
-            if (currentMode === 'pomodoro') {
-                timeRemaining = 25 * 60;
-            } else if (currentMode === 'short') {
-                timeRemaining = 5 * 60;
-            } else if (currentMode === 'long') {
-                timeRemaining = 15 * 60;
-            }
-            totalDuration = timeRemaining;
-            updateTimerDisplay();
-        }
-
-        btnPlayPause.addEventListener('click', () => {
-            if (isRunning) {
-                pauseTimer();
-            } else {
-                startTimer();
-            }
+        document.getElementById('cal-prev').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar(currentYear, currentMonth);
         });
-
-        btnReset.addEventListener('click', resetTimer);
-
-        modeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modeButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                currentMode = btn.dataset.mode;
-                resetTimer();
-            });
+        document.getElementById('cal-next').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar(currentYear, currentMonth);
         });
-
-        resetTimer();
     }
 
-    // ─── AGENDA INTERATIVA ───
+    // ─── ÁREA DO PROFESSOR ───
+
+    // Recipient toggle buttons
+    const recipientBtns = document.querySelectorAll('.recipient-btn');
+    const turmaSelectGroup = document.getElementById('turma-select-group');
+    if (recipientBtns.length > 0) {
+        recipientBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                recipientBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                if (turmaSelectGroup) {
+                    turmaSelectGroup.style.display = btn.dataset.target === 'turma' ? 'block' : 'none';
+                }
+            });
+        });
+    }
+
+    // Turma chips toggle
+    document.querySelectorAll('.turma-chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    // Student tabs
+    const studentTabs = document.querySelectorAll('.student-tab');
+    studentTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            studentTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.student-tab-content').forEach(c => c.style.display = 'none');
+            const target = document.getElementById('tab-' + tab.dataset.tab);
+            if (target) target.style.display = 'block';
+        });
+    });
+
+    // Publish task button
+    const profPublishBtn = document.getElementById('prof-publish-btn');
+    if (profPublishBtn) {
+        profPublishBtn.addEventListener('click', () => {
+            const title = document.getElementById('prof-task-title').value.trim();
+            const subject = document.getElementById('prof-task-subject').value;
+            const due = document.getElementById('prof-task-due').value;
+            const platform = document.getElementById('prof-task-platform').value;
+
+            if (!title) { alert('Informe o título da tarefa.'); return; }
+
+            const list = document.getElementById('prof-tasks-list');
+            const tagMap = { mat:'Mat', por:'Port', bio:'Bio', qui:'Qui', fis:'Fís', his:'His' };
+            const dueText = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) : 'sem prazo';
+            const platformLabel = { interna:'Estuda CEEP', 'redacao-pr':'Redação Paraná', classroom:'Google Classroom', livro:'Livro Didático' }[platform] || platform;
+
+            const html = `
+                <div class="task-item">
+                    <div class="task-body">
+                        <div class="task-title">${title}</div>
+                        <div class="task-meta">Publicada agora · Vence ${dueText} · 0 entregues · ${platformLabel}</div>
+                    </div>
+                    <span class="task-tag tag-${subject}">${tagMap[subject]}</span>
+                </div>`;
+            list.insertAdjacentHTML('afterbegin', html);
+
+            document.getElementById('prof-task-title').value = '';
+            document.getElementById('prof-task-desc').value = '';
+            document.getElementById('prof-task-due').value = '';
+            alert(`Tarefa "${title}" publicada com sucesso!`);
+        });
+    }
+
+    // Sync buttons feedback
+    document.querySelectorAll('.sync-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const original = this.textContent;
+            this.textContent = 'Sincronizando...';
+            this.disabled = true;
+            setTimeout(() => {
+                this.textContent = '✓ Atualizado';
+                setTimeout(() => {
+                    this.textContent = original;
+                    this.disabled = false;
+                }, 2000);
+            }, 1200);
+        });
+    });
     const dayElements = document.querySelectorAll('.days-week .day');
     dayElements.forEach(day => {
         day.addEventListener('click', () => {

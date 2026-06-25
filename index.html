@@ -11,13 +11,20 @@
 
 <body>
 
+    <!-- ── TOP HEADER ── -->
+    <header class="top-header">
+        <div class="top-header-brand">
+            <div class="top-header-name">Estuda CEEP </div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar">MK</div>
+            </div>
+        </div>
+    </header>
+
     <!-- ── SIDEBAR ── -->
     <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="sidebar-brand-name">Estuda CEEP</div>
-            <div class="sidebar-brand-sub">Plataforma de estudos</div>
-        </div>
-
         <nav class="sidebar-nav">
             <div class="nav-section-label">Principal</div>
 
@@ -36,27 +43,24 @@
             <div class="nav-section-label">Ferramentas</div>
 
             <a class="nav-item">
-                Pomodoro
-            </a>
-
-            <a class="nav-item">
                 Histórico
             </a>
 
             <a class="nav-item">
                 Matérias
             </a>
+
+            <div class="nav-section-label">Escola</div>
+
+            <a class="nav-item">
+                Calendário Escolar
+            </a>
+
+            <a class="nav-item">
+                Área do Professor
+            </a>
         </nav>
 
-        <div class="sidebar-footer">
-            <div class="user-row">
-                <div class="user-avatar">MK</div>
-                <div>
-                    <div class="user-name">Aluno.</div>
-                    <div class="user-role">3º ano</div>
-                </div>
-            </div>
-        </div>
     </aside>
 
     <!-- ── MAIN CONTENT CONTAINER (SPA VIEWS) ── -->
@@ -68,16 +72,10 @@
                 <!-- Cabeçalho -->
                 <div class="page-header">
                     <h1 class="page-title">Início</h1>
-                    <div class="date-badge">SEMANA · 23 a 29 jun</div>
                 </div>
 
                 <!-- Stats rápidos -->
                 <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Horas esta semana</div>
-                        <div class="stat-value accent-qui">4h20</div>
-                        <div class="stat-sub">de 9h40 sugeridas</div>
-                    </div>
                     <div class="stat-card">
                         <div class="stat-label">Matérias ativas</div>
                         <div class="stat-value accent-port">6</div>
@@ -91,15 +89,13 @@
                     <div class="stat-card">
                         <div class="stat-label">Tarefas pendentes</div>
                         <div class="stat-value accent-mat">5</div>
-                        <div class="stat-sub">2 vencem hoje</div>
                     </div>
                 </div>
 
                 <!-- Seção: Agenda de estudos resumida -->
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Agenda de estudos</h2>
-                        <span class="section-note">6 matérias · 9h40 sugeridas</span>
+                        <h2 class="section-title">Matérias do dia:</h2>
                     </div>
 
                     <div class="days-week">
@@ -178,12 +174,12 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Agenda de Estudos</h1>
-                        <p style="color: var(--borda-cinza); margin-top: 8px;">Organize o seu plano de estudos diário e semanal de forma automática.</p>
+                        <p>Organize o seu plano de estudos diário e semanal de forma automática.</p>
                     </div>
                     <div class="date-badge">JUNHO · Semana Atual</div>
                 </div>
 
-                <div style="display: flex; gap: 12px; margin-bottom: 28px;">
+                <div>
                     <button class="btn btn-primary">Plano Sugerido (IA)</button>
                     <button class="btn btn-secondary">Importar do Google Classroom</button>
                 </div>
@@ -259,14 +255,14 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Tarefas</h1>
-                        <p style="color: var(--borda-cinza); margin-top: 8px;">Acompanhe e gerencie as atividades escolares integradas de todas as plataformas.</p>
+                        <p>Acompanhe e gerencie as atividades escolares integradas de todas as plataformas.</p>
                     </div>
                     <div class="date-badge">5 PENDENTES</div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; gap: 16px; flex-wrap: wrap;">
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-secondary filter-btn active" data-filter="todas" style="border-color: var(--qui); color: var(--qui);">Todas</button>
+                <div>
+                    <div>
+                        <button>Todas</button>
                         <button class="btn btn-secondary filter-btn" data-filter="pendentes">Pendentes</button>
                         <button class="btn btn-secondary filter-btn" data-filter="concluidas">Concluídas</button>
                     </div>
@@ -330,7 +326,7 @@
                     </div>
 
                     <div id="section-completed">
-                        <div class="tasks-section-label" style="margin-top: 32px;">Concluídas</div>
+                        <div class="tasks-section-label">Concluídas</div>
                         <div class="tasks-list">
                             <div class="task-item done">
                                 <div class="task-check"></div>
@@ -363,57 +359,13 @@
                 </div>
             </div>
         </div>
-
-        <!-- 4. VIEW: POMODORO -->
-        <div id="view-pomodoro" class="page-view">
-            <div class="content">
-                <div class="page-header">
-                    <div>
-                        <h1 class="page-title">Pomodoro</h1>
-                        <p style="color: var(--borda-cinza); margin-top: 8px;">Aumente o seu foco alternando blocos de estudo concentrado com pausas relaxantes.</p>
-                    </div>
-                    <div class="date-badge">FOCO MÁXIMO</div>
-                </div>
-
-                <div class="pomodoro-container">
-                    <div class="pomodoro-modes">
-                        <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
-                        <button class="mode-btn" data-mode="short">Intervalo Curto</button>
-                        <button class="mode-btn" data-mode="long">Intervalo Longo</button>
-                    </div>
-
-                    <div class="pomodoro-timer-circle" style="--progress: 100%;">
-                        <div class="timer-display">25:00</div>
-                    </div>
-
-                    <div class="pomodoro-controls">
-                        <button class="btn btn-primary" id="pomodoro-play" style="min-width: 140px;">Iniciar</button>
-                        <button class="btn btn-secondary" id="pomodoro-reset">Reiniciar</button>
-                    </div>
-                </div>
-
-                <div class="section" style="max-width: 500px; margin: 0 auto;">
-                    <div class="section-head">
-                        <h2 class="section-title">Como funciona?</h2>
-                    </div>
-                    <div style="background: var(--fundo-secundario); border: 1px solid var(--board-line); border-radius: 12px; padding: 20px; font-size: 14px; line-height: 1.6;">
-                        <ol style="margin: 0; padding-left: 20px; color: var(--borda-cinza);">
-                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Foco total:</strong> Escolha uma tarefa pendente e estude concentrado por 25 minutos.</li>
-                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Pausa curta:</strong> Relaxe e alongue-se por 5 minutos após o alarme.</li>
-                            <li style="margin-bottom: 8px;"><strong style="color: var(--branco);">Pausa longa:</strong> A cada 4 ciclos (pomodoros), faça uma pausa de 15 minutos.</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- 5. VIEW: HISTÓRICO -->
         <div id="view-historico" class="page-view">
             <div class="content">
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Histórico de Estudos</h1>
-                        <p style="color: var(--borda-cinza); margin-top: 8px;">Consulte suas estatísticas de foco e verifique seu progresso acadêmico.</p>
+                        <p>Consulte suas estatísticas de foco e verifique seu progresso acadêmico.</p>
                     </div>
                     <div class="date-badge">SEMANA ATUAL</div>
                 </div>
@@ -442,36 +394,36 @@
                 </div>
 
                 <div class="chart-card">
-                    <h3 style="margin: 0 0 4px; font-size: 16px; font-weight: 700;">Distribuição Diária de Estudos</h3>
-                    <p style="margin: 0; font-size: 12px; color: var(--borda-cinza);">Horas de foco registradas por dia da semana</p>
+                    <h3>Distribuição Diária de Estudos</h3>
+                    <p>Horas de foco registradas por dia da semana</p>
                     
                     <div class="chart-container">
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar mat" style="height: 60%;"></div>
+                            <div class="chart-bar mat"></div>
                             <span class="chart-label">Seg</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar por" style="height: 40%;"></div>
+                            <div class="chart-bar por"></div>
                             <span class="chart-label">Ter</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar bio" style="height: 85%;"></div>
+                            <div class="chart-bar bio"></div>
                             <span class="chart-label">Qua</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 50%;"></div>
+                            <div class="chart-bar"></div>
                             <span class="chart-label">Qui</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar"></div>
                             <span class="chart-label">Sex</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 25%;"></div>
+                            <div class="chart-bar"></div>
                             <span class="chart-label">Sáb</span>
                         </div>
                         <div class="chart-bar-wrapper">
-                            <div class="chart-bar" style="height: 10%;"></div>
+                            <div class="chart-bar"></div>
                             <span class="chart-label">Dom</span>
                         </div>
                     </div>
@@ -485,9 +437,9 @@
 
                     <div class="tasks-list">
                         <div class="task-item done">
-                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div class="task-body">
                                 <div>
-                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Revisão de Funções e Gráficos</div>
+                                    <div class="task-title">Revisão de Funções e Gráficos</div>
                                     <div class="task-meta">24 Jun, 15:30 · 2 Ciclos Pomodoro (50 min)</div>
                                 </div>
                                 <span class="task-tag tag-mat">Mat</span>
@@ -495,9 +447,9 @@
                         </div>
 
                         <div class="task-item done">
-                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div class="task-body">
                                 <div>
-                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Fichamento de Ditadura Militar</div>
+                                    <div class="task-title">Fichamento de Ditadura Militar</div>
                                     <div class="task-meta">23 Jun, 14:00 · Leitura e Resumos (1h 10min)</div>
                                 </div>
                                 <span class="task-tag tag-his">His</span>
@@ -505,9 +457,9 @@
                         </div>
 
                         <div class="task-item done">
-                            <div class="task-body" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div class="task-body">
                                 <div>
-                                    <div class="task-title" style="text-decoration: none; color: var(--branco);">Estudo Dirigido de Genética</div>
+                                    <div class="task-title">Estudo Dirigido de Genética</div>
                                     <div class="task-meta">23 Jun, 09:15 · Exercícios de Mendel (45 min)</div>
                                 </div>
                                 <span class="task-tag tag-bio">Bio</span>
@@ -524,7 +476,7 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Matérias</h1>
-                        <p style="color: var(--borda-cinza); margin-top: 8px;">Gerencie suas disciplinas, acompanhe seu progresso de tópicos estudados e tarefas concluídas.</p>
+                        <p>Gerencie suas disciplinas, acompanhe seu progresso de tópicos estudados e tarefas concluídas.</p>
                     </div>
                     <div class="date-badge">6 DISCIPLINAS</div>
                 </div>
@@ -539,14 +491,14 @@
                                     <span class="subject-time">1 tarefa pendente</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>50%</span>
                                     </div>
                                     <div class="progress-container">
-                                        <div class="progress-bar mat" style="width: 50%;"></div>
+                                        <div class="progress-bar mat"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Marcos Oliveira</p>
+                                    <p>Prof. Marcos Oliveira</p>
                                 </div>
                             </div>
                         </article>
@@ -559,14 +511,14 @@
                                     <span class="subject-time">1 tarefa pendente</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>33%</span>
                                     </div>
                                     <div class="progress-container">
-                                        <div class="progress-bar por" style="width: 33%;"></div>
+                                        <div class="progress-bar por"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Ana Silva</p>
+                                    <p>Prof. Ana Silva</p>
                                 </div>
                             </div>
                         </article>
@@ -579,14 +531,14 @@
                                     <span class="subject-time">1 tarefa pendente</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>66%</span>
                                     </div>
                                     <div class="progress-container">
-                                        <div class="progress-bar bio" style="width: 66%;"></div>
+                                        <div class="progress-bar bio"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Profª. Cláudia Reis</p>
+                                    <p>Profª. Cláudia Reis</p>
                                 </div>
                             </div>
                         </article>
@@ -599,14 +551,14 @@
                                     <span class="subject-time">1 tarefa pendente</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>33%</span>
                                     </div>
                                     <div class="progress-container">
                                         <div class="progress-bar qui" style="width: 33%;"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. Ricardo Dias</p>
+                                    <p>Prof. Ricardo Dias</p>
                                 </div>
                             </div>
                         </article>
@@ -619,14 +571,14 @@
                                     <span class="subject-time">1 tarefa pendente</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>33%</span>
                                     </div>
                                     <div class="progress-container">
                                         <div class="progress-bar fis" style="width: 33%;"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Prof. André Santos</p>
+                                    <p>Prof. André Santos</p>
                                 </div>
                             </div>
                         </article>
@@ -639,19 +591,363 @@
                                     <span class="subject-time">0 pendentes</span>
                                 </div>
                                 <div class="topics">
-                                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600;">
+                                    <div>
                                         <span>Progresso Geral</span>
                                         <span>100%</span>
                                     </div>
                                     <div class="progress-container">
-                                        <div class="progress-bar his" style="width: 100%;"></div>
+                                        <div class="progress-bar his"></div>
                                     </div>
-                                    <p style="font-size: 11px; margin: 8px 0 0; color: #5B5444;">Profª. Júlia Lima</p>
+                                    <p>Profª. Júlia Lima</p>
                                 </div>
                             </div>
                         </article>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- 7. VIEW: CALENDÁRIO ESCOLAR -->
+        <div id="view-calendario" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Calendário Escolar</h1>
+                    </div>
+                    <div class="date-badge">JUNHO 2025</div>
+                </div>
+
+                <!-- Legenda de tipos de evento -->
+                <div class="cal-legend">
+                    <span class="cal-legend-item"><span class="cal-dot dot-aula"></span>Aulas</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-prova"></span>Provas</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-prazo"></span>Prazos</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-feriado"></span>Feriados</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-evento"></span>Eventos</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Recesso</span>
+                </div>
+
+                <!-- Controles de navegação do mês -->
+                <div class="cal-nav">
+                    <button class="btn btn-secondary cal-nav-btn" id="cal-prev">&#8592; Anterior</button>
+                    <span class="cal-month-label" id="cal-month-label">Junho 2025</span>
+                    <button class="btn btn-secondary cal-nav-btn" id="cal-next">Próximo &#8594;</button>
+                </div>
+
+                <!-- Grade do calendário mensal -->
+                <div class="section">
+                    <div class="calendar-grid" id="school-calendar-grid">
+                        <div class="calendar-header-day">Seg</div>
+                        <div class="calendar-header-day">Ter</div>
+                        <div class="calendar-header-day">Qua</div>
+                        <div class="calendar-header-day">Qui</div>
+                        <div class="calendar-header-day">Sex</div>
+                        <div class="calendar-header-day">Sáb</div>
+                        <div class="calendar-header-day">Dom</div>
+                        <!-- Células geradas pelo JS -->
+                    </div>
+                </div>
+
+                <!-- Próximos eventos em lista -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Próximos Eventos</h2>
+                    </div>
+                    <div class="tasks-list" id="upcoming-events-list">
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Prova de Matemática — Funções</div>
+                                <div class="task-meta">Qui, 26 Jun · 3º ano A e B · Sala 12</div>
+                            </div>
+                            <span class="task-tag tag-mat">Mat</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Prazo: Redação Paraná — Mobilidade Urbana</div>
+                                <div class="task-meta">Sex, 27 Jun · Todos os alunos · Plataforma online</div>
+                            </div>
+                            <span class="task-tag tag-por">Port</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Feriado Municipal — Aniversário de Ibiporã</div>
+                                <div class="task-meta">Sáb, 28 Jun · Sem aulas · Municipal</div>
+                            </div>
+                            <span class="task-tag">Fer</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Simulado ENEM — Ciências da Natureza</div>
+                                <div class="task-meta">Ter, 1 Jul · 3º ano · Auditório</div>
+                            </div>
+                            <span class="task-tag tag-bio">Bio</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Recesso Escolar — Julho</div>
+                                <div class="task-meta">14 Jul – 25 Jul · Toda a escola · Calendário SEED-PR</div>
+                            </div>
+                            <span class="task-tag">Rec</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Feira de Ciências CEEP 2025</div>
+                                <div class="task-meta">Sex, 8 Ago · Todas as turmas · Quadra coberta</div>
+                            </div>
+                            <span class="task-tag tag-bio">Cie</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. VIEW: ÁREA DO PROFESSOR -->
+        <div id="view-professor" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Área do Professor</h1>
+                    </div>
+                </div>
+
+                <!-- Stats rápidos do professor -->
+                <div class="stats-row" style="grid-template-columns: repeat(4,1fr);">
+                    <div class="stat-card">
+                        <div class="stat-label">Tarefas Ativas</div>
+                        <div class="stat-value accent-qui">12</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Alunos Ativos</div>
+                        <div class="stat-value accent-bio">84</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tarefas Atrasadas</div>
+                        <div class="stat-value accent-mat">7</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Tarefas Entregues</div>
+                        <div class="stat-value accent-port">23</div>
+                    </div>
+                </div>
+
+                <!-- Criar nova tarefa para turma -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Criar Tarefa para Turma</h2>
+                    </div>
+                    <div class="prof-form-card">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label">Título da Tarefa</label>
+                                <input type="text" class="form-input" id="prof-task-title">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Matéria</label>
+                                <select class="form-input" id="prof-task-subject">
+                                    <option value="mat">Matemática</option>
+                                    <option value="por">Português</option>
+                                    <option value="bio">Biologia</option>
+                                    <option value="qui">Química</option>
+                                    <option value="fis">Física</option>
+                                    <option value="his">História</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label">Prazo de Entrega</label>
+                                <input type="date" class="form-input" id="prof-task-due">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plataforma / Origem</label>
+                                <select class="form-input" id="prof-task-platform">
+                                    <option value="interna">Estuda CEEP (interna)</option>
+                                    <option value="redacao-pr">Redação Paraná</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Descrição / Instruções</label>
+                            <textarea class="form-input" rows="3" id="prof-task-desc" l;></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Destinatários</label>
+                            <div class="recipient-toggle">
+                                <button class="recipient-btn active" data-target="todos">Todos os alunos</button>
+                                <button class="recipient-btn" data-target="turma">Por turma</button>
+                            </div>
+                        </div>
+                        <div class="form-group" id="turma-select-group" style="display:none;">
+                            <label class="form-label">Selecionar Turma(s)</label>
+                            <div class="turma-chips">
+                                <span class="turma-chip">3º A</span>
+                                <span class="turma-chip">3º B</span>
+                                <span class="turma-chip">2º A</span>
+                                <span class="turma-chip">2º B</span>
+                                <span class="turma-chip">1º A</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary">Salvar Rascunho</button>
+                            <button class="btn btn-primary" id="prof-publish-btn">Publicar Tarefa</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sincronizações externas -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Sincronização de Plataformas</h2>
+                        <span class="section-note">Última sync: hoje às 08:14</span>
+                    </div>
+                    <div class="sync-cards">
+                        <div class="sync-card">
+                            <div class="sync-icon sync-icon-pr">RP</div>
+                            <div class="sync-info">
+                                <div class="sync-name">Redação Paraná</div>
+                                <div class="sync-status sync-ok">● Conectado — 3 turmas sincronizadas</div>
+                            </div>
+                            <button class="btn btn-secondary sync-btn">Sincronizar</button>
+                        </div>
+                        <div class="sync-card">
+                            <div class="sync-icon sync-icon-gc">GC</div>
+                            <div class="sync-info">
+                                <div class="sync-name">Google Classroom</div>
+                                <div class="sync-status sync-ok">● Conectado — 6 turmas</div>
+                            </div>
+                            <button class="btn btn-secondary sync-btn">Sincronizar</button>
+                        </div>
+                        <div class="sync-card">
+                            <div class="sync-icon sync-icon-seed">SE</div>
+                            <div class="sync-info">
+                                <div class="sync-name">SEED-PR / Aula Paraná</div>
+                                <div class="sync-status sync-warn">● Pendente — verificar credenciais</div>
+                            </div>
+                            <button class="btn btn-secondary sync-btn">Conectar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alunos em atraso e destaque -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Acompanhamento dos Alunos</h2>
+                        <span class="section-note">Atualizado agora</span>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="student-tabs">
+                        <button class="student-tab active" data-tab="atrasados">Em Atraso (7)</button>
+                        <button class="student-tab" data-tab="destaque">Mais Dedicados</button>
+                        <button class="student-tab" data-tab="todos-alunos">Ver Todos</button>
+                    </div>
+
+                    <!-- Lista de atrasados -->
+                    <div id="tab-atrasados" class="student-tab-content">
+                        <div class="tasks-list">
+                            <div class="student-row task-item">
+                                <div class="student-avatar" style="background:var(--fis);">AN</div>
+                                <div class="task-body">
+                                    <div class="task-title">Ana Nascimento — 3º A</div>
+                                    <div class="task-meta">2 tarefas em atraso: Lista de Parábolas, Redação Paraná</div>
+                                </div>
+                                <span class="task-tag" style="background:rgba(255,107,157,0.2);color:var(--fis);">Atraso</span>
+                            </div>
+                            <div class="student-row task-item">
+                                <div class="student-avatar" style="background:var(--mat);">LF</div>
+                                <div class="task-body">
+                                    <div class="task-title">Lucas Ferreira — 3º B</div>
+                                    <div class="task-meta">1 tarefa em atraso: Estequiometria Cap. 8</div>
+                                </div>
+                                <span class="task-tag" style="background:rgba(255,107,157,0.2);color:var(--fis);">Atraso</span>
+                            </div>
+                            <div class="student-row task-item">
+                                <div class="student-avatar" style="background:var(--port);">MS</div>
+                                <div class="task-body">
+                                    <div class="task-title">Mariana Santos — 2º A</div>
+                                    <div class="task-meta">3 tarefas em atraso · Última atividade: há 5 dias</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de destaque -->
+                    <div id="tab-destaque" class="student-tab-content" style="display:none;">
+                        <div class="tasks-list">
+                            <div class="student-row task-item done">
+                                <div class="student-avatar">MK</div>
+                                <div class="task-body">
+                                    <div class="task-title">Maria Kato — 3º A</div>
+                                    <div class="task-meta">28h estudadas este mês · 52 ciclos Pomodoro · 100% das tarefas entregues</div>
+                                </div>
+                            </div>
+                            <div class="student-row task-item done">
+                                <div class="student-avatar">PO</div>
+                                <div class="task-body">
+                                    <div class="task-title">Pedro Oliveira — 3º B</div>
+                                    <div class="task-meta">22h estudadas · ofensiva de 12 dias · 95% de entregas</div>
+                                </div>
+                            </div>
+                            <div class="student-row task-item done">
+                                <div class="student-avatar">JL</div>
+                                <div class="task-body">
+                                    <div class="task-title">Julia Lima — 2º B</div>
+                                    <div class="task-meta">18h estudadas · 3 redações enviadas para o Redação Paraná</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Todos os alunos -->
+                    <div id="tab-todos-alunos" class="student-tab-content" style="display:none;">
+                        <div class="tasks-list">
+                            <div class="task-item">
+                                <div class="task-body">
+                                    <div class="task-title">
+                                        Exibindo resumo — use filtros por turma para ver todos os 84 alunos.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                            <button class="btn btn-secondary">3º A (28)</button>
+                            <button class="btn btn-secondary">3º B (29)</button>
+                            <button class="btn btn-secondary">2º A (27)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarefas publicadas recentes -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Tarefas Publicadas</h2>
+                        <span class="section-note">Mais recentes primeiro</span>
+                    </div>
+                    <div class="tasks-list" id="prof-tasks-list">
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Lista de parábolas (ENEM 2022)</div>
+                                <div class="task-meta">Publicada 23 Jun · Vence hoje · 28/35 entregues · Redação Paraná sync</div>
+                            </div>
+                            <span class="task-tag tag-mat">Mat</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-body">
+                                <div class="task-title">Redação: Mobilidade Urbana</div>
+                                <div class="task-meta">Publicada 22 Jun · Vence hoje · 31/35 entregues · Redação Paraná</div>
+                            </div>
+                            <span class="task-tag tag-por">Port</span>
+                        </div>
+                        <div class="task-item done">
+                            <div class="task-body">
+                                <div class="task-title">Resumo: Genética Mendeliana</div>
+                                <div class="task-meta">Publicada 20 Jun · Venceu 24 Jun · 35/35 entregues ✓</div>
+                            </div>
+                            <span class="task-tag tag-bio">Bio</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -672,7 +968,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="task-subject-input">Matéria</label>
-                    <select id="task-subject-input" class="form-input" style="background: var(--fundo);">
+                    <select id="task-subject-input" class="form-input">
                         <option value="mat">Matemática</option>
                         <option value="por">Português</option>
                         <option value="bio">Biologia</option>
@@ -683,7 +979,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="task-priority-input">Prioridade</label>
-                    <select id="task-priority-input" class="form-input" style="background: var(--fundo);">
+                    <select id="task-priority-input" class="form-input">
                         <option value="baixa">Baixa (Verde)</option>
                         <option value="media" selected>Média (Amarelo)</option>
                         <option value="alta">Alta (Rosa)</option>
