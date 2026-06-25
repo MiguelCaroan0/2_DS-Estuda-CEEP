@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Estuda CEEP</title>
+</head>
+
+<body>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-name">Estuda CEEP</div>
+            <div class="sidebar-brand-sub">Plataforma de estudos</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Principal</div>
+
+            <a class="nav-item active">
+
+                Início
+            </a>
+
+            <a class="nav-item">
+                Agenda de Estudos
+            </a>
+
+            <a class="nav-item">
+                Tarefas
+            </a>
+
+            <div class="nav-section-label">Ferramentas</div>
+
+            <a class="nav-item">
+                Pomodoro
+            </a>
+
+            <a class="nav-item">
+                Histórico
+            </a>
+
+            <a class="nav-item">
+                Matérias
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar">MK</div>
+                <div>
+                    <div class="user-name">Aluno.</div>
+                    <div class="user-role">3º ano</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <div class="main">
+        <div class="content">
+
+            <!-- Cabeçalho -->
+            <div class="page-header">
+                <h1 class="page-title">Início</h1>
+                <div class="date-badge">SEMANA · 23 a 29 jun</div>
+            </div>
+
+            <!-- Stats rápidos -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Horas esta semana</div>
+                    <div class="stat-value accent-qui">4h20</div>
+                    <div class="stat-sub">de 9h40 sugeridas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Matérias ativas</div>
+                    <div class="stat-value accent-port">6</div>
+                    <div class="stat-sub">esta semana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Tópicos concluídos</div>
+                    <div class="stat-value accent-bio">7</div>
+                    <div class="stat-sub">de 18 no total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Tarefas pendentes</div>
+                    <div class="stat-value accent-mat">5</div>
+                    <div class="stat-sub">2 vencem hoje</div>
+                </div>
+            </div>
+
+            <!-- ──────────────────────────────────── -->
+            <!-- SEÇÃO 1: AGENDA DE ESTUDOS          -->
+            <!-- ──────────────────────────────────── -->
+            <div class="section">
+                <div class="section-head">
+                    <h2 class="section-title">Agenda de estudos</h2>
+                    <span class="section-note">6 matérias · 9h40 sugeridas</span>
+                </div>
+
+                <div class="days-week">
+                    <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
+                    <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
+                    <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
+                    <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
+                    <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
+                    <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
+                    <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
+                </div>
+
+                <div class="subject-grid">
+
+                    <article class="subject-card" data-subject="mat">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Matemática</span>
+                                <span class="subject-time">1h40 hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (4)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Funções quadráticas</span></li>
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Equações do 2º grau</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Gráficos de parábola</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Exercícios do ENEM</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="subject-card" data-subject="por">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Português</span>
+                                <span class="subject-time">1h20 hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (3)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Figuras de linguagem</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Redação dissertativa</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Interpretação de texto</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="subject-card" data-subject="bio">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Biologia</span>
+                                <span class="subject-time">1h hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (3)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Genética mendeliana</span></li>
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Mutações gênicas</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Engenharia genética</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="subject-card" data-subject="qui">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Química</span>
+                                <span class="subject-time">1h20 hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (3)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Estequiometria</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Soluções e concentração</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Reações de oxirredução</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="subject-card" data-subject="fis">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Física</span>
+                                <span class="subject-time">1h20 hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (3)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Leis de Newton</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Cinemática vetorial</span></li>
+                                    <li class="topic-item"><span class="topic-dot"></span><span>Trabalho e energia</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="subject-card" data-subject="his">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">História</span>
+                                <span class="subject-time">1h hoje</span>
+                            </div>
+                            <div class="topics">
+                                <p class="topics-label">Tópicos da semana (2)</p>
+                                <ul class="topic-list">
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Era Vargas</span></li>
+                                    <li class="topic-item done"><span class="topic-dot"></span><span>Ditadura militar</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- ──────────────────────────────────── -->
+            <!-- SEÇÃO 2: TAREFAS                    -->
+            <!-- ──────────────────────────────────── -->
+            <div class="section">
+                <div class="section-head">
+                    <h2 class="section-title">Tarefas</h2>
+                    <span class="section-note">5 pendentes · 3 concluídas</span>
+                </div>
+
+                <div class="tasks-section-label">Pendentes</div>
+
+                <div class="tasks-list">
+
+                    <div class="task-item">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Resolver lista de parábolas (ENEM 2022)</div>
+                            <div class="task-meta">Vence hoje · 20 questões</div>
+                        </div>
+                        <div class="task-priority priority-alta"></div>
+                        <span class="task-tag tag-mat">Mat</span>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Escrever redação sobre mobilidade urbana</div>
+                            <div class="task-meta">Vence hoje · mín. 30 linhas</div>
+                        </div>
+                        <div class="task-priority priority-alta"></div>
+                        <span class="task-tag tag-por">Port</span>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Exercícios de estequiometria — cap. 8</div>
+                            <div class="task-meta">Vence qui, 26 jun · pág. 112–118</div>
+                        </div>
+                        <div class="task-priority priority-media"></div>
+                        <span class="task-tag tag-qui">Qui</span>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Resumo: Cinemática vetorial</div>
+                            <div class="task-meta">Vence sex, 27 jun · 1 página</div>
+                        </div>
+                        <div class="task-priority priority-media"></div>
+                        <span class="task-tag tag-fis">Fís</span>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Mapa mental — Engenharia genética</div>
+                            <div class="task-meta">Vence sáb, 28 jun</div>
+                        </div>
+                        <div class="task-priority priority-baixa"></div>
+                        <span class="task-tag tag-bio">Bio</span>
+                    </div>
+
+                </div>
+
+                <div class="tasks-section-label">Concluídas</div>
+
+                <div class="tasks-list">
+
+                    <div class="task-item done">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Rever anotações — Funções quadráticas</div>
+                            <div class="task-meta">Concluída ontem</div>
+                        </div>
+                        <span class="task-tag tag-mat">Mat</span>
+                    </div>
+
+                    <div class="task-item done">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Ler capítulo sobre Era Vargas</div>
+                            <div class="task-meta">Concluída seg, 23 jun</div>
+                        </div>
+                        <span class="task-tag tag-his">His</span>
+                    </div>
+
+                    <div class="task-item done">
+                        <div class="task-check"></div>
+                        <div class="task-body">
+                            <div class="task-title">Exercícios — Genética mendeliana</div>
+                            <div class="task-meta">Concluída seg, 23 jun</div>
+                        </div>
+                        <span class="task-tag tag-bio">Bio</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
