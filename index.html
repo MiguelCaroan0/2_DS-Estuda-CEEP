@@ -16,11 +16,6 @@
         <div class="top-header-brand">
             <div class="top-header-name">Estuda CEEP </div>
         </div>
-        <div class="sidebar-footer">
-            <div class="user-row">
-                <div class="user-avatar">MK</div>
-            </div>
-        </div>
     </header>
 
     <!-- ── SIDEBAR ── -->
@@ -61,6 +56,15 @@
             </a>
         </nav>
 
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar">MK</div>
+                <div>
+                    <div class="user-name">Aluno.</div>
+                    <div class="user-role">3º ano</div>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <!-- ── MAIN CONTENT CONTAINER (SPA VIEWS) ── -->
@@ -69,100 +73,45 @@
         <!-- 1. VIEW: INÍCIO (PÁGINA INICIAL) -->
         <div id="view-inicio" class="page-view active">
             <div class="content">
-                <!-- Cabeçalho -->
-                <div class="page-header">
-                    <h1 class="page-title">Início</h1>
-                </div>
 
-                <!-- Stats rápidos -->
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Matérias ativas</div>
-                        <div class="stat-value accent-port">6</div>
-                        <div class="stat-sub">esta semana</div>
+                <!-- ── HERO: Saudação + Data ── -->
+                <div class="home-hero">
+                    <!-- Card de data automática -->
+                    <div class="date-hero-card">
+                        <div class="date-hero-weekday" id="hero-weekday">Carregando...</div>
+                        <div class="date-hero-date"    id="hero-date">—</div>
+                        <div class="date-hero-bar"></div>
+                        <div class="date-hero-time"    id="hero-time">--:--:--</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Tópicos concluídos</div>
-                        <div class="stat-value accent-bio">7</div>
-                        <div class="stat-sub">de 18 no total</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Tarefas pendentes</div>
-                        <div class="stat-value accent-mat">5</div>
+
+                    <!-- Saudação dinâmica -->
+                    <div class="greeting-block">
+                        <div class="greeting-label" id="greeting-label">Olá,</div>
+                        <div class="greeting-name">Patrícia Alves! 👋</div>
+                        <p class="greeting-sub" id="greeting-sub">Veja abaixo o que está no seu plano de hoje.</p>
                     </div>
                 </div>
 
-                <!-- Seção: Agenda de estudos resumida -->
+                <!-- Seção: Grade de horários por dia -->
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Matérias do dia:</h2>
+                        <h2 class="section-title">Matérias do dia</h2>
+                        <span class="section-note" id="day-filter-note">Clique em um dia para filtrar</span>
                     </div>
 
-                    <div class="days-week">
-                        <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
-                        <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
-                        <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
-                        <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
-                        <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
-                        <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
-                        <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
+                    <!-- Seletor de dias (agora com data real) -->
+                    <div class="days-week" id="inicio-days-week"></div>
+
+                    <!-- Grade de matérias filtrada pelo dia selecionado -->
+                    <div class="subject-grid" id="inicio-subject-grid">
+                        <!-- Populada pelo JS conforme o dia selecionado -->
                     </div>
 
-                    <div class="subject-grid">
-                        <article class="subject-card" data-subject="mat">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Matemática</span>
-                                    <span class="subject-time">1h40 hoje</span>
-                                </div>
-                                <div class="topics">
-                                    <p class="topics-label">Tópicos da semana (4)</p>
-                                    <ul class="topic-list">
-                                        <li class="topic-item done"><span class="topic-dot"></span><span>Funções quadráticas</span></li>
-                                        <li class="topic-item done"><span class="topic-dot"></span><span>Equações do 2º grau</span></li>
-                                        <li class="topic-item"><span class="topic-dot"></span><span>Gráficos de parábola</span></li>
-                                        <li class="topic-item"><span class="topic-dot"></span><span>Exercícios do ENEM</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="por">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Português</span>
-                                    <span class="subject-time">1h20 hoje</span>
-                                </div>
-                                <div class="topics">
-                                    <p class="topics-label">Tópicos da semana (3)</p>
-                                    <ul class="topic-list">
-                                        <li class="topic-item done"><span class="topic-dot"></span><span>Figuras de linguagem</span></li>
-                                        <li class="topic-item"><span class="topic-dot"></span><span>Redação dissertativa</span></li>
-                                        <li class="topic-item"><span class="topic-dot"></span><span>Interpretação de texto</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="bio">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Biologia</span>
-                                    <span class="subject-time">1h hoje</span>
-                                </div>
-                                <div class="topics">
-                                    <p class="topics-label">Tópicos da semana (3)</p>
-                                    <ul class="topic-list">
-                                        <li class="topic-item done"><span class="topic-dot"></span><span>Genética mendeliana</span></li>
-                                        <li class="topic-item done"><span class="topic-dot"></span><span>Mutações gênicas</span></li>
-                                        <li class="topic-item"><span class="topic-dot"></span><span>Engenharia genética</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
+                    <!-- Estado vazio (fim de semana / sem aulas) -->
+                    <div class="day-empty-state" id="day-empty-state" style="display:none;">
+                        <div class="day-empty-icon">🎉</div>
+                        <div class="day-empty-title">Nenhuma aula hoje</div>
+                        <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
                     </div>
                 </div>
             </div>

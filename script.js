@@ -1,4 +1,294 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ─── SAUDAÇÃO DINÂMICA + RELÓGIO ───
+    const weekdays = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+    const months   = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+    function updateClock() {
+        const now = new Date();
+        const h = now.getHours();
+
+        // Saudação
+        const greetingLabel = document.getElementById('greeting-label');
+        const greetingSub   = document.getElementById('greeting-sub');
+        if (greetingLabel) {
+            if (h >= 5 && h < 12) {
+                greetingLabel.textContent = 'Bom dia,';
+                if (greetingSub) greetingSub.textContent = 'Ótimo começo de dia! Veja abaixo o que está no seu plano de hoje.';
+            } else if (h >= 12 && h < 18) {
+                greetingLabel.textContent = 'Boa tarde,';
+                if (greetingSub) greetingSub.textContent = 'Continue firme! Confira suas matérias e tarefas de hoje.';
+            } else {
+                greetingLabel.textContent = 'Boa noite,';
+                if (greetingSub) greetingSub.textContent = 'Hora de revisar o que estudou hoje e se preparar para amanhã.';
+            }
+        }
+
+        // Data
+        const heroWeekday = document.getElementById('hero-weekday');
+        const heroDate    = document.getElementById('hero-date');
+        if (heroWeekday) heroWeekday.textContent = weekdays[now.getDay()];
+        if (heroDate)    heroDate.textContent    = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+
+        // Relógio
+        const heroTime = document.getElementById('hero-time');
+        if (heroTime) {
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            heroTime.textContent = `${String(h).padStart(2,'0')}:${mm}:${ss}`;
+        }
+    }
+
+    // ─── GRADE DE HORÁRIOS SEMANAL ───
+    // Cada dia da semana (0=Dom, 1=Seg … 6=Sáb) mapeia para as matérias daquele dia.
+    // Cada matéria tem: subject key, nome, horário, e lista de tópicos com estado done.
+    const timetable = {
+        1: [ // Segunda
+            { subject: 'mat', name: 'Matemática',  time: '7h – 8h40', topics: [
+                { text: 'Funções quadráticas',   done: true  },
+                { text: 'Equações do 2º grau',   done: true  },
+                { text: 'Gráficos de parábola',  done: false },
+                { text: 'Exercícios do ENEM',    done: false },
+            ]},
+            { subject: 'por', name: 'Português',   time: '9h – 10h20', topics: [
+                { text: 'Figuras de linguagem',  done: true  },
+                { text: 'Redação dissertativa',  done: false },
+                { text: 'Interpretação de texto',done: false },
+            ]},
+            { subject: 'qui', name: 'Química',     time: '10h30 – 12h', topics: [
+                { text: 'Estequiometria',        done: false },
+                { text: 'Reações de oxirredução',done: false },
+            ]},
+        ],
+        2: [ // Terça
+            { subject: 'bio', name: 'Biologia',    time: '7h – 8h', topics: [
+                { text: 'Genética mendeliana',   done: true  },
+                { text: 'Mutações gênicas',      done: true  },
+                { text: 'Engenharia genética',   done: false },
+            ]},
+            { subject: 'fis', name: 'Física',      time: '8h10 – 9h30', topics: [
+                { text: 'Cinemática escalar',    done: true  },
+                { text: 'Dinâmica (Newton)',     done: false },
+            ]},
+            { subject: 'hist', name: 'História',   time: '9h40 – 11h', topics: [
+                { text: 'Primeira Guerra Mundial',done: false },
+                { text: 'Revolução Russa',       done: false },
+            ]},
+        ],
+        3: [ // Quarta
+            { subject: 'mat', name: 'Matemática',  time: '7h – 8h40', topics: [
+                { text: 'Progressões aritméticas', done: false },
+                { text: 'Progressões geométricas', done: false },
+            ]},
+            { subject: 'por', name: 'Português',   time: '9h – 10h', topics: [
+                { text: 'Crase e pontuação',     done: false },
+                { text: 'Concordância verbal',   done: false },
+            ]},
+            { subject: 'bio', name: 'Biologia',    time: '10h10 – 11h30', topics: [
+                { text: 'Ecossistemas',          done: false },
+                { text: 'Cadeias alimentares',   done: false },
+            ]},
+        ],
+        4: [ // Quinta
+            { subject: 'fis', name: 'Física',      time: '7h – 8h30', topics: [
+                { text: 'Energia cinética',      done: false },
+                { text: 'Energia potencial',     done: false },
+            ]},
+            { subject: 'qui', name: 'Química',     time: '8h40 – 10h', topics: [
+                { text: 'Termoquímica',          done: false },
+                { text: 'Cinética química',      done: false },
+            ]},
+        ],
+        5: [ // Sexta
+            { subject: 'mat', name: 'Matemática',  time: '7h – 8h', topics: [
+                { text: 'Logaritmos',            done: false },
+                { text: 'Função logarítmica',    done: false },
+            ]},
+            { subject: 'hist', name: 'História',   time: '8h10 – 9h30', topics: [
+                { text: 'Segunda Guerra Mundial', done: false },
+                { text: 'Guerra Fria',           done: false },
+            ]},
+            { subject: 'por', name: 'Português',   time: '9h40 – 11h', topics: [
+                { text: 'Simulado de redação',   done: false },
+            ]},
+        ],
+        6: [], // Sábado – sem aulas
+        0: [], // Domingo – sem aulas
+    };
+
+    // Estado persistente dos tópicos por dia (chave: "dayOfWeek-subjectIndex-topicIndex")
+    const topicState = {};
+
+    function getAllTopics() {
+        let done = 0, total = 0;
+        Object.values(timetable).forEach(subjects => {
+            subjects.forEach((subj, si) => {
+                subj.topics.forEach((t, ti) => {
+                    total++;
+                    const key = `${Object.keys(timetable).find(k => timetable[k] === subjects)}-${si}-${ti}`;
+                    if (key in topicState ? topicState[key] : t.done) done++;
+                });
+            });
+        });
+        return { done, total };
+    }
+
+    function updateProgressCard() {
+        let done = 0, total = 0;
+        Object.entries(timetable).forEach(([day, subjects]) => {
+            subjects.forEach((subj, si) => {
+                subj.topics.forEach((t, ti) => {
+                    total++;
+                    const key = `${day}-${si}-${ti}`;
+                    if (key in topicState ? topicState[key] : t.done) done++;
+                });
+            });
+        });
+
+        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+        const circumference = 2 * Math.PI * 32; // r=32 → ~201
+
+        document.getElementById('prog-done').textContent  = done;
+        document.getElementById('prog-total').textContent = total;
+        document.getElementById('prog-pct').textContent   = pct + '%';
+        document.getElementById('prog-bar').style.width   = pct + '%';
+
+        const arc = document.getElementById('prog-arc');
+        if (arc) arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+
+        const sub = document.getElementById('prog-sub');
+        const left = total - done;
+        if (pct === 100) {
+            sub.textContent = '🏆 Parabéns! Todos os tópicos concluídos!';
+            document.getElementById('prog-done').style.color = 'var(--qui)';
+            if (arc) arc.style.stroke = 'var(--qui)';
+        } else if (pct >= 70) {
+            sub.textContent = `Quase lá! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
+            document.getElementById('prog-done').style.color = 'var(--bio)';
+            if (arc) arc.style.stroke = 'var(--bio)';
+        } else {
+            sub.textContent = `Continue firme! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
+            document.getElementById('prog-done').style.color = 'var(--bio)';
+            if (arc) arc.style.stroke = 'var(--bio)';
+        }
+    }
+
+    function renderSubjectGrid(dayOfWeek) {
+        const grid      = document.getElementById('inicio-subject-grid');
+        const emptyState = document.getElementById('day-empty-state');
+        const note      = document.getElementById('day-filter-note');
+        if (!grid) return;
+
+        const subjects = timetable[dayOfWeek] || [];
+        grid.innerHTML = '';
+
+        if (subjects.length === 0) {
+            grid.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        grid.style.display = '';
+        emptyState.style.display = 'none';
+
+        subjects.forEach((subj, si) => {
+            const doneCnt  = subj.topics.filter((t, ti) => {
+                const k = `${dayOfWeek}-${si}-${ti}`;
+                return k in topicState ? topicState[k] : t.done;
+            }).length;
+
+            const topicsHtml = subj.topics.map((t, ti) => {
+                const k    = `${dayOfWeek}-${si}-${ti}`;
+                const isDone = k in topicState ? topicState[k] : t.done;
+                return `<li class="topic-item${isDone ? ' done' : ''}" data-day="${dayOfWeek}" data-si="${si}" data-ti="${ti}">
+                    <span class="topic-dot"></span><span>${t.text}</span>
+                </li>`;
+            }).join('');
+
+            const card = document.createElement('article');
+            card.className = 'subject-card';
+            card.dataset.subject = subj.subject;
+            card.innerHTML = `
+                <div class="subject-tab"></div>
+                <div class="subject-body">
+                    <div class="subject-head">
+                        <span class="subject-name">${subj.name}</span>
+                        <span class="subject-time">${subj.time}</span>
+                    </div>
+                    <div class="topics">
+                        <p class="topics-label">${doneCnt}/${subj.topics.length} tópicos concluídos</p>
+                        <ul class="topic-list">${topicsHtml}</ul>
+                    </div>
+                </div>`;
+            grid.appendChild(card);
+        });
+
+        // Click em tópico → toggle done + atualiza progress
+        grid.querySelectorAll('.topic-item').forEach(li => {
+            li.addEventListener('click', () => {
+                const day = li.dataset.day;
+                const si  = parseInt(li.dataset.si);
+                const ti  = parseInt(li.dataset.ti);
+                const k   = `${day}-${si}-${ti}`;
+                const cur = k in topicState ? topicState[k] : timetable[day][si].topics[ti].done;
+                topicState[k] = !cur;
+                renderSubjectGrid(parseInt(day));
+                updateProgressCard();
+            });
+        });
+    }
+
+    function renderDaysWeek() {
+        const container = document.getElementById('inicio-days-week');
+        if (!container) return;
+
+        const now = new Date();
+        const todayDow = now.getDay(); // 0=Dom … 6=Sáb
+        // Gera a semana corrente começando na segunda
+        const labels = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        // Calcula a segunda-feira desta semana
+        const monday = new Date(now);
+        monday.setDate(now.getDate() - ((todayDow + 6) % 7));
+
+        container.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const d   = new Date(monday);
+            d.setDate(monday.getDate() + i);
+            const dow = d.getDay();
+            const isToday = dow === todayDow && d.toDateString() === now.toDateString();
+
+            const div = document.createElement('div');
+            div.className = 'day' + (isToday ? ' today' : '');
+            div.dataset.dow = dow;
+            div.innerHTML = `<div class="d-label">${labels[dow]}</div><div class="d-num">${d.getDate()}</div>`;
+            container.appendChild(div);
+        }
+
+        // Clicar num dia filtra as matérias
+        container.querySelectorAll('.day').forEach(d => {
+            d.addEventListener('click', () => {
+                container.querySelectorAll('.day').forEach(x => x.classList.remove('today'));
+                d.classList.add('today');
+
+                const dow  = parseInt(d.dataset.dow);
+                const label = d.querySelector('.d-label').textContent;
+                const num   = d.querySelector('.d-num').textContent;
+                const note  = document.getElementById('day-filter-note');
+                if (note) note.textContent = `${label}, dia ${num}`;
+
+                renderSubjectGrid(dow);
+            });
+        });
+
+        // Render inicial com o dia de hoje
+        renderSubjectGrid(todayDow);
+        const note = document.getElementById('day-filter-note');
+        const todayLabel = labels[todayDow];
+        if (note) note.textContent = `Hoje · ${todayLabel}`;
+    }
+
+    renderDaysWeek();
+    updateProgressCard();
     // ─── SPA ROUTING (SHOW/HIDE VIEWS) ───
     const navItems = document.querySelectorAll('.nav-item');
     const pageViews = document.querySelectorAll('.page-view');
