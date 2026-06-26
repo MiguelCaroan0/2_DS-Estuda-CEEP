@@ -1409,3 +1409,224 @@ footer {
     cursor: pointer;
     user-select: none;
 }
+.agenda-ai-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(111,207,122,0.08), rgba(255,209,102,0.06));
+    border: 1px solid rgba(111,207,122,0.25);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+ 
+.agenda-ai-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--branco);
+    margin-bottom: 2px;
+}
+ 
+.agenda-ai-sub {
+    font-size: 12px;
+    color: var(--borda-cinza);
+}
+ 
+/* ── Linha de ações ── */
+.agenda-action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+ 
+/* ── Resumo semanal ── */
+.agenda-summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+}
+ 
+/* ── Dias da semana (agenda) ── */
+.agenda-day {
+    cursor: pointer;
+    position: relative;
+}
+ 
+.agenda-day-weekend {
+    opacity: 0.45;
+}
+ 
+.agenda-day-dots {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 5px;
+    min-height: 7px;
+}
+ 
+.agenda-day-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+ 
+/* ── Grade de horários ── */
+.agenda-planner-grid {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--board-line);
+    border-radius: 14px;
+    overflow: hidden;
+}
+ 
+.agenda-planner-row {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    border-bottom: 1px solid var(--board-line);
+    min-height: 60px;
+}
+ 
+.agenda-planner-row:last-child {
+    border-bottom: none;
+}
+ 
+.agenda-time-label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 10px 14px 0 0;
+    font-size: 11px;
+    color: var(--borda-cinza);
+    font-variant-numeric: tabular-nums;
+    border-right: 1px solid var(--board-line);
+    background: var(--fundo-secundario);
+    flex-shrink: 0;
+}
+ 
+.agenda-slot-wrap {
+    flex: 1;
+}
+ 
+.agenda-slot {
+    height: 100%;
+    min-height: 60px;
+}
+ 
+/* Slot vazio — clicável */
+.agenda-slot--empty {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+ 
+.agenda-slot--empty:hover {
+    background: rgba(255,255,255,0.03);
+}
+ 
+.agenda-slot-hint {
+    font-size: 12px;
+    color: var(--borda-cinza);
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+ 
+.agenda-slot--empty:hover .agenda-slot-hint {
+    opacity: 1;
+}
+ 
+/* Slot preenchido — evento */
+.agenda-slot--filled {
+    padding: 6px 10px;
+    cursor: default;
+}
+ 
+.agenda-event {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border-left: 3px solid transparent;
+    height: 100%;
+    min-height: 46px;
+    transition: opacity 0.15s;
+}
+ 
+.agenda-slot--filled:hover .agenda-event {
+    opacity: 0.85;
+}
+ 
+/* Cores por matéria */
+.agenda-event--mat      { background: rgba(255,138,91,0.12);  border-left-color: var(--mat); }
+.agenda-event--por      { background: rgba(95,179,232,0.12);  border-left-color: var(--port); }
+.agenda-event--bio      { background: rgba(111,207,122,0.12); border-left-color: var(--bio); }
+.agenda-event--qui      { background: rgba(255,209,102,0.12); border-left-color: var(--qui); }
+.agenda-event--fis      { background: rgba(255,107,157,0.12); border-left-color: var(--fis); }
+.agenda-event--his      { background: rgba(199,146,234,0.12); border-left-color: var(--hist); }
+.agenda-event--intervalo{ background: rgba(185,194,188,0.08); border-left-color: var(--borda-cinza); }
+ 
+.agenda-event-left {
+    flex: 1;
+    min-width: 0;
+}
+ 
+.agenda-event-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--branco);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+ 
+.agenda-event-meta {
+    font-size: 11px;
+    color: var(--borda-cinza);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+ 
+.agenda-event-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+ 
+.agenda-tag-intervalo {
+    background: rgba(185,194,188,0.15);
+    color: var(--borda-cinza);
+}
+ 
+/* Badge "Escola" */
+.agenda-school-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
+    color: var(--borda-cinza);
+    margin-left: 4px;
+}
+ 
+/* Estado vazio fim de semana */
+.agenda-empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--borda-cinza);
+    background: var(--fundo-secundario);
+    border: 1px solid var(--board-line);
+    border-radius: 14px;
+}

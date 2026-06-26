@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = new Date();
         const h = now.getHours();
 
-        // Saudação
         const greetingLabel = document.getElementById('greeting-label');
         const greetingSub   = document.getElementById('greeting-sub');
         if (greetingLabel) {
@@ -24,13 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Data
         const heroWeekday = document.getElementById('hero-weekday');
         const heroDate    = document.getElementById('hero-date');
         if (heroWeekday) heroWeekday.textContent = weekdays[now.getDay()];
         if (heroDate)    heroDate.textContent    = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
 
-        // Relógio
         const heroTime = document.getElementById('hero-time');
         if (heroTime) {
             const mm = String(now.getMinutes()).padStart(2, '0');
@@ -39,11 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ─── GRADE DE HORÁRIOS SEMANAL ───
-    // Cada dia da semana (0=Dom, 1=Seg … 6=Sáb) mapeia para as matérias daquele dia.
-    // Cada matéria tem: subject key, nome, horário, e lista de tópicos com estado done.
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ─── GRADE DE HORÁRIOS SEMANAL (INÍCIO) ───
     const timetable = {
-        1: [ // Segunda
+        1: [
             { subject: 'mat', name: 'Matemática',  time: '7h – 8h40', topics: [
                 { text: 'Funções quadráticas',   done: true  },
                 { text: 'Equações do 2º grau',   done: true  },
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { text: 'Reações de oxirredução',done: false },
             ]},
         ],
-        2: [ // Terça
+        2: [
             { subject: 'bio', name: 'Biologia',    time: '7h – 8h', topics: [
                 { text: 'Genética mendeliana',   done: true  },
                 { text: 'Mutações gênicas',      done: true  },
@@ -75,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { text: 'Revolução Russa',       done: false },
             ]},
         ],
-        3: [ // Quarta
+        3: [
             { subject: 'mat', name: 'Matemática',  time: '7h – 8h40', topics: [
                 { text: 'Progressões aritméticas', done: false },
                 { text: 'Progressões geométricas', done: false },
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { text: 'Cadeias alimentares',   done: false },
             ]},
         ],
-        4: [ // Quinta
+        4: [
             { subject: 'fis', name: 'Física',      time: '7h – 8h30', topics: [
                 { text: 'Energia cinética',      done: false },
                 { text: 'Energia potencial',     done: false },
@@ -99,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { text: 'Cinética química',      done: false },
             ]},
         ],
-        5: [ // Sexta
+        5: [
             { subject: 'mat', name: 'Matemática',  time: '7h – 8h', topics: [
                 { text: 'Logaritmos',            done: false },
                 { text: 'Função logarítmica',    done: false },
@@ -112,26 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 { text: 'Simulado de redação',   done: false },
             ]},
         ],
-        6: [], // Sábado – sem aulas
-        0: [], // Domingo – sem aulas
+        6: [],
+        0: [],
     };
 
-    // Estado persistente dos tópicos por dia (chave: "dayOfWeek-subjectIndex-topicIndex")
     const topicState = {};
-
-    function getAllTopics() {
-        let done = 0, total = 0;
-        Object.values(timetable).forEach(subjects => {
-            subjects.forEach((subj, si) => {
-                subj.topics.forEach((t, ti) => {
-                    total++;
-                    const key = `${Object.keys(timetable).find(k => timetable[k] === subjects)}-${si}-${ti}`;
-                    if (key in topicState ? topicState[key] : t.done) done++;
-                });
-            });
-        });
-        return { done, total };
-    }
 
     function updateProgressCard() {
         let done = 0, total = 0;
@@ -146,37 +129,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-        const circumference = 2 * Math.PI * 32; // r=32 → ~201
+        const circumference = 2 * Math.PI * 32;
 
-        document.getElementById('prog-done').textContent  = done;
-        document.getElementById('prog-total').textContent = total;
-        document.getElementById('prog-pct').textContent   = pct + '%';
-        document.getElementById('prog-bar').style.width   = pct + '%';
+        const progDone  = document.getElementById('prog-done');
+        const progTotal = document.getElementById('prog-total');
+        const progPct   = document.getElementById('prog-pct');
+        const progBar   = document.getElementById('prog-bar');
+        const arc       = document.getElementById('prog-arc');
+        const sub       = document.getElementById('prog-sub');
 
-        const arc = document.getElementById('prog-arc');
-        if (arc) arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+        if (progDone)  progDone.textContent  = done;
+        if (progTotal) progTotal.textContent = total;
+        if (progPct)   progPct.textContent   = pct + '%';
+        if (progBar)   progBar.style.width   = pct + '%';
+        if (arc)       arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
 
-        const sub = document.getElementById('prog-sub');
-        const left = total - done;
-        if (pct === 100) {
-            sub.textContent = '🏆 Parabéns! Todos os tópicos concluídos!';
-            document.getElementById('prog-done').style.color = 'var(--qui)';
-            if (arc) arc.style.stroke = 'var(--qui)';
-        } else if (pct >= 70) {
-            sub.textContent = `Quase lá! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
-            document.getElementById('prog-done').style.color = 'var(--bio)';
-            if (arc) arc.style.stroke = 'var(--bio)';
-        } else {
-            sub.textContent = `Continue firme! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
-            document.getElementById('prog-done').style.color = 'var(--bio)';
-            if (arc) arc.style.stroke = 'var(--bio)';
+        if (sub) {
+            const left = total - done;
+            if (pct === 100) {
+                sub.textContent = '🏆 Parabéns! Todos os tópicos concluídos!';
+                if (progDone) progDone.style.color = 'var(--qui)';
+                if (arc) arc.style.stroke = 'var(--qui)';
+            } else if (pct >= 70) {
+                sub.textContent = `Quase lá! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
+            } else {
+                sub.textContent = `Continue firme! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
+            }
         }
     }
 
     function renderSubjectGrid(dayOfWeek) {
-        const grid      = document.getElementById('inicio-subject-grid');
+        const grid       = document.getElementById('inicio-subject-grid');
         const emptyState = document.getElementById('day-empty-state');
-        const note      = document.getElementById('day-filter-note');
+        const note       = document.getElementById('day-filter-note');
         if (!grid) return;
 
         const subjects = timetable[dayOfWeek] || [];
@@ -192,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyState.style.display = 'none';
 
         subjects.forEach((subj, si) => {
-            const doneCnt  = subj.topics.filter((t, ti) => {
+            const doneCnt = subj.topics.filter((t, ti) => {
                 const k = `${dayOfWeek}-${si}-${ti}`;
                 return k in topicState ? topicState[k] : t.done;
             }).length;
@@ -223,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.appendChild(card);
         });
 
-        // Click em tópico → toggle done + atualiza progress
         grid.querySelectorAll('.topic-item').forEach(li => {
             li.addEventListener('click', () => {
                 const day = li.dataset.day;
@@ -243,10 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         const now = new Date();
-        const todayDow = now.getDay(); // 0=Dom … 6=Sáb
-        // Gera a semana corrente começando na segunda
+        const todayDow = now.getDay();
         const labels = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-        // Calcula a segunda-feira desta semana
         const monday = new Date(now);
         monday.setDate(now.getDate() - ((todayDow + 6) % 7));
 
@@ -264,286 +246,950 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(div);
         }
 
-        // Clicar num dia filtra as matérias
         container.querySelectorAll('.day').forEach(d => {
             d.addEventListener('click', () => {
                 container.querySelectorAll('.day').forEach(x => x.classList.remove('today'));
                 d.classList.add('today');
-
                 const dow  = parseInt(d.dataset.dow);
                 const label = d.querySelector('.d-label').textContent;
                 const num   = d.querySelector('.d-num').textContent;
                 const note  = document.getElementById('day-filter-note');
                 if (note) note.textContent = `${label}, dia ${num}`;
-
                 renderSubjectGrid(dow);
             });
         });
 
-        // Render inicial com o dia de hoje
         renderSubjectGrid(todayDow);
         const note = document.getElementById('day-filter-note');
-        const todayLabel = labels[todayDow];
-        if (note) note.textContent = `Hoje · ${todayLabel}`;
+        if (note) note.textContent = `Hoje · ${labels[todayDow]}`;
     }
 
     renderDaysWeek();
     updateProgressCard();
-    // ─── SPA ROUTING (SHOW/HIDE VIEWS) ───
-    const navItems = document.querySelectorAll('.nav-item');
+
+    // ─── SPA ROUTING ───
+    const navItems  = document.querySelectorAll('.nav-item');
     const pageViews = document.querySelectorAll('.page-view');
 
     function navigateTo(hash) {
-        // Se hash estiver vazio, padrão é 'inicio'
         const targetId = hash ? hash.replace('#', '') : 'inicio';
-        
         let targetView = document.getElementById(`view-${targetId}`);
-        if (!targetView) {
-            targetView = document.getElementById('view-inicio');
-        }
+        if (!targetView) targetView = document.getElementById('view-inicio');
 
-        // 1. Ocultar todas as views e exibir a view ativa
-        pageViews.forEach(view => {
-            view.classList.remove('active');
-        });
+        pageViews.forEach(view => view.classList.remove('active'));
         targetView.classList.add('active');
 
-        // 2. Atualizar a classe active no menu de navegação
         navItems.forEach(item => {
             item.classList.remove('active');
             const text = item.textContent.trim().toLowerCase();
-            
-            if (targetId === 'inicio' && (text.includes('início') || text.includes('inicio'))) {
-                item.classList.add('active');
-            } else if (targetId === 'agenda' && text.includes('agenda')) {
-                item.classList.add('active');
-            } else if (targetId === 'tarefas' && text.includes('tarefa')) {
-                item.classList.add('active');
-            } else if (targetId === 'pomodoro' && text.includes('pomodoro')) {
-                item.classList.add('active');
-            } else if (targetId === 'historico' && (text.includes('histórico') || text.includes('historico'))) {
-                item.classList.add('active');
-            } else if (targetId === 'materias' && (text.includes('matéria') || text.includes('materia'))) {
-                item.classList.add('active');
-            } else if (targetId === 'calendario' && (text.includes('calendário') || text.includes('calendario'))) {
-                item.classList.add('active');
-            } else if (targetId === 'professor' && text.includes('professor')) {
-                item.classList.add('active');
-            }
+            if (targetId === 'inicio'     && (text.includes('início') || text.includes('inicio'))) item.classList.add('active');
+            else if (targetId === 'agenda'    && text.includes('agenda'))    item.classList.add('active');
+            else if (targetId === 'tarefas'   && text.includes('tarefa'))    item.classList.add('active');
+            else if (targetId === 'historico' && (text.includes('histórico') || text.includes('historico'))) item.classList.add('active');
+            else if (targetId === 'materias'  && (text.includes('matéria')   || text.includes('materia')))   item.classList.add('active');
+            else if (targetId === 'calendario'&& (text.includes('calendário')|| text.includes('calendario')))item.classList.add('active');
+            else if (targetId === 'professor' && text.includes('professor'))  item.classList.add('active');
         });
 
-        // Rolar para o topo da página ao mudar de seção
+        if (targetId === 'agenda')  initAgenda();
+        if (targetId === 'tarefas') initTarefas();
         window.scrollTo(0, 0);
     }
 
-    // Navega na carga inicial da página
     navigateTo(window.location.hash);
+    window.addEventListener('hashchange', () => navigateTo(window.location.hash));
 
-    // Escuta mudanças de hash (botões voltar/avançar do navegador)
-    window.addEventListener('hashchange', () => {
-        navigateTo(window.location.hash);
-    });
-
-    // Vincula cliques da navegação ao hash
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             const text = item.textContent.trim().toLowerCase();
             let hash = '#inicio';
-
-            if (text.includes('início') || text.includes('inicio')) {
-                hash = '#inicio';
-            } else if (text.includes('agenda')) {
-                hash = '#agenda';
-            } else if (text.includes('tarefa')) {
-                hash = '#tarefas';
-            } else if (text.includes('pomodoro')) {
-                hash = '#pomodoro';
-            } else if (text.includes('histórico') || text.includes('historico')) {
-                hash = '#historico';
-            } else if (text.includes('matéria') || text.includes('materia')) {
-                hash = '#materias';
-            } else if (text.includes('calendário') || text.includes('calendario')) {
-                hash = '#calendario';
-            } else if (text.includes('professor')) {
-                hash = '#professor';
-            }
-
+            if (text.includes('início') || text.includes('inicio'))           hash = '#inicio';
+            else if (text.includes('agenda'))                                  hash = '#agenda';
+            else if (text.includes('tarefa'))                                  hash = '#tarefas';
+            else if (text.includes('histórico') || text.includes('historico'))hash = '#historico';
+            else if (text.includes('matéria')   || text.includes('materia'))  hash = '#materias';
+            else if (text.includes('calendário')|| text.includes('calendario'))hash = '#calendario';
+            else if (text.includes('professor'))                               hash = '#professor';
             window.location.hash = hash;
         });
     });
 
-    // ─── TAREFAS INTERATIVAS ───
-    const tasksLists = document.querySelectorAll('.tasks-list');
-    if (tasksLists.length > 0) {
-        document.body.addEventListener('click', (e) => {
-            const taskCheck = e.target.closest('.task-check');
-            if (taskCheck) {
-                const taskItem = taskCheck.closest('.task-item');
-                if (taskItem) {
-                    taskItem.classList.toggle('done');
-                    
-                    // Se estivermos na seção de tarefas, movemos o item para a seção correspondente
-                    const isDone = taskItem.classList.contains('done');
-                    const pendingList = document.querySelector('#view-tarefas .tasks-list:first-of-type');
-                    const completedList = document.querySelector('#view-tarefas .tasks-list:last-of-type');
-                    
-                    if (pendingList && completedList) {
-                        if (isDone) {
-                            completedList.appendChild(taskItem);
-                        } else {
-                            pendingList.appendChild(taskItem);
-                        }
-                    }
+    // ─── AGENDA DE ESTUDOS ───
+    const AGENDA_DAYS = [
+        { label:'Seg', num:'23', fullLabel:'Segunda-feira, 23 jun', key:'seg', dow:1 },
+        { label:'Ter', num:'24', fullLabel:'Terça-feira, 24 jun',   key:'ter', dow:2 },
+        { label:'Qua', num:'25', fullLabel:'Quarta-feira, 25 jun',  key:'qua', dow:3 },
+        { label:'Qui', num:'26', fullLabel:'Quinta-feira, 26 jun',  key:'qui', dow:4 },
+        { label:'Sex', num:'27', fullLabel:'Sexta-feira, 27 jun',   key:'sex', dow:5 },
+        { label:'Sáb', num:'28', fullLabel:'Sábado, 28 jun',        key:'sab', dow:6 },
+        { label:'Dom', num:'29', fullLabel:'Domingo, 29 jun',       key:'dom', dow:0 },
+    ];
 
-                    updateTaskCounts();
-                }
-            }
+    const AGENDA_SUBJECTS = {
+        mat: { name:'Matemática', tag:'Mat', cssVar:'--mat' },
+        por: { name:'Português',  tag:'Port',cssVar:'--port'},
+        bio: { name:'Biologia',   tag:'Bio', cssVar:'--bio' },
+        qui: { name:'Química',    tag:'Qui', cssVar:'--qui' },
+        fis: { name:'Física',     tag:'Fís', cssVar:'--fis' },
+        his: { name:'História',   tag:'His', cssVar:'--hist'},
+    };
+
+    const AGENDA_HOURS = [
+        '07:00','08:00','09:00','10:00','11:00','12:00',
+        '13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'
+    ];
+
+    // Plano IA baseado nas tarefas e horários do timetable
+    const AI_PLAN = {
+        seg: [
+            { time:'07:00', subject:'mat', title:'Lista ENEM — Funções' },
+            { time:'09:00', subject:'por', title:'Redação: introdução e tese' },
+            { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
+            { time:'14:00', subject:'qui', title:'Estequiometria — cap. 8' },
+        ],
+        ter: [
+            { time:'07:00', subject:'bio', title:'Genética Mendeliana' },
+            { time:'09:00', subject:'fis', title:'Cinemática vetorial' },
+            { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
+            { time:'14:00', subject:'his', title:'Era Vargas — revisão' },
+        ],
+        qua: [
+            { time:'07:00', subject:'mat', title:'Parábolas — exercícios ENEM' },
+            { time:'09:00', subject:'por', title:'Redação: mobilidade urbana' },
+            { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
+            { time:'14:00', subject:'bio', title:'Engenharia genética' },
+        ],
+        qui: [
+            { time:'07:00', subject:'fis', title:'Energia cinética e potencial' },
+            { time:'09:00', subject:'qui', title:'Exercícios estequiometria' },
+            { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
+            { time:'14:00', subject:'mat', title:'Revisão geral — lista ENEM' },
+        ],
+        sex: [
+            { time:'07:00', subject:'por', title:'Simulado de redação' },
+            { time:'09:00', subject:'his', title:'Segunda Guerra / Guerra Fria' },
+            { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
+            { time:'14:00', subject:'bio', title:'Revisão Biologia — Ecossistemas' },
+        ],
+        sab: [],
+        dom: [],
+    };
+
+    // Horário de aulas da escola (do timetable) mapeado para o plano
+    const SCHOOL_SCHEDULE = {
+        seg: [
+            { time:'07:00', subject:'mat', title:'Matemática — aula escolar', school: true },
+            { time:'09:00', subject:'por', title:'Português — aula escolar',  school: true },
+            { time:'10:30', subject:'qui', title:'Química — aula escolar',    school: true },
+        ],
+        ter: [
+            { time:'07:00', subject:'bio', title:'Biologia — aula escolar',   school: true },
+            { time:'08:10', subject:'fis', title:'Física — aula escolar',     school: true },
+            { time:'09:40', subject:'his', title:'História — aula escolar',   school: true },
+        ],
+        qua: [
+            { time:'07:00', subject:'mat', title:'Matemática — aula escolar', school: true },
+            { time:'09:00', subject:'por', title:'Português — aula escolar',  school: true },
+            { time:'10:10', subject:'bio', title:'Biologia — aula escolar',   school: true },
+        ],
+        qui: [
+            { time:'07:00', subject:'fis', title:'Física — aula escolar',     school: true },
+            { time:'08:40', subject:'qui', title:'Química — aula escolar',    school: true },
+        ],
+        sex: [
+            { time:'07:00', subject:'mat', title:'Matemática — aula escolar', school: true },
+            { time:'08:10', subject:'his', title:'História — aula escolar',   school: true },
+            { time:'09:40', subject:'por', title:'Português — aula escolar',  school: true },
+        ],
+        sab: [], dom: [],
+    };
+
+    let agendaSchedule = { seg:[], ter:[], qua:[], qui:[], sex:[], sab:[], dom:[] };
+    let agendaActiveDay = 'qua';
+    let agendaViewMode = 'estudos'; // 'estudos' | 'escola'
+    let agendaInitialized = false;
+
+    function agendaApplyAIPlan() {
+        Object.keys(AI_PLAN).forEach(k => {
+            agendaSchedule[k] = AI_PLAN[k].map(e => ({ ...e }));
+        });
+        agendaUpdateSummary();
+        agendaRenderDays();
+        agendaRenderPlanner();
+    }
+
+    function agendaRenderDays() {
+        const row = document.getElementById('agenda-days-row');
+        if (!row) return;
+        row.innerHTML = '';
+
+        AGENDA_DAYS.forEach(d => {
+            const ev = agendaSchedule[d.key] || [];
+            const subjects = [...new Set(ev.filter(e => e.subject).map(e => e.subject))].slice(0, 4);
+            const isWeekend = d.key === 'sab' || d.key === 'dom';
+
+            const div = document.createElement('div');
+            div.className = 'day agenda-day' + (d.key === agendaActiveDay ? ' today' : '') + (isWeekend ? ' agenda-day-weekend' : '');
+
+            const dots = subjects.map(s =>
+                `<span class="agenda-day-dot" style="background:var(${AGENDA_SUBJECTS[s]?.cssVar || '--borda-cinza'})"></span>`
+            ).join('');
+
+            div.innerHTML = `
+                <div class="d-label">${d.label}</div>
+                <div class="d-num">${d.num}</div>
+                <div class="agenda-day-dots">${dots}</div>
+            `;
+            div.addEventListener('click', () => {
+                agendaActiveDay = d.key;
+                agendaRenderDays();
+                agendaRenderPlanner();
+            });
+            row.appendChild(div);
         });
     }
 
-    // Filtros de Tarefas (Todas, Pendentes, Concluídas)
-    const filterButtons = document.querySelectorAll('#view-tarefas .filter-btn');
-    const sectionPending = document.getElementById('section-pending');
-    const sectionCompleted = document.getElementById('section-completed');
+    function agendaRenderPlanner() {
+        const area = document.getElementById('agenda-planner-area');
+        const titleEl = document.getElementById('agenda-planner-title');
+        if (!area) return;
 
-    if (filterButtons.length > 0 && sectionPending && sectionCompleted) {
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 1. Atualizar estilo do botão ativo
-                filterButtons.forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = '';
-                    b.style.color = '';
-                });
-                btn.classList.add('active');
-                btn.style.borderColor = 'var(--qui)';
-                btn.style.color = 'var(--qui)';
+        const day = AGENDA_DAYS.find(d => d.key === agendaActiveDay);
+        if (titleEl) titleEl.textContent = day.fullLabel;
 
-                // 2. Filtrar seções
-                const filter = btn.dataset.filter;
-                if (filter === 'todas') {
-                    sectionPending.style.display = 'block';
-                    sectionCompleted.style.display = 'block';
-                } else if (filter === 'pendentes') {
-                    sectionPending.style.display = 'block';
-                    sectionCompleted.style.display = 'none';
-                } else if (filter === 'concluidas') {
-                    sectionPending.style.display = 'none';
-                    sectionCompleted.style.display = 'block';
+        if (agendaActiveDay === 'sab' || agendaActiveDay === 'dom') {
+            area.innerHTML = `
+                <div class="agenda-empty-state">
+                    <div class="day-empty-icon">🎉</div>
+                    <div class="day-empty-title">Fim de semana livre</div>
+                    <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
+                </div>`;
+            return;
+        }
+
+        const source = agendaViewMode === 'escola'
+            ? (SCHOOL_SCHEDULE[agendaActiveDay] || [])
+            : (agendaSchedule[agendaActiveDay] || []);
+
+        // Monta mapa de horário → evento
+        const evMap = {};
+        source.forEach(e => { evMap[e.time] = e; });
+
+        const wrap = document.createElement('div');
+        wrap.className = 'agenda-planner-grid';
+
+        AGENDA_HOURS.forEach(h => {
+            const ev = evMap[h];
+
+            const timeLabel = document.createElement('div');
+            timeLabel.className = 'agenda-time-label';
+            timeLabel.textContent = h;
+
+            const slotWrap = document.createElement('div');
+            slotWrap.className = 'agenda-slot-wrap';
+
+            const slot = document.createElement('div');
+            slot.className = 'agenda-slot';
+
+            if (ev) {
+                const subj = ev.subject || 'intervalo';
+                const isIntervalo = ev.type === 'intervalo';
+                const isSchool = ev.school;
+                slot.classList.add('agenda-slot--filled');
+
+                const subjInfo = AGENDA_SUBJECTS[subj];
+                const tagHtml = subjInfo
+                    ? `<span class="agenda-event-tag tag-${subj}">${subjInfo.tag}</span>`
+                    : `<span class="agenda-event-tag agenda-tag-intervalo">—</span>`;
+
+                const schoolBadge = isSchool
+                    ? `<span class="agenda-school-badge">Escola</span>`
+                    : '';
+
+                slot.innerHTML = `
+                    <div class="agenda-event agenda-event--${subj}">
+                        <div class="agenda-event-left">
+                            <div class="agenda-event-name">${ev.title}</div>
+                            <div class="agenda-event-meta">${h} · ${isIntervalo ? 'Pausa' : (subjInfo?.name || 'Pausa')}${schoolBadge}</div>
+                        </div>
+                        ${tagHtml}
+                    </div>`;
+
+                if (agendaViewMode === 'estudos') {
+                    slot.title = 'Duplo clique para remover';
+                    slot.addEventListener('dblclick', () => {
+                        agendaSchedule[agendaActiveDay] = agendaSchedule[agendaActiveDay].filter(x => x.time !== h);
+                        agendaUpdateSummary();
+                        agendaRenderPlanner();
+                        agendaRenderDays();
+                    });
                 }
+            } else {
+                if (agendaViewMode === 'estudos') {
+                    slot.classList.add('agenda-slot--empty');
+                    slot.innerHTML = `<span class="agenda-slot-hint">+ adicionar</span>`;
+                    slot.addEventListener('click', () => {
+                        const sel = document.getElementById('agenda-modal-time');
+                        if (sel) sel.value = h;
+                        agendaOpenModal();
+                    });
+                }
+            }
+
+            slotWrap.appendChild(slot);
+
+            const row = document.createElement('div');
+            row.className = 'agenda-planner-row';
+            row.appendChild(timeLabel);
+            row.appendChild(slotWrap);
+            wrap.appendChild(row);
+        });
+
+        area.innerHTML = '';
+        area.appendChild(wrap);
+    }
+
+    function agendaUpdateSummary() {
+        let totalAulas = 0;
+        Object.values(agendaSchedule).forEach(day => {
+            day.forEach(e => { if (e.subject) totalAulas++; });
+        });
+        const horasEst = totalAulas * 1.5;
+
+        const elAulas = document.getElementById('agenda-sum-aulas');
+        const elHoras = document.getElementById('agenda-sum-horas');
+        const elMeta  = document.getElementById('agenda-sum-meta');
+        if (elAulas) elAulas.textContent = totalAulas;
+        if (elHoras) elHoras.textContent = horasEst.toFixed(0) + 'h';
+        if (elMeta)  elMeta.textContent  = Math.min(100, Math.round(totalAulas / 15 * 100)) + '%';
+    }
+
+    function agendaOpenModal() {
+        const m = document.getElementById('agenda-modal');
+        if (m) m.style.display = 'flex';
+    }
+
+    function agendaCloseModal() {
+        const m = document.getElementById('agenda-modal');
+        if (m) m.style.display = 'none';
+    }
+
+    function initAgenda() {
+        if (agendaInitialized) {
+            agendaRenderDays();
+            agendaRenderPlanner();
+            agendaUpdateSummary();
+            return;
+        }
+        agendaInitialized = true;
+
+        // Injeta o HTML da agenda na view
+        const view = document.getElementById('view-agenda');
+        if (!view) return;
+
+        view.innerHTML = `
+        <div class="content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Agenda de Estudos</h1>
+                    <p>Organize seu plano diário e semanal</p>
+                </div>
+                <div class="date-badge">JUNHO · Semana Atual</div>
+            </div>
+
+            <!-- Banner IA -->
+            <div class="agenda-ai-banner">
+                <div>
+                    <div class="agenda-ai-title">✦ Plano sugerido disponível para esta semana</div>
+                    <div class="agenda-ai-sub">Baseado nas suas tarefas pendentes e histórico de estudos</div>
+                </div>
+                <button class="btn btn-primary" id="agenda-btn-apply-banner">Aplicar plano</button>
+            </div>
+
+            <!-- Ações -->
+            <div class="agenda-action-row">
+                <button class="btn btn-primary" id="agenda-btn-apply">✦ Plano Sugerido (IA)</button>
+                <button class="btn btn-secondary" id="agenda-btn-toggle-view">Ver horário escolar</button>
+                <button class="btn btn-secondary" id="agenda-btn-clear">Limpar dia</button>
+                <button class="btn btn-secondary" id="agenda-btn-add">+ Adicionar aula</button>
+            </div>
+
+            <!-- Resumo semanal -->
+            <div class="agenda-summary-row">
+                <div class="stat-card">
+                    <div class="stat-label">Horas planejadas</div>
+                    <div class="stat-value accent-qui" id="agenda-sum-horas">—</div>
+                    <div class="stat-sub">esta semana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sessões</div>
+                    <div class="stat-value accent-port" id="agenda-sum-aulas">—</div>
+                    <div class="stat-sub">aulas agendadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ofensiva</div>
+                    <div class="stat-value accent-bio">5 dias</div>
+                    <div class="stat-sub">estudando seguido</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Meta semanal</div>
+                    <div class="stat-value accent-mat" id="agenda-sum-meta">—</div>
+                    <div class="stat-sub">concluída</div>
+                </div>
+            </div>
+
+            <!-- Seletor de dias -->
+            <div class="section">
+                <div class="section-head">
+                    <h2 class="section-title">Semana</h2>
+                    <span class="section-note" id="agenda-view-note">Plano de estudos</span>
+                </div>
+                <div class="days-week" id="agenda-days-row"></div>
+            </div>
+
+            <!-- Grade de horários -->
+            <div class="section">
+                <div class="section-head">
+                    <h2 class="section-title" id="agenda-planner-title">Quarta-feira, 25 jun</h2>
+                    <span class="section-note">Duplo clique num evento para remover</span>
+                </div>
+                <div id="agenda-planner-area"></div>
+            </div>
+
+            <!-- Calendário da semana (mini) -->
+            <div class="section">
+                <div class="section-head">
+                    <h2 class="section-title">Calendário Escolar e Provas</h2>
+                    <span class="section-note">Feriados, Provas e Eventos da CEEP</span>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-header-day">Seg</div>
+                    <div class="calendar-header-day">Ter</div>
+                    <div class="calendar-header-day">Qua</div>
+                    <div class="calendar-header-day">Qui</div>
+                    <div class="calendar-header-day">Sex</div>
+                    <div class="calendar-header-day">Sáb</div>
+                    <div class="calendar-header-day">Dom</div>
+                    <div class="calendar-cell muted"><div class="cell-num">22</div></div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">23</div>
+                        <div class="cell-events"><span class="cell-event event-geral">Início Bimestre</span></div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">24</div>
+                        <div class="cell-events"><span class="cell-event event-aula">Aula Redação</span></div>
+                    </div>
+                    <div class="calendar-cell today-cell">
+                        <div class="cell-num">25</div>
+                        <div class="cell-events">
+                            <span class="cell-event event-prazo">ENEM Lista</span>
+                            <span class="cell-event event-prazo">Redação M.U.</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">26</div>
+                        <div class="cell-events"><span class="cell-event event-prova">Prova Mat.</span></div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">27</div>
+                        <div class="cell-events"><span class="cell-event event-prazo">Prazo Redação</span></div>
+                    </div>
+                    <div class="calendar-cell">
+                        <div class="cell-num">28</div>
+                        <div class="cell-events"><span class="cell-event event-feriado">Feriado Municipal</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal adicionar aula -->
+        <div class="modal-overlay" id="agenda-modal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-title">Adicionar aula</div>
+                <div class="form-group">
+                    <label class="form-label" for="agenda-modal-subject">Matéria</label>
+                    <select id="agenda-modal-subject" class="form-input">
+                        <option value="mat">Matemática</option>
+                        <option value="por">Português</option>
+                        <option value="bio">Biologia</option>
+                        <option value="qui">Química</option>
+                        <option value="fis">Física</option>
+                        <option value="his">História</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="agenda-modal-title">Título / Tópico</label>
+                    <input type="text" id="agenda-modal-title" class="form-input" placeholder="Ex: Funções do 2º grau">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="agenda-modal-time">Horário</label>
+                    <select id="agenda-modal-time" class="form-input">
+                        ${AGENDA_HOURS.map(h => `<option value="${h}">${h}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="agenda-modal-cancel">Cancelar</button>
+                    <button type="button" class="btn btn-primary"   id="agenda-modal-confirm">Adicionar</button>
+                </div>
+            </div>
+        </div>`;
+
+        // Eventos dos botões
+        document.getElementById('agenda-btn-apply').addEventListener('click', agendaApplyAIPlan);
+        document.getElementById('agenda-btn-apply-banner').addEventListener('click', agendaApplyAIPlan);
+
+        document.getElementById('agenda-btn-clear').addEventListener('click', () => {
+            agendaSchedule[agendaActiveDay] = [];
+            agendaUpdateSummary();
+            agendaRenderPlanner();
+            agendaRenderDays();
+        });
+
+        document.getElementById('agenda-btn-add').addEventListener('click', agendaOpenModal);
+
+        document.getElementById('agenda-btn-toggle-view').addEventListener('click', function() {
+            agendaViewMode = agendaViewMode === 'estudos' ? 'escola' : 'estudos';
+            this.textContent = agendaViewMode === 'escola' ? 'Ver plano de estudos' : 'Ver horário escolar';
+            const note = document.getElementById('agenda-view-note');
+            if (note) note.textContent = agendaViewMode === 'escola' ? 'Horário escolar (somente leitura)' : 'Plano de estudos';
+            agendaRenderPlanner();
+        });
+
+        document.getElementById('agenda-modal-cancel').addEventListener('click', agendaCloseModal);
+
+        document.getElementById('agenda-modal').addEventListener('click', function(e) {
+            if (e.target === this) agendaCloseModal();
+        });
+
+        document.getElementById('agenda-modal-confirm').addEventListener('click', () => {
+            const subj  = document.getElementById('agenda-modal-subject').value;
+            const title = document.getElementById('agenda-modal-title').value.trim()
+                || AGENDA_SUBJECTS[subj].name;
+            const time  = document.getElementById('agenda-modal-time').value;
+
+            const day = agendaSchedule[agendaActiveDay];
+            const idx = day.findIndex(e => e.time === time);
+            if (idx > -1) day.splice(idx, 1);
+            day.push({ time, subject: subj, title });
+            day.sort((a, b) => a.time.localeCompare(b.time));
+
+            document.getElementById('agenda-modal-title').value = '';
+            agendaCloseModal();
+            agendaUpdateSummary();
+            agendaRenderPlanner();
+            agendaRenderDays();
+        });
+
+        // Render inicial com plano IA
+        agendaApplyAIPlan();
+    }
+
+    // ─── TAREFAS ───
+    const TASK_SUBJECTS = {
+        mat: { name:'Matemática', tag:'Mat',  cssVar:'--mat'  },
+        por: { name:'Português',  tag:'Port', cssVar:'--port' },
+        bio: { name:'Biologia',   tag:'Bio',  cssVar:'--bio'  },
+        qui: { name:'Química',    tag:'Qui',  cssVar:'--qui'  },
+        fis: { name:'Física',     tag:'Fís',  cssVar:'--fis'  },
+        his: { name:'História',   tag:'His',  cssVar:'--hist' },
+    };
+
+    // Banco de tarefas em memória
+    let taskList = [
+        { id:1,  title:'Resolver lista de parábolas (ENEM 2022)', desc:'Vence hoje · 20 questões · Integrado do Classroom',      subject:'mat', priority:'alta',  done:false, due:'2025-06-25' },
+        { id:2,  title:'Escrever redação sobre mobilidade urbana', desc:'Vence hoje · mín. 30 linhas · Redação Paraná',           subject:'por', priority:'alta',  done:false, due:'2025-06-25' },
+        { id:3,  title:'Exercícios de estequiometria — cap. 8',   desc:'Vence qui, 26 jun · pág. 112–118 · Livro Didático',      subject:'qui', priority:'media', done:false, due:'2025-06-26' },
+        { id:4,  title:'Resumo: Cinemática vetorial',             desc:'Vence sex, 27 jun · 1 página · Caderno de Física',       subject:'fis', priority:'media', done:false, due:'2025-06-27' },
+        { id:5,  title:'Mapa mental — Engenharia genética',       desc:'Vence sáb, 28 jun · Atividade de Biologia',              subject:'bio', priority:'baixa', done:false, due:'2025-06-28' },
+        { id:6,  title:'Rever anotações — Funções quadráticas',   desc:'Concluída ontem',                                        subject:'mat', priority:'media', done:true,  due:'2025-06-24' },
+        { id:7,  title:'Ler capítulo sobre Era Vargas',           desc:'Concluída seg, 23 jun',                                  subject:'his', priority:'baixa', done:true,  due:'2025-06-23' },
+        { id:8,  title:'Exercícios — Genética mendeliana',        desc:'Concluída seg, 23 jun',                                  subject:'bio', priority:'media', done:true,  due:'2025-06-23' },
+    ];
+    let nextTaskId = 9;
+    let taskFilter   = 'todas';   // 'todas' | 'pendentes' | 'concluidas'
+    let taskSubjFilter = 'todas'; // matéria ou 'todas'
+    let taskSortBy   = 'prazo';   // 'prazo' | 'prioridade' | 'materia'
+    let tarefasInitialized = false;
+
+    const PRIORITY_ORDER = { alta:0, media:1, baixa:2 };
+
+    function taskGetFiltered() {
+        let list = [...taskList];
+        if (taskFilter === 'pendentes')  list = list.filter(t => !t.done);
+        if (taskFilter === 'concluidas') list = list.filter(t =>  t.done);
+        if (taskSubjFilter !== 'todas')  list = list.filter(t => t.subject === taskSubjFilter);
+
+        list.sort((a, b) => {
+            if (taskSortBy === 'prioridade') return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+            if (taskSortBy === 'materia')    return a.subject.localeCompare(b.subject);
+            return (a.due || '').localeCompare(b.due || ''); // prazo
+        });
+        return list;
+    }
+
+    function taskToggleDone(id) {
+        const t = taskList.find(t => t.id === id);
+        if (t) { t.done = !t.done; }
+        tarefasRender();
+    }
+
+    function taskDelete(id) {
+        taskList = taskList.filter(t => t.id !== id);
+        tarefasRender();
+    }
+
+    function tarefasRender() {
+        const view = document.getElementById('view-tarefas');
+        if (!view) return;
+
+        const pending   = taskList.filter(t => !t.done);
+        const completed = taskList.filter(t =>  t.done);
+        const filtered  = taskGetFiltered();
+
+        // Atualiza badge e contadores
+        const badge = view.querySelector('.tf-badge');
+        if (badge) badge.textContent = `${pending.length} PENDENTES`;
+
+        const statPend = view.querySelector('#tf-stat-pend');
+        const statConc = view.querySelector('#tf-stat-conc');
+        const statHoje = view.querySelector('#tf-stat-hoje');
+        const statAtras= view.querySelector('#tf-stat-atras');
+
+        const hoje = new Date().toISOString().slice(0,10);
+        const atrasadas = pending.filter(t => t.due && t.due < hoje).length;
+        const venceHoje = pending.filter(t => t.due === hoje).length;
+
+        if (statPend)  statPend.textContent  = pending.length;
+        if (statConc)  statConc.textContent  = completed.length;
+        if (statHoje)  statHoje.textContent  = venceHoje;
+        if (statAtras) statAtras.textContent = atrasadas;
+
+        // Atualiza barra de progresso
+        const total = taskList.length;
+        const pct   = total === 0 ? 0 : Math.round((completed.length / total) * 100);
+        const bar   = view.querySelector('#tf-progress-bar');
+        const pctEl = view.querySelector('#tf-progress-pct');
+        if (bar)   bar.style.width = pct + '%';
+        if (pctEl) pctEl.textContent = pct + '%';
+
+        // Renderiza lista
+        const listEl = view.querySelector('#tf-list');
+        if (!listEl) return;
+
+        if (filtered.length === 0) {
+            listEl.innerHTML = `
+                <div class="tf-empty">
+                    <div class="tf-empty-icon">✅</div>
+                    <div class="tf-empty-title">Nenhuma tarefa aqui</div>
+                    <div class="tf-empty-sub">Tudo em ordem por este filtro!</div>
+                </div>`;
+            return;
+        }
+
+        // Agrupa por status quando filtro = 'todas'
+        if (taskFilter === 'todas' && taskSubjFilter === 'todas') {
+            const pList = filtered.filter(t => !t.done);
+            const cList = filtered.filter(t =>  t.done);
+            let html = '';
+
+            if (pList.length > 0) {
+                html += `<div class="tf-section-label">Pendentes <span class="tf-count">${pList.length}</span></div>`;
+                html += pList.map(t => taskCardHTML(t)).join('');
+            }
+            if (cList.length > 0) {
+                html += `<div class="tf-section-label tf-section-done">Concluídas <span class="tf-count">${cList.length}</span></div>`;
+                html += cList.map(t => taskCardHTML(t)).join('');
+            }
+            listEl.innerHTML = html;
+        } else {
+            listEl.innerHTML = filtered.map(t => taskCardHTML(t)).join('');
+        }
+
+        // Bind eventos nos cards
+        listEl.querySelectorAll('.tf-check').forEach(el => {
+            el.addEventListener('click', () => taskToggleDone(Number(el.dataset.id)));
+        });
+        listEl.querySelectorAll('.tf-delete').forEach(el => {
+            el.addEventListener('click', (e) => { e.stopPropagation(); taskDelete(Number(el.dataset.id)); });
+        });
+    }
+
+    function taskCardHTML(t) {
+        const subj = TASK_SUBJECTS[t.subject] || { name: t.subject, tag: t.subject, cssVar: '--borda-cinza' };
+        const prioColors = { alta:'var(--fis)', media:'var(--qui)', baixa:'var(--bio)' };
+        const prioLabels = { alta:'Alta',       media:'Média',      baixa:'Baixa' };
+
+        const hoje = new Date().toISOString().slice(0,10);
+        let dueClass = '';
+        let dueLabel = t.desc;
+        if (!t.done && t.due) {
+            if (t.due < hoje)  { dueClass = 'tf-due-late';  }
+            if (t.due === hoje){ dueClass = 'tf-due-today'; }
+        }
+
+        return `
+        <div class="task-item tf-card${t.done ? ' done' : ''}" data-id="${t.id}">
+            <div class="tf-check task-check" data-id="${t.id}"></div>
+            <div class="task-body">
+                <div class="task-title">${t.title}</div>
+                <div class="task-meta ${dueClass}">${dueLabel}</div>
+            </div>
+            <div class="tf-badges">
+                <span class="tf-prio-dot" style="background:${prioColors[t.priority]}" title="Prioridade ${prioLabels[t.priority]}"></span>
+                <span class="task-tag tag-${t.subject}">${subj.tag}</span>
+                <button class="tf-delete btn-icon" data-id="${t.id}" title="Remover">✕</button>
+            </div>
+        </div>`;
+    }
+
+    function tarefasOpenModal(prefill) {
+        const m = document.getElementById('tf-modal');
+        if (!m) return;
+
+        // Limpa / preenche
+        m.querySelector('#tf-modal-title').value    = prefill?.title    || '';
+        m.querySelector('#tf-modal-desc').value     = prefill?.desc     || '';
+        m.querySelector('#tf-modal-subject').value  = prefill?.subject  || 'mat';
+        m.querySelector('#tf-modal-priority').value = prefill?.priority || 'media';
+        m.querySelector('#tf-modal-due').value      = prefill?.due      || '';
+        m.style.display = 'flex';
+        setTimeout(() => m.querySelector('#tf-modal-title').focus(), 50);
+    }
+
+    function tarefasCloseModal() {
+        const m = document.getElementById('tf-modal');
+        if (m) m.style.display = 'none';
+    }
+
+    function initTarefas() {
+        if (tarefasInitialized) { tarefasRender(); return; }
+        tarefasInitialized = true;
+
+        const view = document.getElementById('view-tarefas');
+        if (!view) return;
+
+        view.innerHTML = `
+        <div class="content">
+            <!-- Cabeçalho -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Tarefas</h1>
+                    <p>Acompanhe e gerencie suas atividades escolares</p>
+                </div>
+                <div class="date-badge tf-badge">5 PENDENTES</div>
+            </div>
+
+            <!-- Stats rápidos -->
+            <div class="tf-stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Pendentes</div>
+                    <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Concluídas</div>
+                    <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Vencem hoje</div>
+                    <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Atrasadas</div>
+                    <div class="stat-value accent-port" id="tf-stat-atras">—</div>
+                </div>
+            </div>
+
+            <!-- Barra de progresso geral -->
+            <div class="tf-progress-wrap">
+                <div class="tf-progress-header">
+                    <span class="tf-progress-label">Progresso geral</span>
+                    <span class="tf-progress-pct" id="tf-progress-pct">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar mat" id="tf-progress-bar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- Controles: filtros + ordenação + novo -->
+            <div class="tf-controls">
+                <div class="tf-filter-group">
+                    <button class="tf-filter-btn active" data-filter="todas">Todas</button>
+                    <button class="tf-filter-btn" data-filter="pendentes">Pendentes</button>
+                    <button class="tf-filter-btn" data-filter="concluidas">Concluídas</button>
+                </div>
+
+                <div class="tf-filter-group tf-subj-filters">
+                    <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                    <button class="tf-subj-btn" data-subj="mat"  style="--subj-c:var(--mat)">Mat</button>
+                    <button class="tf-subj-btn" data-subj="por"  style="--subj-c:var(--port)">Port</button>
+                    <button class="tf-subj-btn" data-subj="bio"  style="--subj-c:var(--bio)">Bio</button>
+                    <button class="tf-subj-btn" data-subj="qui"  style="--subj-c:var(--qui)">Qui</button>
+                    <button class="tf-subj-btn" data-subj="fis"  style="--subj-c:var(--fis)">Fís</button>
+                    <button class="tf-subj-btn" data-subj="his"  style="--subj-c:var(--hist)">His</button>
+                </div>
+
+                <div class="tf-right-controls">
+                    <select class="form-input tf-sort-select" id="tf-sort">
+                        <option value="prazo">Ordenar: Prazo</option>
+                        <option value="prioridade">Ordenar: Prioridade</option>
+                        <option value="materia">Ordenar: Matéria</option>
+                    </select>
+                    <button class="btn btn-primary" id="tf-btn-new">+ Nova tarefa</button>
+                </div>
+            </div>
+
+            <!-- Lista de tarefas -->
+            <div class="section">
+                <div id="tf-list"></div>
+            </div>
+        </div>
+
+        <!-- Modal nova tarefa -->
+        <div class="modal-overlay" id="tf-modal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-title">Nova Tarefa</div>
+                <div class="form-group">
+                    <label class="form-label" for="tf-modal-title">Título da atividade</label>
+                    <input type="text" id="tf-modal-title" class="form-input" placeholder="Ex: Exercícios de Gravitação">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tf-modal-desc">Descrição / Observação</label>
+                    <input type="text" id="tf-modal-desc" class="form-input" placeholder="Ex: pág. 45 · vence sexta">
+                </div>
+                <div class="tf-modal-row">
+                    <div class="form-group">
+                        <label class="form-label" for="tf-modal-subject">Matéria</label>
+                        <select id="tf-modal-subject" class="form-input">
+                            <option value="mat">Matemática</option>
+                            <option value="por">Português</option>
+                            <option value="bio">Biologia</option>
+                            <option value="qui">Química</option>
+                            <option value="fis">Física</option>
+                            <option value="his">História</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="tf-modal-priority">Prioridade</label>
+                        <select id="tf-modal-priority" class="form-input">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tf-modal-due">Prazo de entrega</label>
+                    <input type="date" id="tf-modal-due" class="form-input">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="tf-modal-cancel">Cancelar</button>
+                    <button type="button" class="btn btn-primary"   id="tf-modal-confirm">Adicionar</button>
+                </div>
+            </div>
+        </div>`;
+
+        // ── Bind filtros de status ──
+        view.querySelectorAll('.tf-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                taskFilter = btn.dataset.filter;
+                tarefasRender();
             });
         });
-    }
 
-    function updateTaskCounts() {
-        const totalPending = document.querySelectorAll('#view-tarefas .tasks-list:first-of-type .task-item:not(.done)').length;
-        const totalDone = document.querySelectorAll('#view-tarefas .task-item.done').length;
-        
-        // Atualiza nota
-        const note = document.querySelector('#view-tarefas .section-note');
-        if (note) {
-            note.textContent = `${totalPending} pendentes · ${totalDone} concluídas`;
-        }
-
-        // Atualiza contador no cabeçalho de tarefas
-        const badge = document.querySelector('#view-tarefas .date-badge');
-        if (badge) {
-            badge.textContent = `${totalPending} PENDENTES`;
-        }
-
-        // Atualiza número de tarefas pendentes nos cards rápidos do início
-        const statCardTasks = document.querySelector('.stat-value.accent-mat');
-        if (statCardTasks) {
-            statCardTasks.textContent = totalPending;
-        }
-    }
-
-    // Modal / Adicionar Tarefa
-    const btnNewTask = document.getElementById('btn-new-task');
-    const modalTask = document.getElementById('modal-task');
-    const formTask = document.getElementById('form-task');
-    const btnCancelTask = document.getElementById('btn-cancel-task');
-
-    if (btnNewTask && modalTask && formTask) {
-        btnNewTask.addEventListener('click', () => {
-            modalTask.style.display = 'flex';
+        // ── Bind filtros de matéria ──
+        view.querySelectorAll('.tf-subj-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                taskSubjFilter = btn.dataset.subj;
+                tarefasRender();
+            });
         });
 
-        btnCancelTask.addEventListener('click', () => {
-            modalTask.style.display = 'none';
+        // ── Ordenação ──
+        view.querySelector('#tf-sort').addEventListener('change', function() {
+            taskSortBy = this.value;
+            tarefasRender();
         });
 
-        formTask.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const title = document.getElementById('task-title-input').value;
-            const desc = document.getElementById('task-desc-input').value;
-            const subject = document.getElementById('task-subject-input').value;
-            const priority = document.getElementById('task-priority-input').value;
+        // ── Botão nova tarefa ──
+        view.querySelector('#tf-btn-new').addEventListener('click', () => tarefasOpenModal());
 
-            // Criação do elemento HTML da tarefa
-            const taskHTML = `
-                <div class="task-item">
-                    <div class="task-check"></div>
-                    <div class="task-body">
-                        <div class="task-title">${title}</div>
-                        <div class="task-meta">${desc}</div>
-                    </div>
-                    <div class="task-priority priority-${priority}"></div>
-                    <span class="task-tag tag-${subject}">${subject.charAt(0).toUpperCase() + subject.slice(1, 3)}</span>
-                </div>
-            `;
+        // ── Modal: fechar ──
+        view.querySelector('#tf-modal-cancel').addEventListener('click', tarefasCloseModal);
+        view.querySelector('#tf-modal').addEventListener('click', function(e) {
+            if (e.target === this) tarefasCloseModal();
+        });
 
-            const pendingList = document.querySelector('#view-tarefas .tasks-list:first-of-type');
-            if (pendingList) {
-                pendingList.insertAdjacentHTML('afterbegin', taskHTML);
+        // ── Modal: confirmar ──
+        view.querySelector('#tf-modal-confirm').addEventListener('click', () => {
+            const title    = view.querySelector('#tf-modal-title').value.trim();
+            if (!title) { view.querySelector('#tf-modal-title').focus(); return; }
+
+            const desc     = view.querySelector('#tf-modal-desc').value.trim();
+            const subject  = view.querySelector('#tf-modal-subject').value;
+            const priority = view.querySelector('#tf-modal-priority').value;
+            const due      = view.querySelector('#tf-modal-due').value;
+
+            const subj  = TASK_SUBJECTS[subject];
+            let descFinal = desc;
+            if (!descFinal && due) {
+                const d = new Date(due + 'T12:00:00');
+                descFinal = 'Vence ' + d.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' });
             }
 
-            modalTask.style.display = 'none';
-            formTask.reset();
-            updateTaskCounts();
+            taskList.unshift({
+                id: nextTaskId++,
+                title, desc: descFinal, subject, priority,
+                done: false, due: due || null,
+            });
+
+            // Volta para filtro pendentes pra mostrar a nova tarefa
+            taskFilter = 'todas';
+            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.remove('active'));
+            view.querySelector('[data-filter="todas"]').classList.add('active');
+
+            tarefasCloseModal();
+            tarefasRender();
         });
+
+        tarefasRender();
     }
 
-
     // ─── CALENDÁRIO ESCOLAR ───
-    const calGrid = document.getElementById('school-calendar-grid');
+    const calGrid       = document.getElementById('school-calendar-grid');
     const calMonthLabel = document.getElementById('cal-month-label');
 
     if (calGrid) {
         const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-        let currentYear = 2025;
-        let currentMonth = 5; // 0-indexed = Junho
+        let currentYear  = 2025;
+        let currentMonth = 5;
 
-        // Static events keyed as "YYYY-M-D"
         const schoolEvents = {
-            '2025-5-23': [{ label: 'Início Bimestre', type: 'event-geral' }],
-            '2025-5-24': [{ label: 'Aula Redação', type: 'event-aula' }],
-            '2025-5-25': [{ label: 'ENEM Lista Mat', type: 'event-prazo' }, { label: 'Redação M.U.', type: 'event-prazo' }],
-            '2025-5-26': [{ label: 'Prova Matemática', type: 'event-prova' }],
-            '2025-5-27': [{ label: 'Prazo Redação PR', type: 'event-prazo' }],
-            '2025-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
-            '2025-6-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
-            '2025-6-8':  [{ label: 'Física: Vetores', type: 'event-aula' }],
-            '2025-6-13': [{ label: 'Recesso — Jul', type: 'event-recesso' }],
-            '2025-6-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2025-5-23': [{ label:'Início Bimestre',    type:'event-geral'   }],
+            '2025-5-24': [{ label:'Aula Redação',        type:'event-aula'    }],
+            '2025-5-25': [{ label:'ENEM Lista Mat',      type:'event-prazo'   }, { label:'Redação M.U.', type:'event-prazo' }],
+            '2025-5-26': [{ label:'Prova Matemática',    type:'event-prova'   }],
+            '2025-5-27': [{ label:'Prazo Redação PR',    type:'event-prazo'   }],
+            '2025-5-28': [{ label:'Feriado Municipal',   type:'event-feriado' }],
+            '2025-6-1':  [{ label:'Simulado ENEM',       type:'event-prova'   }],
+            '2025-6-8':  [{ label:'Física: Vetores',     type:'event-aula'    }],
+            '2025-6-13': [{ label:'Recesso — Jul',       type:'event-recesso' }],
+            '2025-6-14': [{ label:'Recesso Escolar',     type:'event-recesso' }],
         };
 
         function renderCalendar(year, month) {
-            // Remove old cells (keep 7 header cells)
-            while (calGrid.children.length > 7) {
-                calGrid.removeChild(calGrid.lastChild);
-            }
+            while (calGrid.children.length > 7) calGrid.removeChild(calGrid.lastChild);
             calMonthLabel.textContent = `${monthNames[month]} ${year}`;
 
-            const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+            const firstDay    = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-            // Convert Sunday=0 to Monday=0 offset
-            const offset = (firstDay === 0) ? 6 : firstDay - 1;
+            const offset      = (firstDay === 0) ? 6 : firstDay - 1;
+            const today       = new Date();
 
-            const today = new Date();
-
-            // Blank cells
             for (let i = 0; i < offset; i++) {
                 const blank = document.createElement('div');
                 blank.className = 'calendar-cell muted';
@@ -552,15 +1198,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             for (let d = 1; d <= daysInMonth; d++) {
-                const cell = document.createElement('div');
+                const cell    = document.createElement('div');
                 const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
                 cell.className = 'calendar-cell' + (isToday ? ' today-cell' : '');
-
-                const key = `${year}-${month}-${d}`;
-                const events = schoolEvents[key] || [];
-                const eventsHtml = events.map(ev => `<span class="cell-event ${ev.type}">${ev.label}</span>`).join('');
-
-                cell.innerHTML = `<div class="cell-num">${d}</div><div class="cell-events">${eventsHtml}</div>`;
+                const key      = `${year}-${month}-${d}`;
+                const events   = schoolEvents[key] || [];
+                const evHtml   = events.map(ev => `<span class="cell-event ${ev.type}">${ev.label}</span>`).join('');
+                cell.innerHTML = `<div class="cell-num">${d}</div><div class="cell-events">${evHtml}</div>`;
                 calGrid.appendChild(cell);
             }
         }
@@ -580,32 +1224,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ─── ÁREA DO PROFESSOR ───
-
-    // Recipient toggle buttons
-    const recipientBtns = document.querySelectorAll('.recipient-btn');
+    const recipientBtns    = document.querySelectorAll('.recipient-btn');
     const turmaSelectGroup = document.getElementById('turma-select-group');
     if (recipientBtns.length > 0) {
         recipientBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 recipientBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                if (turmaSelectGroup) {
+                if (turmaSelectGroup)
                     turmaSelectGroup.style.display = btn.dataset.target === 'turma' ? 'block' : 'none';
-                }
             });
         });
     }
 
-    // Turma chips toggle
     document.querySelectorAll('.turma-chip').forEach(chip => {
         chip.addEventListener('click', () => chip.classList.toggle('selected'));
     });
 
-    // Student tabs
-    const studentTabs = document.querySelectorAll('.student-tab');
-    studentTabs.forEach(tab => {
+    document.querySelectorAll('.student-tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            studentTabs.forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.student-tab').forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             document.querySelectorAll('.student-tab-content').forEach(c => c.style.display = 'none');
             const target = document.getElementById('tab-' + tab.dataset.tab);
@@ -613,40 +1251,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Publish task button
     const profPublishBtn = document.getElementById('prof-publish-btn');
     if (profPublishBtn) {
         profPublishBtn.addEventListener('click', () => {
-            const title = document.getElementById('prof-task-title').value.trim();
-            const subject = document.getElementById('prof-task-subject').value;
-            const due = document.getElementById('prof-task-due').value;
+            const title    = document.getElementById('prof-task-title').value.trim();
+            const subject  = document.getElementById('prof-task-subject').value;
+            const due      = document.getElementById('prof-task-due').value;
             const platform = document.getElementById('prof-task-platform').value;
-
             if (!title) { alert('Informe o título da tarefa.'); return; }
 
-            const list = document.getElementById('prof-tasks-list');
-            const tagMap = { mat:'Mat', por:'Port', bio:'Bio', qui:'Qui', fis:'Fís', his:'His' };
-            const dueText = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) : 'sem prazo';
-            const platformLabel = { interna:'Estuda CEEP', 'redacao-pr':'Redação Paraná', classroom:'Google Classroom', livro:'Livro Didático' }[platform] || platform;
+            const list      = document.getElementById('prof-tasks-list');
+            const tagMap    = { mat:'Mat', por:'Port', bio:'Bio', qui:'Qui', fis:'Fís', his:'His' };
+            const dueText   = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short' }) : 'sem prazo';
+            const plabels   = { interna:'Estuda CEEP', 'redacao-pr':'Redação Paraná', classroom:'Google Classroom', livro:'Livro Didático' };
 
-            const html = `
+            list.insertAdjacentHTML('afterbegin', `
                 <div class="task-item">
                     <div class="task-body">
                         <div class="task-title">${title}</div>
-                        <div class="task-meta">Publicada agora · Vence ${dueText} · 0 entregues · ${platformLabel}</div>
+                        <div class="task-meta">Publicada agora · Vence ${dueText} · 0 entregues · ${plabels[platform] || platform}</div>
                     </div>
                     <span class="task-tag tag-${subject}">${tagMap[subject]}</span>
-                </div>`;
-            list.insertAdjacentHTML('afterbegin', html);
+                </div>`);
 
             document.getElementById('prof-task-title').value = '';
-            document.getElementById('prof-task-desc').value = '';
-            document.getElementById('prof-task-due').value = '';
+            document.getElementById('prof-task-desc').value  = '';
+            document.getElementById('prof-task-due').value   = '';
             alert(`Tarefa "${title}" publicada com sucesso!`);
         });
     }
 
-    // Sync buttons feedback
     document.querySelectorAll('.sync-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const original = this.textContent;
@@ -654,26 +1288,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.disabled = true;
             setTimeout(() => {
                 this.textContent = '✓ Atualizado';
-                setTimeout(() => {
-                    this.textContent = original;
-                    this.disabled = false;
-                }, 2000);
+                setTimeout(() => { this.textContent = original; this.disabled = false; }, 2000);
             }, 1200);
-        });
-    });
-    const dayElements = document.querySelectorAll('.days-week .day');
-    dayElements.forEach(day => {
-        day.addEventListener('click', () => {
-            dayElements.forEach(d => d.classList.remove('today'));
-            day.classList.add('today');
-            
-            const dayNum = day.querySelector('.d-num').textContent;
-            const dayLabel = day.querySelector('.d-label').textContent;
-            
-            const note = document.querySelector('#view-agenda .section-note');
-            if (note) {
-                note.textContent = `Visualizando planejamentos para ${dayLabel}, dia ${dayNum}`;
-            }
         });
     });
 });
