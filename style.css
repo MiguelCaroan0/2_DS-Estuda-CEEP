@@ -1630,3 +1630,358 @@ footer {
     border: 1px solid var(--board-line);
     border-radius: 14px;
 }
+.tf-progress-card {
+    background: var(--fundo-secundario);
+    border: 1px solid var(--board-line);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+ 
+.tf-progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+ 
+.tf-progress-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--borda-cinza);
+}
+ 
+.tf-progress-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bio);
+}
+ 
+.tf-progress-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+ 
+.tf-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--borda-cinza);
+}
+ 
+.tf-leg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+ 
+/* ── Controles (filtros + botão) ── */
+.tf-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+ 
+.tf-controls-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+ 
+.tf-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+ 
+.tf-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--board-line);
+    flex-shrink: 0;
+}
+ 
+/* Filtros de status */
+.tf-filter-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+ 
+.tf-filter-btn {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--board-line);
+    background: transparent;
+    color: var(--borda-cinza);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+ 
+.tf-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--borda-cinza);
+    color: var(--branco);
+}
+ 
+.tf-filter-btn.active {
+    background: rgba(255, 209, 102, 0.1);
+    border-color: var(--qui);
+    color: var(--qui);
+}
+ 
+/* Filtros de matéria */
+.tf-subj-btn {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    color: var(--borda-cinza);
+}
+ 
+.tf-subj-btn:hover {
+    opacity: 0.85;
+    background: rgba(255, 255, 255, 0.04);
+}
+ 
+.tf-subj-btn.active {
+    color: var(--sc, var(--branco));
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--sc, var(--board-line));
+}
+ 
+/* Seletor de ordenação */
+.tf-sort {
+    width: auto;
+    padding: 7px 12px;
+    font-size: 12px;
+    cursor: pointer;
+}
+ 
+/* Botão nova tarefa */
+.tf-new-btn {
+    white-space: nowrap;
+}
+ 
+/* ── Cards de tarefa (nova versão) ── */
+ 
+/* Remove conflito com .task-item base — os cards tf usam
+   a mesma classe mais a tf-card para especificidade */
+.tf-card.task-item {
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+ 
+.tf-accent {
+    width: 4px;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+ 
+.tf-inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+}
+ 
+/* Botão de check (sobrescreve .task-check base para tf) */
+.tf-card .tf-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--borda-cinza);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+ 
+.tf-card .tf-check:hover {
+    border-color: var(--branco);
+}
+ 
+.tf-card.done .tf-check {
+    background: var(--qui);
+    border-color: var(--qui);
+}
+ 
+.tf-check-mark {
+    display: none;
+    width: 5px;
+    height: 9px;
+    border-right: 2px solid #4A3A06;
+    border-bottom: 2px solid #4A3A06;
+    transform: rotate(45deg) translate(-1px, -1px);
+}
+ 
+.tf-card.done .tf-check-mark {
+    display: block;
+}
+ 
+/* Direita do card */
+.tf-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+ 
+.tf-prio-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+ 
+/* Botão deletar */
+.tf-del {
+    background: transparent;
+    border: none;
+    color: var(--borda-cinza);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 3px 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    opacity: 0;
+}
+ 
+.tf-card:hover .tf-del {
+    opacity: 1;
+}
+ 
+.tf-del:hover {
+    color: var(--fis);
+    background: rgba(255, 107, 157, 0.1);
+}
+ 
+/* Cores de prazo */
+.tf-due-today {
+    color: var(--qui) !important;
+}
+ 
+.tf-due-late {
+    color: var(--fis) !important;
+}
+ 
+/* ── Separadores de seção ── */
+.tf-section-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--borda-cinza);
+    opacity: 0.65;
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+ 
+.tf-section-label:first-child {
+    margin-top: 0;
+}
+ 
+.tf-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--board-line);
+}
+ 
+.tf-section-done {
+    margin-top: 28px;
+}
+ 
+.tf-count {
+    background: var(--board-line);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: 10px;
+    color: var(--borda-cinza);
+    opacity: 1;
+    letter-spacing: 0;
+}
+ 
+/* ── Estado vazio ── */
+.tf-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--borda-cinza);
+}
+ 
+.tf-empty-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+ 
+.tf-empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--branco);
+    margin-bottom: 4px;
+}
+ 
+.tf-empty-sub {
+    font-size: 13px;
+}
+ 
+/* ── Modal — linha dupla de selects ── */
+.tf-modal-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+ 
+/* ── Responsividade básica ── */
+@media (max-width: 680px) {
+    .tf-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+ 
+    .tf-controls-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+ 
+    .tf-sort {
+        flex: 1;
+    }
+ 
+    .tf-modal-row {
+        grid-template-columns: 1fr;
+    }
+ 
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

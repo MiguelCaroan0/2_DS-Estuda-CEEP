@@ -340,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         '13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'
     ];
 
-    // Plano IA baseado nas tarefas e horários do timetable
     const AI_PLAN = {
         seg: [
             { time:'07:00', subject:'mat', title:'Lista ENEM — Funções' },
@@ -372,11 +371,9 @@ document.addEventListener('DOMContentLoaded', () => {
             { time:'12:00', type:'intervalo', title:'Intervalo / Almoço' },
             { time:'14:00', subject:'bio', title:'Revisão Biologia — Ecossistemas' },
         ],
-        sab: [],
-        dom: [],
+        sab: [], dom: [],
     };
 
-    // Horário de aulas da escola (do timetable) mapeado para o plano
     const SCHOOL_SCHEDULE = {
         seg: [
             { time:'07:00', subject:'mat', title:'Matemática — aula escolar', school: true },
@@ -407,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let agendaSchedule = { seg:[], ter:[], qua:[], qui:[], sex:[], sab:[], dom:[] };
     let agendaActiveDay = 'qua';
-    let agendaViewMode = 'estudos'; // 'estudos' | 'escola'
+    let agendaViewMode = 'estudos';
     let agendaInitialized = false;
 
     function agendaApplyAIPlan() {
@@ -472,7 +469,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ? (SCHOOL_SCHEDULE[agendaActiveDay] || [])
             : (agendaSchedule[agendaActiveDay] || []);
 
-        // Monta mapa de horário → evento
         const evMap = {};
         source.forEach(e => { evMap[e.time] = e; });
 
@@ -584,7 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         agendaInitialized = true;
 
-        // Injeta o HTML da agenda na view
         const view = document.getElementById('view-agenda');
         if (!view) return;
 
@@ -598,7 +593,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="date-badge">JUNHO · Semana Atual</div>
             </div>
 
-            <!-- Banner IA -->
             <div class="agenda-ai-banner">
                 <div>
                     <div class="agenda-ai-title">✦ Plano sugerido disponível para esta semana</div>
@@ -607,7 +601,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="btn btn-primary" id="agenda-btn-apply-banner">Aplicar plano</button>
             </div>
 
-            <!-- Ações -->
             <div class="agenda-action-row">
                 <button class="btn btn-primary" id="agenda-btn-apply">✦ Plano Sugerido (IA)</button>
                 <button class="btn btn-secondary" id="agenda-btn-toggle-view">Ver horário escolar</button>
@@ -615,7 +608,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="btn btn-secondary" id="agenda-btn-add">+ Adicionar aula</button>
             </div>
 
-            <!-- Resumo semanal -->
             <div class="agenda-summary-row">
                 <div class="stat-card">
                     <div class="stat-label">Horas planejadas</div>
@@ -639,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
 
-            <!-- Seletor de dias -->
             <div class="section">
                 <div class="section-head">
                     <h2 class="section-title">Semana</h2>
@@ -648,7 +639,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="days-week" id="agenda-days-row"></div>
             </div>
 
-            <!-- Grade de horários -->
             <div class="section">
                 <div class="section-head">
                     <h2 class="section-title" id="agenda-planner-title">Quarta-feira, 25 jun</h2>
@@ -657,7 +647,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div id="agenda-planner-area"></div>
             </div>
 
-            <!-- Calendário da semana (mini) -->
             <div class="section">
                 <div class="section-head">
                     <h2 class="section-title">Calendário Escolar e Provas</h2>
@@ -703,7 +692,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
 
-        <!-- Modal adicionar aula -->
         <div class="modal-overlay" id="agenda-modal" style="display:none;">
             <div class="modal-content">
                 <div class="modal-title">Adicionar aula</div>
@@ -735,7 +723,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>`;
 
-        // Eventos dos botões
         document.getElementById('agenda-btn-apply').addEventListener('click', agendaApplyAIPlan);
         document.getElementById('agenda-btn-apply-banner').addEventListener('click', agendaApplyAIPlan);
 
@@ -781,21 +768,24 @@ document.addEventListener('DOMContentLoaded', () => {
             agendaRenderDays();
         });
 
-        // Render inicial com plano IA
         agendaApplyAIPlan();
     }
 
-    // ─── TAREFAS ───
+    // ─── TAREFAS (REDESENHADO) ───────────────────────────────────────────────
+
     const TASK_SUBJECTS = {
-        mat: { name:'Matemática', tag:'Mat',  cssVar:'--mat'  },
-        por: { name:'Português',  tag:'Port', cssVar:'--port' },
-        bio: { name:'Biologia',   tag:'Bio',  cssVar:'--bio'  },
-        qui: { name:'Química',    tag:'Qui',  cssVar:'--qui'  },
-        fis: { name:'Física',     tag:'Fís',  cssVar:'--fis'  },
-        his: { name:'História',   tag:'His',  cssVar:'--hist' },
+        mat: { name:'Matemática', tag:'Mat',  color:'var(--mat)',  bg:'rgba(255,138,91,0.15)'  },
+        por: { name:'Português',  tag:'Port', color:'var(--port)', bg:'rgba(95,179,232,0.15)'  },
+        bio: { name:'Biologia',   tag:'Bio',  color:'var(--bio)',  bg:'rgba(111,207,122,0.15)' },
+        qui: { name:'Química',    tag:'Qui',  color:'var(--qui)',  bg:'rgba(255,209,102,0.15)' },
+        fis: { name:'Física',     tag:'Fís',  color:'var(--fis)',  bg:'rgba(255,107,157,0.15)' },
+        his: { name:'História',   tag:'His',  color:'var(--hist)', bg:'rgba(199,146,234,0.15)' },
     };
 
-    // Banco de tarefas em memória
+    const PRIO_COLOR  = { alta:'var(--fis)', media:'var(--qui)', baixa:'var(--bio)' };
+    const PRIO_LABEL  = { alta:'Alta', media:'Média', baixa:'Baixa' };
+    const PRIO_ORDER  = { alta:0, media:1, baixa:2 };
+
     let taskList = [
         { id:1,  title:'Resolver lista de parábolas (ENEM 2022)', desc:'Vence hoje · 20 questões · Integrado do Classroom',      subject:'mat', priority:'alta',  done:false, due:'2025-06-25' },
         { id:2,  title:'Escrever redação sobre mobilidade urbana', desc:'Vence hoje · mín. 30 linhas · Redação Paraná',           subject:'por', priority:'alta',  done:false, due:'2025-06-25' },
@@ -807,12 +797,19 @@ document.addEventListener('DOMContentLoaded', () => {
         { id:8,  title:'Exercícios — Genética mendeliana',        desc:'Concluída seg, 23 jun',                                  subject:'bio', priority:'media', done:true,  due:'2025-06-23' },
     ];
     let nextTaskId = 9;
-    let taskFilter   = 'todas';   // 'todas' | 'pendentes' | 'concluidas'
-    let taskSubjFilter = 'todas'; // matéria ou 'todas'
-    let taskSortBy   = 'prazo';   // 'prazo' | 'prioridade' | 'materia'
+    let taskFilter     = 'todas';
+    let taskSubjFilter = 'todas';
+    let taskSortBy     = 'prazo';
     let tarefasInitialized = false;
 
-    const PRIORITY_ORDER = { alta:0, media:1, baixa:2 };
+    const TODAY_DATE = new Date().toISOString().slice(0, 10);
+
+    function taskDueClass(t) {
+        if (t.done || !t.due) return '';
+        if (t.due < TODAY_DATE) return 'tf-due-late';
+        if (t.due === TODAY_DATE) return 'tf-due-today';
+        return '';
+    }
 
     function taskGetFiltered() {
         let list = [...taskList];
@@ -821,16 +818,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (taskSubjFilter !== 'todas')  list = list.filter(t => t.subject === taskSubjFilter);
 
         list.sort((a, b) => {
-            if (taskSortBy === 'prioridade') return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+            if (taskSortBy === 'prioridade') return PRIO_ORDER[a.priority] - PRIO_ORDER[b.priority];
             if (taskSortBy === 'materia')    return a.subject.localeCompare(b.subject);
-            return (a.due || '').localeCompare(b.due || ''); // prazo
+            return (a.due || '9999').localeCompare(b.due || '9999');
         });
         return list;
     }
 
     function taskToggleDone(id) {
         const t = taskList.find(t => t.id === id);
-        if (t) { t.done = !t.done; }
+        if (t) t.done = !t.done;
         tarefasRender();
     }
 
@@ -839,45 +836,65 @@ document.addEventListener('DOMContentLoaded', () => {
         tarefasRender();
     }
 
+    function taskCardHTML(t) {
+        const s  = TASK_SUBJECTS[t.subject] || { name:t.subject, tag:t.subject, color:'var(--borda-cinza)', bg:'transparent' };
+        const dc = taskDueClass(t);
+        const dueIcon = dc === 'tf-due-today' ? '🔔 ' : dc === 'tf-due-late' ? '⚠️ ' : '';
+
+        return `
+        <div class="tf-card task-item${t.done ? ' done' : ''}" data-id="${t.id}">
+            <div class="tf-accent" style="background:${s.color}"></div>
+            <div class="tf-inner">
+                <button class="tf-check task-check" data-id="${t.id}" aria-label="Marcar como ${t.done ? 'pendente' : 'concluída'}">
+                    <div class="tf-check-mark"></div>
+                </button>
+                <div class="task-body">
+                    <div class="task-title">${t.title}</div>
+                    <div class="task-meta${dc ? ' ' + dc : ''}">${dueIcon}${t.desc}</div>
+                </div>
+                <div class="tf-right">
+                    <span class="tf-prio-dot" style="background:${PRIO_COLOR[t.priority]}" title="Prioridade ${PRIO_LABEL[t.priority]}"></span>
+                    <span class="task-tag tag-${t.subject}">${s.tag}</span>
+                    <button class="tf-del" data-id="${t.id}" title="Remover tarefa">✕</button>
+                </div>
+            </div>
+        </div>`;
+    }
+
     function tarefasRender() {
         const view = document.getElementById('view-tarefas');
-        if (!view) return;
+        if (!view || !tarefasInitialized) return;
 
-        const pending   = taskList.filter(t => !t.done);
-        const completed = taskList.filter(t =>  t.done);
-        const filtered  = taskGetFiltered();
+        const pend   = taskList.filter(t => !t.done);
+        const conc   = taskList.filter(t =>  t.done);
+        const hoje   = pend.filter(t => t.due === TODAY_DATE).length;
+        const atras  = pend.filter(t => t.due && t.due < TODAY_DATE).length;
+        const total  = taskList.length;
+        const pct    = total === 0 ? 0 : Math.round((conc.length / total) * 100);
 
-        // Atualiza badge e contadores
         const badge = view.querySelector('.tf-badge');
-        if (badge) badge.textContent = `${pending.length} PENDENTES`;
+        if (badge) badge.textContent = `${pend.length} PENDENTES`;
 
-        const statPend = view.querySelector('#tf-stat-pend');
-        const statConc = view.querySelector('#tf-stat-conc');
-        const statHoje = view.querySelector('#tf-stat-hoje');
-        const statAtras= view.querySelector('#tf-stat-atras');
+        const sPend  = view.querySelector('#tf-stat-pend');
+        const sConc  = view.querySelector('#tf-stat-conc');
+        const sHoje  = view.querySelector('#tf-stat-hoje');
+        const sAtras = view.querySelector('#tf-stat-atras');
+        const bar    = view.querySelector('#tf-progress-bar');
+        const pctEl  = view.querySelector('#tf-progress-pct');
 
-        const hoje = new Date().toISOString().slice(0,10);
-        const atrasadas = pending.filter(t => t.due && t.due < hoje).length;
-        const venceHoje = pending.filter(t => t.due === hoje).length;
+        if (sPend)  sPend.textContent  = pend.length;
+        if (sConc)  sConc.textContent  = conc.length;
+        if (sHoje)  sHoje.textContent  = hoje;
+        if (sAtras) sAtras.textContent = atras;
+        if (bar)    bar.style.width    = pct + '%';
+        if (pctEl)  pctEl.textContent  = pct + '%';
 
-        if (statPend)  statPend.textContent  = pending.length;
-        if (statConc)  statConc.textContent  = completed.length;
-        if (statHoje)  statHoje.textContent  = venceHoje;
-        if (statAtras) statAtras.textContent = atrasadas;
-
-        // Atualiza barra de progresso
-        const total = taskList.length;
-        const pct   = total === 0 ? 0 : Math.round((completed.length / total) * 100);
-        const bar   = view.querySelector('#tf-progress-bar');
-        const pctEl = view.querySelector('#tf-progress-pct');
-        if (bar)   bar.style.width = pct + '%';
-        if (pctEl) pctEl.textContent = pct + '%';
-
-        // Renderiza lista
         const listEl = view.querySelector('#tf-list');
         if (!listEl) return;
 
-        if (filtered.length === 0) {
+        const filtered = taskGetFiltered();
+
+        if (!filtered.length) {
             listEl.innerHTML = `
                 <div class="tf-empty">
                     <div class="tf-empty-icon">✅</div>
@@ -887,67 +904,34 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Agrupa por status quando filtro = 'todas'
         if (taskFilter === 'todas' && taskSubjFilter === 'todas') {
             const pList = filtered.filter(t => !t.done);
             const cList = filtered.filter(t =>  t.done);
             let html = '';
-
-            if (pList.length > 0) {
+            if (pList.length) {
                 html += `<div class="tf-section-label">Pendentes <span class="tf-count">${pList.length}</span></div>`;
-                html += pList.map(t => taskCardHTML(t)).join('');
+                html += pList.map(taskCardHTML).join('');
             }
-            if (cList.length > 0) {
+            if (cList.length) {
                 html += `<div class="tf-section-label tf-section-done">Concluídas <span class="tf-count">${cList.length}</span></div>`;
-                html += cList.map(t => taskCardHTML(t)).join('');
+                html += cList.map(taskCardHTML).join('');
             }
             listEl.innerHTML = html;
         } else {
-            listEl.innerHTML = filtered.map(t => taskCardHTML(t)).join('');
+            listEl.innerHTML = filtered.map(taskCardHTML).join('');
         }
 
-        // Bind eventos nos cards
         listEl.querySelectorAll('.tf-check').forEach(el => {
             el.addEventListener('click', () => taskToggleDone(Number(el.dataset.id)));
         });
-        listEl.querySelectorAll('.tf-delete').forEach(el => {
-            el.addEventListener('click', (e) => { e.stopPropagation(); taskDelete(Number(el.dataset.id)); });
+        listEl.querySelectorAll('.tf-del').forEach(el => {
+            el.addEventListener('click', e => { e.stopPropagation(); taskDelete(Number(el.dataset.id)); });
         });
-    }
-
-    function taskCardHTML(t) {
-        const subj = TASK_SUBJECTS[t.subject] || { name: t.subject, tag: t.subject, cssVar: '--borda-cinza' };
-        const prioColors = { alta:'var(--fis)', media:'var(--qui)', baixa:'var(--bio)' };
-        const prioLabels = { alta:'Alta',       media:'Média',      baixa:'Baixa' };
-
-        const hoje = new Date().toISOString().slice(0,10);
-        let dueClass = '';
-        let dueLabel = t.desc;
-        if (!t.done && t.due) {
-            if (t.due < hoje)  { dueClass = 'tf-due-late';  }
-            if (t.due === hoje){ dueClass = 'tf-due-today'; }
-        }
-
-        return `
-        <div class="task-item tf-card${t.done ? ' done' : ''}" data-id="${t.id}">
-            <div class="tf-check task-check" data-id="${t.id}"></div>
-            <div class="task-body">
-                <div class="task-title">${t.title}</div>
-                <div class="task-meta ${dueClass}">${dueLabel}</div>
-            </div>
-            <div class="tf-badges">
-                <span class="tf-prio-dot" style="background:${prioColors[t.priority]}" title="Prioridade ${prioLabels[t.priority]}"></span>
-                <span class="task-tag tag-${t.subject}">${subj.tag}</span>
-                <button class="tf-delete btn-icon" data-id="${t.id}" title="Remover">✕</button>
-            </div>
-        </div>`;
     }
 
     function tarefasOpenModal(prefill) {
         const m = document.getElementById('tf-modal');
         if (!m) return;
-
-        // Limpa / preenche
         m.querySelector('#tf-modal-title').value    = prefill?.title    || '';
         m.querySelector('#tf-modal-desc').value     = prefill?.desc     || '';
         m.querySelector('#tf-modal-subject').value  = prefill?.subject  || 'mat';
@@ -971,7 +955,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         view.innerHTML = `
         <div class="content">
-            <!-- Cabeçalho -->
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Tarefas</h1>
@@ -981,65 +964,78 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <!-- Stats rápidos -->
-            <div class="tf-stats-row">
+            <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-label">Pendentes</div>
                     <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
+                    <div class="stat-sub">a fazer</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Concluídas</div>
                     <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
+                    <div class="stat-sub">finalizadas</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Vencem hoje</div>
                     <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
+                    <div class="stat-sub">prazo hoje</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Atrasadas</div>
                     <div class="stat-value accent-port" id="tf-stat-atras">—</div>
+                    <div class="stat-sub">em atraso</div>
                 </div>
             </div>
 
-            <!-- Barra de progresso geral -->
-            <div class="tf-progress-wrap">
-                <div class="tf-progress-header">
+            <!-- Barra de progresso -->
+            <div class="tf-progress-card">
+                <div class="tf-progress-head">
                     <span class="tf-progress-label">Progresso geral</span>
                     <span class="tf-progress-pct" id="tf-progress-pct">0%</span>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-bar mat" id="tf-progress-bar" style="width:0%"></div>
+                    <div class="progress-bar bio" id="tf-progress-bar" style="width:0%"></div>
+                </div>
+                <div class="tf-progress-legend">
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--mat)"></span>Mat</span>
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--port)"></span>Port</span>
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--bio)"></span>Bio</span>
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--qui)"></span>Qui</span>
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--fis)"></span>Fís</span>
+                    <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--hist)"></span>His</span>
                 </div>
             </div>
 
-            <!-- Controles: filtros + ordenação + novo -->
+            <!-- Controles -->
             <div class="tf-controls">
-                <div class="tf-filter-group">
-                    <button class="tf-filter-btn active" data-filter="todas">Todas</button>
-                    <button class="tf-filter-btn" data-filter="pendentes">Pendentes</button>
-                    <button class="tf-filter-btn" data-filter="concluidas">Concluídas</button>
+                <div class="tf-controls-left">
+                    <div class="tf-filter-group" id="tf-status-filters">
+                        <button class="tf-filter-btn active" data-filter="todas">Todas</button>
+                        <button class="tf-filter-btn" data-filter="pendentes">Pendentes</button>
+                        <button class="tf-filter-btn" data-filter="concluidas">Concluídas</button>
+                    </div>
+                    <div class="tf-divider"></div>
+                    <div class="tf-filter-group" id="tf-subj-filters">
+                        <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                        <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
+                        <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
+                        <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">Bio</button>
+                        <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">Qui</button>
+                        <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
+                        <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+                    </div>
                 </div>
-
-                <div class="tf-filter-group tf-subj-filters">
-                    <button class="tf-subj-btn active" data-subj="todas">Todas</button>
-                    <button class="tf-subj-btn" data-subj="mat"  style="--subj-c:var(--mat)">Mat</button>
-                    <button class="tf-subj-btn" data-subj="por"  style="--subj-c:var(--port)">Port</button>
-                    <button class="tf-subj-btn" data-subj="bio"  style="--subj-c:var(--bio)">Bio</button>
-                    <button class="tf-subj-btn" data-subj="qui"  style="--subj-c:var(--qui)">Qui</button>
-                    <button class="tf-subj-btn" data-subj="fis"  style="--subj-c:var(--fis)">Fís</button>
-                    <button class="tf-subj-btn" data-subj="his"  style="--subj-c:var(--hist)">His</button>
-                </div>
-
-                <div class="tf-right-controls">
-                    <select class="form-input tf-sort-select" id="tf-sort">
+                <div class="tf-controls-right">
+                    <select class="form-input tf-sort" id="tf-sort">
                         <option value="prazo">Ordenar: Prazo</option>
                         <option value="prioridade">Ordenar: Prioridade</option>
                         <option value="materia">Ordenar: Matéria</option>
                     </select>
-                    <button class="btn btn-primary" id="tf-btn-new">+ Nova tarefa</button>
+                    <button class="btn btn-primary tf-new-btn" id="tf-btn-new">+ Nova tarefa</button>
                 </div>
             </div>
 
-            <!-- Lista de tarefas -->
+            <!-- Lista -->
             <div class="section">
                 <div id="tf-list"></div>
             </div>
@@ -1050,16 +1046,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-content">
                 <div class="modal-title">Nova Tarefa</div>
                 <div class="form-group">
-                    <label class="form-label" for="tf-modal-title">Título da atividade</label>
+                    <label class="form-label">Título da atividade</label>
                     <input type="text" id="tf-modal-title" class="form-input" placeholder="Ex: Exercícios de Gravitação">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="tf-modal-desc">Descrição / Observação</label>
+                    <label class="form-label">Descrição / observação</label>
                     <input type="text" id="tf-modal-desc" class="form-input" placeholder="Ex: pág. 45 · vence sexta">
                 </div>
                 <div class="tf-modal-row">
                     <div class="form-group">
-                        <label class="form-label" for="tf-modal-subject">Matéria</label>
+                        <label class="form-label">Matéria</label>
                         <select id="tf-modal-subject" class="form-input">
                             <option value="mat">Matemática</option>
                             <option value="por">Português</option>
@@ -1070,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="tf-modal-priority">Prioridade</label>
+                        <label class="form-label">Prioridade</label>
                         <select id="tf-modal-priority" class="form-input">
                             <option value="baixa">Baixa</option>
                             <option value="media" selected>Média</option>
@@ -1079,7 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="tf-modal-due">Prazo de entrega</label>
+                    <label class="form-label">Prazo de entrega</label>
                     <input type="date" id="tf-modal-due" class="form-input">
                 </div>
                 <div class="modal-actions">
@@ -1089,68 +1085,56 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>`;
 
-        // ── Bind filtros de status ──
-        view.querySelectorAll('.tf-filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                taskFilter = btn.dataset.filter;
-                tarefasRender();
-            });
+        view.querySelector('#tf-status-filters').addEventListener('click', e => {
+            const btn = e.target.closest('.tf-filter-btn');
+            if (!btn) return;
+            taskFilter = btn.dataset.filter;
+            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            tarefasRender();
         });
 
-        // ── Bind filtros de matéria ──
-        view.querySelectorAll('.tf-subj-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                taskSubjFilter = btn.dataset.subj;
-                tarefasRender();
-            });
+        view.querySelector('#tf-subj-filters').addEventListener('click', e => {
+            const btn = e.target.closest('.tf-subj-btn');
+            if (!btn) return;
+            taskSubjFilter = btn.dataset.subj;
+            view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.toggle('active', b === btn));
+            tarefasRender();
         });
 
-        // ── Ordenação ──
         view.querySelector('#tf-sort').addEventListener('change', function() {
             taskSortBy = this.value;
             tarefasRender();
         });
 
-        // ── Botão nova tarefa ──
         view.querySelector('#tf-btn-new').addEventListener('click', () => tarefasOpenModal());
 
-        // ── Modal: fechar ──
         view.querySelector('#tf-modal-cancel').addEventListener('click', tarefasCloseModal);
         view.querySelector('#tf-modal').addEventListener('click', function(e) {
             if (e.target === this) tarefasCloseModal();
         });
 
-        // ── Modal: confirmar ──
         view.querySelector('#tf-modal-confirm').addEventListener('click', () => {
-            const title    = view.querySelector('#tf-modal-title').value.trim();
+            const title = view.querySelector('#tf-modal-title').value.trim();
             if (!title) { view.querySelector('#tf-modal-title').focus(); return; }
 
             const desc     = view.querySelector('#tf-modal-desc').value.trim();
             const subject  = view.querySelector('#tf-modal-subject').value;
             const priority = view.querySelector('#tf-modal-priority').value;
-            const due      = view.querySelector('#tf-modal-due').value;
+            const due      = view.querySelector('#tf-modal-due').value || null;
 
-            const subj  = TASK_SUBJECTS[subject];
             let descFinal = desc;
             if (!descFinal && due) {
                 const d = new Date(due + 'T12:00:00');
                 descFinal = 'Vence ' + d.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short' });
             }
+            if (!descFinal) descFinal = 'Adicionada agora';
 
-            taskList.unshift({
-                id: nextTaskId++,
-                title, desc: descFinal, subject, priority,
-                done: false, due: due || null,
-            });
+            taskList.unshift({ id: nextTaskId++, title, desc: descFinal, subject, priority, done: false, due });
 
-            // Volta para filtro pendentes pra mostrar a nova tarefa
             taskFilter = 'todas';
-            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.remove('active'));
-            view.querySelector('[data-filter="todas"]').classList.add('active');
+            taskSubjFilter = 'todas';
+            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todas'));
+            view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.toggle('active', b.dataset.subj === 'todas'));
 
             tarefasCloseModal();
             tarefasRender();
