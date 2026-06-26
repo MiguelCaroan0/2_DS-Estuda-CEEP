@@ -80,14 +80,12 @@
                     <div class="date-hero-card">
                         <div class="date-hero-weekday" id="hero-weekday">Carregando...</div>
                         <div class="date-hero-date"    id="hero-date">—</div>
-                        <div class="date-hero-bar"></div>
-                        <div class="date-hero-time"    id="hero-time">--:--:--</div>
                     </div>
 
                     <!-- Saudação dinâmica -->
                     <div class="greeting-block">
                         <div class="greeting-label" id="greeting-label">Olá,</div>
-                        <div class="greeting-name">Patrícia Alves! 👋</div>
+                        <div class="greeting-name">Patrícia Alves!</div>
                         <p class="greeting-sub" id="greeting-sub">Veja abaixo o que está no seu plano de hoje.</p>
                     </div>
                 </div>
@@ -96,7 +94,6 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Matérias do dia</h2>
-                        <span class="section-note" id="day-filter-note">Clique em um dia para filtrar</span>
                     </div>
 
                     <!-- Seletor de dias (agora com data real) -->
@@ -109,7 +106,6 @@
 
                     <!-- Estado vazio (fim de semana / sem aulas) -->
                     <div class="day-empty-state" id="day-empty-state" style="display:none;">
-                        <div class="day-empty-icon">🎉</div>
                         <div class="day-empty-title">Nenhuma aula hoje</div>
                         <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
                     </div>
@@ -123,76 +119,99 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Agenda de Estudos</h1>
-                        <p>Organize o seu plano de estudos diário e semanal de forma automática.</p>
                     </div>
-                    <div class="date-badge">JUNHO · Semana Atual</div>
                 </div>
 
-                <div>
-                    <button class="btn btn-primary">Plano Sugerido (IA)</button>
-                    <button class="btn btn-secondary">Importar do Google Classroom</button>
+                <div class="agenda-ai-banner">
+                    <div>
+                        <div class="agenda-ai-title">✦ Plano sugerido disponível para esta semana</div>
+                        <div class="agenda-ai-sub">Baseado nas suas tarefas pendentes e histórico de estudos</div>
+                    </div>
+                    <button class="btn btn-primary" id="agenda-btn-apply-banner">Aplicar plano</button>
+                </div>
+
+                <div class="agenda-summary-row">
+                    <div class="stat-card">
+                        <div class="stat-label">Horas planejadas</div>
+                        <div class="stat-value accent-qui" id="agenda-sum-horas">—</div>
+                        <div class="stat-sub">esta semana</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Sessões</div>
+                        <div class="stat-value accent-port" id="agenda-sum-aulas">—</div>
+                        <div class="stat-sub">aulas agendadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ofensiva</div>
+                        <div class="stat-value accent-bio">5 dias</div>
+                        <div class="stat-sub">estudando seguido</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Meta semanal</div>
+                        <div class="stat-value accent-mat" id="agenda-sum-meta">—</div>
+                        <div class="stat-sub">concluída</div>
+                    </div>
+                </div>
+
+                 <div class="agenda-action-row">
+                    <button class="btn btn-primary" id="agenda-btn-apply">✦ Plano Sugerido (IA)</button>
+                    <button class="btn btn-secondary" id="agenda-btn-clear">Limpar dia</button>
+                    <button class="btn btn-secondary" id="agenda-btn-add">+ Adicionar aula</button>
                 </div>
 
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Calendário da Semana</h2>
-                        <span class="section-note">Clique em um dia para planejar</span>
+                        <h2 class="section-title" id="agenda-planner-title">Quarta-feira, 25 jun</h2>
+                        <div class="agenda-day-nav">
+                            <button class="agenda-nav-btn" id="agenda-nav-prev" aria-label="Dia anterior">&#8592;</button>
+                            <button class="agenda-nav-btn" id="agenda-nav-next" aria-label="Próximo dia">&#8594;</button>
+                        </div>
                     </div>
-
-                    <div class="days-week">
-                        <div class="day"><div class="d-label">Seg</div><div class="d-num">23</div></div>
-                        <div class="day"><div class="d-label">Ter</div><div class="d-num">24</div></div>
-                        <div class="day today"><div class="d-label">Qua</div><div class="d-num">25</div></div>
-                        <div class="day"><div class="d-label">Qui</div><div class="d-num">26</div></div>
-                        <div class="day"><div class="d-label">Sex</div><div class="d-num">27</div></div>
-                        <div class="day"><div class="d-label">Sáb</div><div class="d-num">28</div></div>
-                        <div class="day"><div class="d-label">Dom</div><div class="d-num">29</div></div>
-                    </div>
+                    <div id="agenda-planner-area"></div>
                 </div>
+            </div>
 
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Calendário Escolar e Provas</h2>
-                        <span class="section-note">Feriados, Provas e Eventos da CEEP</span>
+            <!-- Modal adicionar aula -->
+            <div class="modal-overlay" id="agenda-modal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-title">Adicionar aula</div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-subject">Matéria</label>
+                        <select id="agenda-modal-subject" class="form-input">
+                            <option value="mat">Matemática</option>
+                            <option value="por">Português</option>
+                            <option value="bio">Biologia</option>
+                            <option value="qui">Química</option>
+                            <option value="fis">Física</option>
+                            <option value="his">História</option>
+                        </select>
                     </div>
-
-                    <div class="calendar-grid">
-                        <div class="calendar-header-day">Seg</div>
-                        <div class="calendar-header-day">Ter</div>
-                        <div class="calendar-header-day">Qua</div>
-                        <div class="calendar-header-day">Qui</div>
-                        <div class="calendar-header-day">Sex</div>
-                        <div class="calendar-header-day">Sáb</div>
-                        <div class="calendar-header-day">Dom</div>
-
-                        <div class="calendar-cell muted"><div class="cell-num">22</div></div>
-                        <div class="calendar-cell">
-                            <div class="cell-num">23</div>
-                            <div class="cell-events"><span class="cell-event event-geral">Início Bimestre</span></div>
-                        </div>
-                        <div class="calendar-cell">
-                            <div class="cell-num">24</div>
-                            <div class="cell-events"><span class="cell-event event-por">Aula Redação</span></div>
-                        </div>
-                        <div class="calendar-cell today-cell">
-                            <div class="cell-num">25</div>
-                            <div class="cell-events">
-                                <span class="cell-event event-mat">ENEM Lista</span>
-                                <span class="cell-event event-por">Redação M.U.</span>
-                            </div>
-                        </div>
-                        <div class="calendar-cell">
-                            <div class="cell-num">26</div>
-                            <div class="cell-events"><span class="cell-event event-qui">Estequiometria</span></div>
-                        </div>
-                        <div class="calendar-cell">
-                            <div class="cell-num">27</div>
-                            <div class="cell-events"><span class="cell-event event-fis">Física Vetor</span></div>
-                        </div>
-                        <div class="calendar-cell">
-                            <div class="cell-num">28</div>
-                            <div class="cell-events"><span class="cell-event event-geral">Feriado Municipal</span></div>
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-title">Título / Tópico</label>
+                        <input type="text" id="agenda-modal-title" class="form-input" placeholder="Ex: Funções do 2º grau">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-time">Horário</label>
+                        <select id="agenda-modal-time" class="form-input">
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="agenda-modal-cancel">Cancelar</button>
+                        <button type="button" class="btn btn-primary"   id="agenda-modal-confirm">Adicionar</button>
                     </div>
                 </div>
             </div>
@@ -204,110 +223,134 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Tarefas</h1>
-                        <p>Acompanhe e gerencie as atividades escolares integradas de todas as plataformas.</p>
+                        <p>Acompanhe e gerencie suas atividades escolares</p>
                     </div>
-                    <div class="date-badge">5 PENDENTES</div>
+                    <div class="date-badge tf-badge">5 PENDENTES</div>
                 </div>
 
-                <div>
-                    <div>
-                        <button>Todas</button>
-                        <button class="btn btn-secondary filter-btn" data-filter="pendentes">Pendentes</button>
-                        <button class="btn btn-secondary filter-btn" data-filter="concluidas">Concluídas</button>
+                <!-- Stats rápidos -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-label">Pendentes</div>
+                        <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
+                        <div class="stat-sub">a fazer</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-new-task">Adicionar Tarefa</button>
+                    <div class="stat-card">
+                        <div class="stat-label">Concluídas</div>
+                        <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
+                        <div class="stat-sub">finalizadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Vencem hoje</div>
+                        <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
+                        <div class="stat-sub">prazo hoje</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Atrasadas</div>
+                        <div class="stat-value accent-port" id="tf-stat-atras">—</div>
+                        <div class="stat-sub">em atraso</div>
+                    </div>
                 </div>
 
+                <!-- Barra de progresso -->
+                <div class="tf-progress-card">
+                    <div class="tf-progress-head">
+                        <span class="tf-progress-label">Progresso geral</span>
+                        <span class="tf-progress-pct" id="tf-progress-pct">0%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar bio" id="tf-progress-bar" style="width:0%"></div>
+                    </div>
+                    <div class="tf-progress-legend">
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--mat)"></span>Mat</span>
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--port)"></span>Port</span>
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--bio)"></span>Bio</span>
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--qui)"></span>Qui</span>
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--fis)"></span>Fís</span>
+                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--hist)"></span>His</span>
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <div class="tf-controls">
+                    <div class="tf-controls-left">
+                        <div class="tf-filter-group" id="tf-status-filters">
+                            <button class="tf-filter-btn active" data-filter="todas">Todas</button>
+                            <button class="tf-filter-btn" data-filter="pendentes">Pendentes</button>
+                            <button class="tf-filter-btn" data-filter="concluidas">Concluídas</button>
+                        </div>
+                        <div class="tf-divider"></div>
+                        <div class="tf-filter-group" id="tf-subj-filters">
+                            <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                            <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
+                            <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
+                            <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">Bio</button>
+                            <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">Qui</button>
+                            <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
+                            <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+                        </div>
+                    </div>
+                    <div class="tf-controls-right">
+                        <select class="form-input tf-sort" id="tf-sort">
+                            <option value="prazo">Ordenar: Prazo</option>
+                            <option value="prioridade">Ordenar: Prioridade</option>
+                            <option value="materia">Ordenar: Matéria</option>
+                        </select>
+                        <button class="btn btn-primary tf-new-btn" id="tf-btn-new">+ Nova tarefa</button>
+                    </div>
+                </div>
+
+                <!-- Lista -->
                 <div class="section">
-                    <div id="section-pending">
-                        <div class="tasks-section-label">Pendentes</div>
-                        <div class="tasks-list">
-                            <div class="task-item">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Resolver lista de parábolas (ENEM 2022)</div>
-                                    <div class="task-meta">Vence hoje · 20 questões · Integrado do Classroom</div>
-                                </div>
-                                <div class="task-priority priority-alta"></div>
-                                <span class="task-tag tag-mat">Mat</span>
-                            </div>
+                    <div id="tf-list"></div>
+                </div>
+            </div>
 
-                            <div class="task-item">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Escrever redação sobre mobilidade urbana</div>
-                                    <div class="task-meta">Vence hoje · mín. 30 linhas · Integrado da Redação Paraná</div>
-                                </div>
-                                <div class="task-priority priority-alta"></div>
-                                <span class="task-tag tag-por">Port</span>
-                            </div>
-
-                            <div class="task-item">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Exercícios de estequiometria — cap. 8</div>
-                                    <div class="task-meta">Vence qui, 26 jun · pág. 112–118 · Livro Didático</div>
-                                </div>
-                                <div class="task-priority priority-media"></div>
-                                <span class="task-tag tag-qui">Qui</span>
-                            </div>
-
-                            <div class="task-item">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Resumo: Cinemática vetorial</div>
-                                    <div class="task-meta">Vence sex, 27 jun · 1 página · Caderno de Física</div>
-                                </div>
-                                <div class="task-priority priority-media"></div>
-                                <span class="task-tag tag-fis">Fís</span>
-                            </div>
-
-                            <div class="task-item">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Mapa mental — Engenharia genética</div>
-                                    <div class="task-meta">Vence sáb, 28 jun · Atividade de Biologia</div>
-                                </div>
-                                <div class="task-priority priority-baixa"></div>
-                                <span class="task-tag tag-bio">Bio</span>
-                            </div>
+            <!-- Modal nova tarefa -->
+            <div class="modal-overlay" id="tf-modal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-title">Nova Tarefa</div>
+                    <div class="form-group">
+                        <label class="form-label">Título da atividade</label>
+                        <input type="text" id="tf-modal-title" class="form-input" placeholder="Ex: Exercícios de Gravitação">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrição / observação</label>
+                        <input type="text" id="tf-modal-desc" class="form-input" placeholder="Ex: pág. 45 · vence sexta">
+                    </div>
+                    <div class="tf-modal-row">
+                        <div class="form-group">
+                            <label class="form-label">Matéria</label>
+                            <select id="tf-modal-subject" class="form-input">
+                                <option value="mat">Matemática</option>
+                                <option value="por">Português</option>
+                                <option value="bio">Biologia</option>
+                                <option value="qui">Química</option>
+                                <option value="fis">Física</option>
+                                <option value="his">História</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prioridade</label>
+                            <select id="tf-modal-priority" class="form-input">
+                                <option value="baixa">Baixa</option>
+                                <option value="media" selected>Média</option>
+                                <option value="alta">Alta</option>
+                            </select>
                         </div>
                     </div>
-
-                    <div id="section-completed">
-                        <div class="tasks-section-label">Concluídas</div>
-                        <div class="tasks-list">
-                            <div class="task-item done">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Rever anotações — Funções quadráticas</div>
-                                    <div class="task-meta">Concluída ontem</div>
-                                </div>
-                                <span class="task-tag tag-mat">Mat</span>
-                            </div>
-
-                            <div class="task-item done">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Ler capítulo sobre Era Vargas</div>
-                                    <div class="task-meta">Concluída seg, 23 jun</div>
-                                </div>
-                                <span class="task-tag tag-his">His</span>
-                            </div>
-
-                            <div class="task-item done">
-                                <div class="task-check"></div>
-                                <div class="task-body">
-                                    <div class="task-title">Exercícios — Genética mendeliana</div>
-                                    <div class="task-meta">Concluída seg, 23 jun</div>
-                                </div>
-                                <span class="task-tag tag-bio">Bio</span>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">Prazo de entrega</label>
+                        <input type="date" id="tf-modal-due" class="form-input">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="tf-modal-cancel">Cancelar</button>
+                        <button type="button" class="btn btn-primary"   id="tf-modal-confirm">Adicionar</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- 5. VIEW: HISTÓRICO -->
         <div id="view-historico" class="page-view">
             <div class="content">
@@ -345,36 +388,14 @@
                 <div class="chart-card">
                     <h3>Distribuição Diária de Estudos</h3>
                     <p>Horas de foco registradas por dia da semana</p>
-                    
                     <div class="chart-container">
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar mat"></div>
-                            <span class="chart-label">Seg</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar por"></div>
-                            <span class="chart-label">Ter</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar bio"></div>
-                            <span class="chart-label">Qua</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar"></div>
-                            <span class="chart-label">Qui</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar"></div>
-                            <span class="chart-label">Sex</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar"></div>
-                            <span class="chart-label">Sáb</span>
-                        </div>
-                        <div class="chart-bar-wrapper">
-                            <div class="chart-bar"></div>
-                            <span class="chart-label">Dom</span>
-                        </div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar mat"></div><span class="chart-label">Seg</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar por"></div><span class="chart-label">Ter</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar bio"></div><span class="chart-label">Qua</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Qui</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Sex</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Sáb</span></div>
+                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Dom</span></div>
                     </div>
                 </div>
 
@@ -383,7 +404,6 @@
                         <h2 class="section-title">Sessões Recentes</h2>
                         <span class="section-note">Últimos 3 dias</span>
                     </div>
-
                     <div class="tasks-list">
                         <div class="task-item done">
                             <div class="task-body">
@@ -394,7 +414,6 @@
                                 <span class="task-tag tag-mat">Mat</span>
                             </div>
                         </div>
-
                         <div class="task-item done">
                             <div class="task-body">
                                 <div>
@@ -402,16 +421,6 @@
                                     <div class="task-meta">23 Jun, 14:00 · Leitura e Resumos (1h 10min)</div>
                                 </div>
                                 <span class="task-tag tag-his">His</span>
-                            </div>
-                        </div>
-
-                        <div class="task-item done">
-                            <div class="task-body">
-                                <div>
-                                    <div class="task-title">Estudo Dirigido de Genética</div>
-                                    <div class="task-meta">23 Jun, 09:15 · Exercícios de Mendel (45 min)</div>
-                                </div>
-                                <span class="task-tag tag-bio">Bio</span>
                             </div>
                         </div>
                     </div>
@@ -425,133 +434,94 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Matérias</h1>
-                        <p>Gerencie suas disciplinas, acompanhe seu progresso de tópicos estudados e tarefas concluídas.</p>
+                        <p>Acompanhe o progresso em cada disciplina.</p>
                     </div>
-                    <div class="date-badge">6 DISCIPLINAS</div>
                 </div>
-
-                <div class="section">
-                    <div class="subject-grid">
-                        <article class="subject-card" data-subject="mat">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Matemática</span>
-                                    <span class="subject-time">1 tarefa pendente</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>50%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar mat"></div>
-                                    </div>
-                                    <p>Prof. Marcos Oliveira</p>
-                                </div>
+                <div class="subject-grid">
+                    <article class="subject-card" data-subject="mat">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Matemática</span>
+                                <span class="subject-time">2 tarefas pendentes</span>
                             </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="por">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Português</span>
-                                    <span class="subject-time">1 tarefa pendente</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>33%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar por"></div>
-                                    </div>
-                                    <p>Prof. Ana Silva</p>
-                                </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>60%</span></div>
+                                <div class="progress-container"><div class="progress-bar mat" style="width:60%;"></div></div>
+                                <p>Prof. Carlos Mendes</p>
                             </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="bio">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Biologia</span>
-                                    <span class="subject-time">1 tarefa pendente</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>66%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar bio"></div>
-                                    </div>
-                                    <p>Profª. Cláudia Reis</p>
-                                </div>
+                        </div>
+                    </article>
+                    <article class="subject-card" data-subject="por">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Português</span>
+                                <span class="subject-time">1 tarefa pendente</span>
                             </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="qui">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Química</span>
-                                    <span class="subject-time">1 tarefa pendente</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>33%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar qui" style="width: 33%;"></div>
-                                    </div>
-                                    <p>Prof. Ricardo Dias</p>
-                                </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>75%</span></div>
+                                <div class="progress-container"><div class="progress-bar por" style="width:75%;"></div></div>
+                                <p>Profª. Patrícia Souza</p>
                             </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="fis">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">Física</span>
-                                    <span class="subject-time">1 tarefa pendente</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>33%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar fis" style="width: 33%;"></div>
-                                    </div>
-                                    <p>Prof. André Santos</p>
-                                </div>
+                        </div>
+                    </article>
+                    <article class="subject-card" data-subject="bio">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Biologia</span>
+                                <span class="subject-time">1 tarefa pendente</span>
                             </div>
-                        </article>
-
-                        <article class="subject-card" data-subject="his">
-                            <div class="subject-tab"></div>
-                            <div class="subject-body">
-                                <div class="subject-head">
-                                    <span class="subject-name">História</span>
-                                    <span class="subject-time">0 pendentes</span>
-                                </div>
-                                <div class="topics">
-                                    <div>
-                                        <span>Progresso Geral</span>
-                                        <span>100%</span>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-bar his"></div>
-                                    </div>
-                                    <p>Profª. Júlia Lima</p>
-                                </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>80%</span></div>
+                                <div class="progress-container"><div class="progress-bar bio" style="width:80%;"></div></div>
+                                <p>Profª. Helena Costa</p>
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
+                    <article class="subject-card" data-subject="qui">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Química</span>
+                                <span class="subject-time">1 tarefa pendente</span>
+                            </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>33%</span></div>
+                                <div class="progress-container"><div class="progress-bar qui" style="width:33%;"></div></div>
+                                <p>Prof. Ricardo Dias</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="subject-card" data-subject="fis">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">Física</span>
+                                <span class="subject-time">1 tarefa pendente</span>
+                            </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>33%</span></div>
+                                <div class="progress-container"><div class="progress-bar fis" style="width:33%;"></div></div>
+                                <p>Prof. André Santos</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="subject-card" data-subject="his">
+                        <div class="subject-tab"></div>
+                        <div class="subject-body">
+                            <div class="subject-head">
+                                <span class="subject-name">História</span>
+                                <span class="subject-time">0 pendentes</span>
+                            </div>
+                            <div class="topics">
+                                <div><span>Progresso Geral</span><span>100%</span></div>
+                                <div class="progress-container"><div class="progress-bar his"></div></div>
+                                <p>Profª. Júlia Lima</p>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
@@ -566,7 +536,6 @@
                     <div class="date-badge">JUNHO 2025</div>
                 </div>
 
-                <!-- Legenda de tipos de evento -->
                 <div class="cal-legend">
                     <span class="cal-legend-item"><span class="cal-dot dot-aula"></span>Aulas</span>
                     <span class="cal-legend-item"><span class="cal-dot dot-prova"></span>Provas</span>
@@ -576,14 +545,12 @@
                     <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Recesso</span>
                 </div>
 
-                <!-- Controles de navegação do mês -->
                 <div class="cal-nav">
                     <button class="btn btn-secondary cal-nav-btn" id="cal-prev">&#8592; Anterior</button>
                     <span class="cal-month-label" id="cal-month-label">Junho 2025</span>
                     <button class="btn btn-secondary cal-nav-btn" id="cal-next">Próximo &#8594;</button>
                 </div>
 
-                <!-- Grade do calendário mensal -->
                 <div class="section">
                     <div class="calendar-grid" id="school-calendar-grid">
                         <div class="calendar-header-day">Seg</div>
@@ -597,7 +564,6 @@
                     </div>
                 </div>
 
-                <!-- Próximos eventos em lista -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Próximos Eventos</h2>
@@ -638,13 +604,6 @@
                             </div>
                             <span class="task-tag">Rec</span>
                         </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Feira de Ciências CEEP 2025</div>
-                                <div class="task-meta">Sex, 8 Ago · Todas as turmas · Quadra coberta</div>
-                            </div>
-                            <span class="task-tag tag-bio">Cie</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -659,7 +618,6 @@
                     </div>
                 </div>
 
-                <!-- Stats rápidos do professor -->
                 <div class="stats-row" style="grid-template-columns: repeat(4,1fr);">
                     <div class="stat-card">
                         <div class="stat-label">Tarefas Ativas</div>
@@ -679,7 +637,6 @@
                     </div>
                 </div>
 
-                <!-- Criar nova tarefa para turma -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Criar Tarefa para Turma</h2>
@@ -717,7 +674,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Descrição / Instruções</label>
-                            <textarea class="form-input" rows="3" id="prof-task-desc" l;></textarea>
+                            <textarea class="form-input" rows="3" id="prof-task-desc"></textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Destinatários</label>
@@ -743,7 +700,6 @@
                     </div>
                 </div>
 
-                <!-- Sincronizações externas -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Sincronização de Plataformas</h2>
@@ -777,21 +733,18 @@
                     </div>
                 </div>
 
-                <!-- Alunos em atraso e destaque -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Acompanhamento dos Alunos</h2>
                         <span class="section-note">Atualizado agora</span>
                     </div>
 
-                    <!-- Tabs -->
                     <div class="student-tabs">
                         <button class="student-tab active" data-tab="atrasados">Em Atraso (7)</button>
                         <button class="student-tab" data-tab="destaque">Mais Dedicados</button>
                         <button class="student-tab" data-tab="todos-alunos">Ver Todos</button>
                     </div>
 
-                    <!-- Lista de atrasados -->
                     <div id="tab-atrasados" class="student-tab-content">
                         <div class="tasks-list">
                             <div class="student-row task-item">
@@ -820,7 +773,6 @@
                         </div>
                     </div>
 
-                    <!-- Lista de destaque -->
                     <div id="tab-destaque" class="student-tab-content" style="display:none;">
                         <div class="tasks-list">
                             <div class="student-row task-item done">
@@ -847,14 +799,11 @@
                         </div>
                     </div>
 
-                    <!-- Todos os alunos -->
                     <div id="tab-todos-alunos" class="student-tab-content" style="display:none;">
                         <div class="tasks-list">
                             <div class="task-item">
                                 <div class="task-body">
-                                    <div class="task-title">
-                                        Exibindo resumo — use filtros por turma para ver todos os 84 alunos.
-                                    </div>
+                                    <div class="task-title">Exibindo resumo — use filtros por turma para ver todos os 84 alunos.</div>
                                 </div>
                             </div>
                         </div>
@@ -866,7 +815,6 @@
                     </div>
                 </div>
 
-                <!-- Tarefas publicadas recentes -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Tarefas Publicadas</h2>
@@ -896,13 +844,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
     </div>
 
-    <!-- ── MODAL NOVA TAREFA ── -->
+    <!-- ── MODAL NOVA TAREFA (legado) ── -->
     <div class="modal-overlay" id="modal-task">
         <div class="modal-content">
             <div class="modal-title">Nova Tarefa</div>
