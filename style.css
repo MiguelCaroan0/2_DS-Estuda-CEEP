@@ -1951,3 +1951,283 @@ footer {
     border-color: var(--accent-primary);
     color: #fff;
 }
+/* ── HISTÓRICO: GRÁFICO INTERATIVO ── */
+
+.hist-chart-card {
+    background: var(--fundo-secundario);
+    border: 1px solid var(--board-line);
+    border-radius: 16px;
+    padding: 28px 28px 20px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.hist-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.hist-chart-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--branco);
+}
+
+.hist-chart-sub {
+    font-size: 12px;
+    color: var(--borda-cinza);
+    margin: 0;
+}
+
+.hist-chart-period-btns {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.hist-period-btn {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--board-line);
+    background: transparent;
+    color: var(--borda-cinza);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.hist-period-btn:hover {
+    border-color: var(--borda-cinza);
+    color: var(--branco);
+}
+
+.hist-period-btn.active {
+    background: rgba(255, 209, 102, 0.12);
+    border-color: var(--qui);
+    color: var(--qui);
+}
+
+/* Chart layout */
+.hist-chart-wrap {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    height: 200px;
+}
+
+.hist-chart-y-axis {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding-bottom: 0;
+    width: 32px;
+    flex-shrink: 0;
+}
+
+.hist-y-label {
+    font-size: 10px;
+    color: var(--borda-cinza);
+    text-align: right;
+    line-height: 1;
+}
+
+.hist-chart-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.hist-bars-row {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    border-bottom: 1px solid var(--board-line);
+    padding-bottom: 0;
+    position: relative;
+}
+
+/* Horizontal grid lines */
+.hist-bars-row::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    background-image: repeating-linear-gradient(
+        to top,
+        transparent,
+        transparent calc(25% - 1px),
+        rgba(46,61,53,0.5) calc(25% - 1px),
+        rgba(46,61,53,0.5) 25%
+    );
+    pointer-events: none;
+}
+
+.hist-bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
+    justify-content: flex-end;
+    position: relative;
+    cursor: pointer;
+}
+
+.hist-bar-solid {
+    width: 100%;
+    max-width: 52px;
+    border-radius: 6px 6px 0 0;
+    background: rgba(185, 194, 188, 0.18);
+    transition: background 0.2s ease, transform 0.18s ease;
+}
+
+.hist-bar-solid.hist-bar-today {
+    background: rgba(255, 209, 102, 0.22);
+}
+
+.hist-bar-group:hover .hist-bar-solid {
+    background: rgba(185, 194, 188, 0.38);
+    transform: scaleY(1.02);
+    transform-origin: bottom;
+}
+
+.hist-bar-group:hover .hist-bar-solid.hist-bar-today {
+    background: rgba(255, 209, 102, 0.48);
+}
+
+.hist-bar-total-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--branco);
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.hist-bar-group:hover .hist-bar-total-label {
+    opacity: 1;
+}
+
+.hist-x-labels {
+    display: flex;
+    gap: 10px;
+    padding-top: 8px;
+}
+
+.hist-x-label {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: var(--borda-cinza);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hist-x-label.today-label {
+    color: var(--qui);
+    font-weight: 700;
+}
+
+/* Tooltip */
+.hist-tooltip {
+    position: absolute;
+    background: #0E1812;
+    border: 1px solid var(--board-line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--branco);
+    pointer-events: none;
+    z-index: 100;
+    min-width: 150px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.hist-tooltip-day {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--borda-cinza);
+    margin-bottom: 8px;
+}
+
+.hist-tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.hist-tooltip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.hist-tooltip-total {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--board-line);
+    font-weight: 700;
+    color: var(--branco);
+}
+
+/* ── HISTÓRICO: CONTROLES DE SESSÃO ── */
+.hist-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.hist-search-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.hist-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--borda-cinza);
+    pointer-events: none;
+}
+
+.hist-search-input {
+    background: var(--fundo-secundario);
+    border: 1px solid var(--board-line);
+    border-radius: 20px;
+    padding: 7px 14px 7px 34px;
+    font-size: 13px;
+    color: var(--branco);
+    font-family: inherit;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.hist-search-input::placeholder {
+    color: var(--borda-cinza);
+}
+
+.hist-search-input:focus {
+    border-color: var(--borda-cinza);
+}

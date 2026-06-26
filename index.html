@@ -223,9 +223,7 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Tarefas</h1>
-                        <p>Acompanhe e gerencie suas atividades escolares</p>
                     </div>
-                    <div class="date-badge tf-badge">5 PENDENTES</div>
                 </div>
 
                 <!-- Stats rápidos -->
@@ -244,30 +242,6 @@
                         <div class="stat-label">Vencem hoje</div>
                         <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
                         <div class="stat-sub">prazo hoje</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Atrasadas</div>
-                        <div class="stat-value accent-port" id="tf-stat-atras">—</div>
-                        <div class="stat-sub">em atraso</div>
-                    </div>
-                </div>
-
-                <!-- Barra de progresso -->
-                <div class="tf-progress-card">
-                    <div class="tf-progress-head">
-                        <span class="tf-progress-label">Progresso geral</span>
-                        <span class="tf-progress-pct" id="tf-progress-pct">0%</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar bio" id="tf-progress-bar" style="width:0%"></div>
-                    </div>
-                    <div class="tf-progress-legend">
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--mat)"></span>Mat</span>
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--port)"></span>Port</span>
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--bio)"></span>Bio</span>
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--qui)"></span>Qui</span>
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--fis)"></span>Fís</span>
-                        <span class="tf-leg-item"><span class="tf-leg-dot" style="background:var(--hist)"></span>His</span>
                     </div>
                 </div>
 
@@ -359,70 +333,74 @@
                         <h1 class="page-title">Histórico de Estudos</h1>
                         <p>Consulte suas estatísticas de foco e verifique seu progresso acadêmico.</p>
                     </div>
-                    <div class="date-badge">SEMANA ATUAL</div>
                 </div>
 
                 <div class="stats-row">
                     <div class="stat-card">
-                        <div class="stat-label">Tempo Total</div>
+                        <div class="stat-label">Tempo Mensal</div>
                         <div class="stat-value accent-qui">28h45</div>
-                        <div class="stat-sub">neste mês</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Ciclos Pomodoro</div>
-                        <div class="stat-value accent-port">52</div>
-                        <div class="stat-sub">concluídos</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-label">Frequência</div>
                         <div class="stat-value accent-bio">94%</div>
-                        <div class="stat-sub">presença ideal</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Ofensiva</div>
+                        <div class="stat-label">Sequência de Estudo</div>
                         <div class="stat-value accent-mat">5 dias</div>
-                        <div class="stat-sub">estudando seguido</div>
                     </div>
                 </div>
 
-                <div class="chart-card">
-                    <h3>Distribuição Diária de Estudos</h3>
-                    <p>Horas de foco registradas por dia da semana</p>
-                    <div class="chart-container">
-                        <div class="chart-bar-wrapper"><div class="chart-bar mat"></div><span class="chart-label">Seg</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar por"></div><span class="chart-label">Ter</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar bio"></div><span class="chart-label">Qua</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Qui</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Sex</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Sáb</span></div>
-                        <div class="chart-bar-wrapper"><div class="chart-bar"></div><span class="chart-label">Dom</span></div>
+                <!-- ── GRÁFICO DE BARRAS INTERATIVO ── -->
+                <div class="hist-chart-card">
+                    <div class="hist-chart-header">
+                        <div>
+                            <h3 class="hist-chart-title">Distribuição de Estudos por Dia</h3>
+                            <p class="hist-chart-sub">Horas de foco registradas — passe o mouse nas barras para detalhes</p>
+                        </div>
+                        <div class="hist-chart-period-btns">
+                            <button class="hist-period-btn active" data-period="semana">Semana</button>
+                            <button class="hist-period-btn" data-period="mes">Mês</button>
+                        </div>
                     </div>
+                    <div class="hist-chart-wrap">
+                        <div class="hist-chart-y-axis" id="hist-y-axis"></div>
+                        <div class="hist-chart-area">
+                            <div class="hist-bars-row" id="hist-bars-row"></div>
+                            <div class="hist-x-labels" id="hist-x-labels"></div>
+                        </div>
+                    </div>
+                    <div class="hist-tooltip" id="hist-tooltip" style="display:none;"></div>
                 </div>
 
+                <!-- ── SESSÕES RECENTES: FILTROS + BUSCA ── -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Sessões Recentes</h2>
-                        <span class="section-note">Últimos 3 dias</span>
+                        <span class="section-note" id="hist-session-count">Últimas sessões</span>
                     </div>
-                    <div class="tasks-list">
-                        <div class="task-item done">
-                            <div class="task-body">
-                                <div>
-                                    <div class="task-title">Revisão de Funções e Gráficos</div>
-                                    <div class="task-meta">24 Jun, 15:30 · 2 Ciclos Pomodoro (50 min)</div>
-                                </div>
-                                <span class="task-tag tag-mat">Mat</span>
-                            </div>
+
+                    <div class="hist-controls">
+                        <div class="hist-search-wrap">
+                            <svg class="hist-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            <input class="hist-search-input" id="hist-search" type="text" placeholder="Buscar sessão...">
                         </div>
-                        <div class="task-item done">
-                            <div class="task-body">
-                                <div>
-                                    <div class="task-title">Fichamento de Ditadura Militar</div>
-                                    <div class="task-meta">23 Jun, 14:00 · Leitura e Resumos (1h 10min)</div>
-                                </div>
-                                <span class="task-tag tag-his">His</span>
-                            </div>
+                        <div class="tf-filter-group" id="hist-subj-filters">
+                            <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                            <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
+                            <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
+                            <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">Bio</button>
+                            <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">Qui</button>
+                            <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
+                            <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
                         </div>
+                    </div>
+
+                    <div class="tasks-list" id="hist-sessions-list"></div>
+
+                    <div class="tf-empty" id="hist-empty" style="display:none;">
+                        <div class="tf-empty-icon">🔍</div>
+                        <div class="tf-empty-title">Nenhuma sessão encontrada</div>
+                        <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
                     </div>
                 </div>
             </div>

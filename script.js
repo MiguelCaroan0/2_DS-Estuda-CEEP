@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetId === 'agenda') initAgenda();
         if (targetId === 'tarefas') initTarefas();
+        if (targetId === 'historico') initHistorico();
         window.scrollTo(0, 0);
     }
 
@@ -874,6 +875,233 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tarefasRender();
     }
+
+    // ─── HISTÓRICO ───
+    const HIST_SUBJECTS = {
+        mat: { name: 'Matemática', tag: 'Mat', color: 'var(--mat)', cssClass: 'tag-mat' },
+        por: { name: 'Português',  tag: 'Port', color: 'var(--port)', cssClass: 'tag-por' },
+        bio: { name: 'Biologia',   tag: 'Bio',  color: 'var(--bio)',  cssClass: 'tag-bio' },
+        qui: { name: 'Química',    tag: 'Qui',  color: 'var(--qui)',  cssClass: 'tag-qui' },
+        fis: { name: 'Física',     tag: 'Fís',  color: 'var(--fis)',  cssClass: 'tag-fis' },
+        his: { name: 'História',   tag: 'His',  color: 'var(--hist)', cssClass: 'tag-his' },
+    };
+
+    // Data: horas por matéria por dia (semana)
+    const HIST_DATA_SEMANA = [
+        { label: 'Seg', today: false, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
+        { label: 'Ter', today: false, subjects: { mat: 0, por: 1.0, bio: 1.0, qui: 0, fis: 0.5, his: 1.0 } },
+        { label: 'Qua', today: false, subjects: { mat: 2.0, por: 0, bio: 0.5, qui: 0, fis: 0, his: 0 } },
+        { label: 'Qui', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
+        { label: 'Sex', today: false, subjects: { mat: 1.0, por: 1.0, bio: 0.5, qui: 0, fis: 0, his: 0.5 } },
+        { label: 'Sáb', today: false, subjects: { mat: 0.5, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'Hoje', today: true,  subjects: { mat: 0.8, por: 0, bio: 1.2, qui: 0.5, fis: 0, his: 0 } },
+    ];
+
+    // Data: horas por matéria por semana (mês)
+    const HIST_DATA_MES = [
+        { label: 'S1', today: false, subjects: { mat: 4.0, por: 2.5, bio: 1.5, qui: 2.0, fis: 1.0, his: 1.0 } },
+        { label: 'S2', today: false, subjects: { mat: 3.5, por: 1.5, bio: 2.0, qui: 1.0, fis: 2.5, his: 2.0 } },
+        { label: 'S3', today: false, subjects: { mat: 5.0, por: 2.0, bio: 1.0, qui: 3.0, fis: 1.5, his: 0.5 } },
+        { label: 'S4', today: true,  subjects: { mat: 3.0, por: 3.0, bio: 2.5, qui: 2.5, fis: 1.5, his: 1.0 } },
+    ];
+
+    // Sessões recentes
+    const HIST_SESSIONS = [
+        { title: 'Revisão de Funções e Gráficos', meta: '25 Jun', subject: 'mat' },
+        { title: 'Fichamento de Ditadura Militar', meta: '25 Jun', subject: 'his' },
+        { title: 'Engenharia Genética — cap. 5', meta: '25 Jun', subject: 'bio' },
+        { title: 'Estequiometria — Lista de Exercícios', meta: '24 Jun', subject: 'qui' },
+        { title: 'Redação Dissertativa — Simulado', meta: '24 Jun', subject: 'por' },
+        { title: 'Cinemática Escalar — Revisão', meta: '23 Jun', subject: 'fis' },
+        { title: 'Progressões Aritméticas e Geométricas', meta: '23 Jun', subject: 'mat' },
+        { title: 'Interpretação de Texto — ENEM 2023', meta: '22 Jun', subject: 'por' },
+        { title: 'Ecossistemas e Cadeias Alimentares', meta: '22 Jun', subject: 'bio' },
+        { title: 'Era Vargas — Resumo e Mapa Mental', meta: '21 Jun', subject: 'his' },
+    ];
+
+    let histPeriod = 'semana';
+    let histSubjFilter = 'todas';
+    let histSearchQuery = '';
+
+    function histRenderChart() {
+        const data = histPeriod === 'semana' ? HIST_DATA_SEMANA : HIST_DATA_MES;
+        const barsRow = document.getElementById('hist-bars-row');
+        const xLabels = document.getElementById('hist-x-labels');
+        const yAxis = document.getElementById('hist-y-axis');
+        const tooltip = document.getElementById('hist-tooltip');
+        if (!barsRow) return;
+
+        // Find max total
+        let maxTotal = 0;
+        data.forEach(d => {
+            const total = Object.values(d.subjects).reduce((a, b) => a + b, 0);
+            if (total > maxTotal) maxTotal = total;
+        });
+        maxTotal = Math.ceil(maxTotal) || 4;
+
+        // Y axis labels (0, 25%, 50%, 75%, 100%)
+        yAxis.innerHTML = '';
+        for (let i = 0; i <= 4; i++) {
+            const val = (maxTotal * i / 4);
+            const lbl = document.createElement('div');
+            lbl.className = 'hist-y-label';
+            lbl.textContent = val % 1 === 0 ? val + 'h' : val.toFixed(1) + 'h';
+            yAxis.appendChild(lbl);
+        }
+
+        barsRow.innerHTML = '';
+        xLabels.innerHTML = '';
+
+        const subjOrder = ['his', 'fis', 'qui', 'bio', 'por', 'mat'];
+
+        data.forEach((d, di) => {
+            const total = Object.values(d.subjects).reduce((a, b) => a + b, 0);
+            const pct = maxTotal > 0 ? (total / maxTotal) * 100 : 0;
+
+            const group = document.createElement('div');
+            group.className = 'hist-bar-group';
+
+            const totalLbl = document.createElement('div');
+            totalLbl.className = 'hist-bar-total-label';
+            totalLbl.textContent = total > 0 ? total.toFixed(1) + 'h' : '';
+
+            // Single solid bar — neutral color, highlight on hover
+            const bar = document.createElement('div');
+            bar.className = 'hist-bar-solid' + (d.today ? ' hist-bar-today' : '');
+            bar.style.height = pct + '%';
+
+            group.appendChild(totalLbl);
+            group.appendChild(bar);
+            barsRow.appendChild(group);
+
+            // Tooltip: show per-subject breakdown with colors
+            group.addEventListener('mouseenter', () => {
+                bar.classList.add('hist-bar-hovered');
+
+                const rect = group.getBoundingClientRect();
+                const cardRect = document.querySelector('.hist-chart-card').getBoundingClientRect();
+
+                let html = `<div class="hist-tooltip-day">${d.label}${d.today ? ' · Hoje' : ''}</div>`;
+                subjOrder.slice().reverse().forEach(sk => {
+                    const h = d.subjects[sk] || 0;
+                    if (h <= 0) return;
+                    const pctSubj = total > 0 ? Math.round((h / total) * 100) : 0;
+                    html += `<div class="hist-tooltip-row">
+                        <span class="hist-tooltip-dot" style="background:${HIST_SUBJECTS[sk].color}"></span>
+                        <span style="flex:1">${HIST_SUBJECTS[sk].name}</span>
+                        <span style="color:var(--borda-cinza);font-size:10px;margin-right:4px">${pctSubj}%</span>
+                        <span style="font-weight:700">${h.toFixed(1)}h</span>
+                    </div>`;
+                });
+                html += `<div class="hist-tooltip-total">Total: ${total.toFixed(1)}h</div>`;
+                tooltip.innerHTML = html;
+
+                let left = rect.left - cardRect.left + rect.width / 2;
+                let top = rect.top - cardRect.top - tooltip.offsetHeight - 8;
+
+                const ttW = 168;
+                if (left + ttW / 2 > cardRect.width - 16) left = cardRect.width - ttW - 16;
+                if (left - ttW / 2 < 16) left = 16 + ttW / 2;
+
+                tooltip.style.left = (left - ttW / 2) + 'px';
+                tooltip.style.top = (top < 0 ? rect.bottom - cardRect.top + 8 : top) + 'px';
+                tooltip.style.display = 'block';
+            });
+
+            group.addEventListener('mouseleave', () => {
+                bar.classList.remove('hist-bar-hovered');
+                tooltip.style.display = 'none';
+            });
+
+            // X label
+            const lbl = document.createElement('div');
+            lbl.className = 'hist-x-label' + (d.today ? ' today-label' : '');
+            lbl.textContent = d.label;
+            xLabels.appendChild(lbl);
+        });
+    }
+
+    function histRenderSessions() {
+        const list = document.getElementById('hist-sessions-list');
+        const empty = document.getElementById('hist-empty');
+        const countEl = document.getElementById('hist-session-count');
+        if (!list) return;
+
+        const filtered = HIST_SESSIONS.filter(s => {
+            const matchSubj = histSubjFilter === 'todas' || s.subject === histSubjFilter;
+            const q = histSearchQuery.toLowerCase();
+            const matchSearch = !q || s.title.toLowerCase().includes(q) || s.meta.toLowerCase().includes(q) || HIST_SUBJECTS[s.subject].name.toLowerCase().includes(q);
+            return matchSubj && matchSearch;
+        });
+
+        list.innerHTML = '';
+
+        if (filtered.length === 0) {
+            list.style.display = 'none';
+            empty.style.display = 'block';
+            if (countEl) countEl.textContent = '0 sessões';
+            return;
+        }
+
+        list.style.display = '';
+        empty.style.display = 'none';
+        if (countEl) countEl.textContent = `${filtered.length} sessão${filtered.length !== 1 ? 'ões' : ''}`;
+
+        filtered.forEach(s => {
+            const subj = HIST_SUBJECTS[s.subject];
+            const item = document.createElement('div');
+            item.className = 'task-item done';
+            item.innerHTML = `
+                <div class="task-body">
+                    <div>
+                        <div class="task-title">${s.title}</div>
+                        <div class="task-meta">${s.meta}</div>
+                    </div>
+                    <span class="task-tag ${subj.cssClass}">${subj.tag}</span>
+                </div>`;
+            list.appendChild(item);
+        });
+    }
+
+    function initHistorico() {
+        // Period buttons
+        document.querySelectorAll('.hist-period-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.hist-period-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                histPeriod = btn.dataset.period;
+                histRenderChart();
+            });
+        });
+
+        // Subject filter chips
+        const subjFilters = document.getElementById('hist-subj-filters');
+        if (subjFilters) {
+            subjFilters.querySelectorAll('.tf-subj-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    subjFilters.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    histSubjFilter = btn.dataset.subj;
+                    histRenderSessions();
+                });
+            });
+        }
+
+        // Search input
+        const searchInput = document.getElementById('hist-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                histSearchQuery = searchInput.value;
+                histRenderSessions();
+            });
+        }
+
+        histRenderChart();
+        histRenderSessions();
+    }
+
+    // Hook into navigation
+    const _origNavigateTo = navigateTo;
 
     // ─── CALENDÁRIO ESCOLAR ───
     const calGrid = document.getElementById('school-calendar-grid');
