@@ -1109,21 +1109,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (calGrid) {
         const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-        let currentYear = 2025;
-        let currentMonth = 5;
+        const weekdayNames = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+        const today = new Date();
+        let currentYear = today.getFullYear();
+        let currentMonth = today.getMonth();
+        let activeCalFilter = 'todas';
+
+        const typeLabels = {
+            'event-prova':   'Prova',
+            'event-prazo':   'Prazo',
+            'event-feriado': 'Feriado',
+            'event-recesso': 'Recesso',
+            'event-evento':  'Evento',
+            'event-aula':    'Aula',
+        };
 
         const schoolEvents = {
-            '2025-5-23': [{ label: 'Início Bimestre', type: 'event-geral' }],
-            '2025-5-24': [{ label: 'Aula Redação', type: 'event-aula' }],
-            '2025-5-25': [{ label: 'ENEM Lista Mat', type: 'event-prazo' }, { label: 'Redação M.U.', type: 'event-prazo' }],
-            '2025-5-26': [{ label: 'Prova Matemática', type: 'event-prova' }],
-            '2025-5-27': [{ label: 'Prazo Redação PR', type: 'event-prazo' }],
-            '2025-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
-            '2025-6-1': [{ label: 'Simulado ENEM', type: 'event-prova' }],
-            '2025-6-8': [{ label: 'Física: Vetores', type: 'event-aula' }],
-            '2025-6-13': [{ label: 'Recesso — Jul', type: 'event-recesso' }],
-            '2025-6-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-5-23': [{ label: 'Início Bimestre', type: 'event-evento' }],
+            '2026-5-24': [{ label: 'Redação', type: 'event-prazo' }, 
+            { label: 'Palestra contra violência', type: 'event-evento' }, {label: 'Prova Portugês', type: 'event-prova' }],
+            '2026-5-25': [{ label: 'ENEM Lista Mat', type: 'event-prazo' }, { label: 'Redação M.U.', type: 'event-prazo' }],
+            '2026-5-26': [{ label: 'Prova Matemática', type: 'event-prova' }],
+            '2026-5-27': [{ label: 'Prazo Redação PR', type: 'event-prazo' }],
+            '2026-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
+            '2026-6-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
+            '2026-6-8':  [{ label: 'Física: Vetores', type: 'event-prazo' }],
+            '2026-6-13': [{ label: 'Recesso — Jul', type: 'event-recesso' }],
+            '2026-6-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-6-26': [{ label: 'Prova Matemática', type: 'event-prova' }, { label: 'Prazo: Redação PR', type: 'event-prazo' }, { label: 'Simulado Bio', type: 'event-prova' }],
+            '2026-6-27': [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
+            '2026-6-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
+            '2026-7-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
+            '2026-7-9':  [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
+            '2026-7-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-7-15': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-7-16': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-7-17': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
+            '2026-7-18': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
         };
+
+        function eventMatchesFilter(type) {
+            if (activeCalFilter === 'todas') return true;
+            return activeCalFilter.split(' ').includes(type);
+        }
+
+        // ── Modal ──
+        const dayModal       = document.getElementById('cal-day-modal');
+        const modalTitle     = document.getElementById('cal-modal-title');
+        const modalSub       = document.getElementById('cal-modal-sub');
+        const modalBody      = document.getElementById('cal-modal-body');
+        const modalClose     = document.getElementById('cal-modal-close');
+
+        function openDayModal(year, month, day, events) {
+            const date = new Date(year, month, day);
+            const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+            const dayName = weekdayNames[date.getDay()];
+            const dayName2 = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+            modalTitle.textContent = `${day} de ${monthNames[month]} de ${year}`;
+            modalSub.textContent   = isToday ? `${dayName2} · Hoje` : dayName2;
+
+            if (events.length === 0) {
+                modalBody.innerHTML = `<div class="cal-modal-empty">Nenhum evento neste dia.</div>`;
+            } else {
+                modalBody.innerHTML = events.map(ev => `
+                    <div class="cal-modal-event ${ev.type}">
+                        <span class="cal-modal-event-type">${typeLabels[ev.type] || 'Evento'}</span>
+                        <span class="cal-modal-event-label">${ev.label}</span>
+                    </div>`).join('');
+            }
+
+            dayModal.style.display = 'flex';
+            requestAnimationFrame(() => dayModal.classList.add('open'));
+        }
+
+        function closeDayModal() {
+            dayModal.classList.remove('open');
+            setTimeout(() => { dayModal.style.display = 'none'; }, 220);
+        }
+
+        if (modalClose) modalClose.addEventListener('click', closeDayModal);
+        if (dayModal)   dayModal.addEventListener('click', e => { if (e.target === dayModal) closeDayModal(); });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && dayModal && dayModal.style.display !== 'none') closeDayModal();
+        });
 
         function renderCalendar(year, month) {
             while (calGrid.children.length > 7) calGrid.removeChild(calGrid.lastChild);
@@ -1132,7 +1201,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const offset = (firstDay === 0) ? 6 : firstDay - 1;
-            const today = new Date();
 
             for (let i = 0; i < offset; i++) {
                 const blank = document.createElement('div');
@@ -1144,11 +1212,46 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let d = 1; d <= daysInMonth; d++) {
                 const cell = document.createElement('div');
                 const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
-                cell.className = 'calendar-cell' + (isToday ? ' today-cell' : '');
                 const key = `${year}-${month}-${d}`;
-                const events = schoolEvents[key] || [];
-                const evHtml = events.map(ev => `<span class="cell-event ${ev.type}">${ev.label}</span>`).join('');
-                cell.innerHTML = `<div class="cell-num">${d}</div><div class="cell-events">${evHtml}</div>`;
+                const allEvents = schoolEvents[key] || [];
+
+                const visibleEvents = activeCalFilter === 'todas'
+                    ? allEvents
+                    : allEvents.filter(ev => eventMatchesFilter(ev.type));
+
+                const hasMatch = visibleEvents.length > 0;
+                const dimmed   = activeCalFilter !== 'todas' && !hasMatch && !isToday;
+
+                cell.className = 'calendar-cell'
+                    + (isToday ? ' today-cell' : '')
+                    + (dimmed  ? ' cal-dimmed'  : '')
+                    + (allEvents.length > 0 ? ' has-events' : '');
+
+                // Show max 2 event pills; if more, show +N badge
+                const MAX_SHOW = 2;
+                const shownEvents  = visibleEvents.slice(0, MAX_SHOW);
+                const extraCount   = visibleEvents.length - MAX_SHOW;
+
+                const evHtml = shownEvents
+                    .map(ev => `<span class="cell-event ${ev.type}">${ev.label}</span>`)
+                    .join('');
+
+                const extraBadge = extraCount > 0
+                    ? `<span class="cell-extra-badge">+${extraCount}</span>`
+                    : '';
+
+                const todayBadge = isToday
+                    ? `<span class="today-badge">Hoje</span><span class="today-pulse-ring"></span>`
+                    : '';
+
+                cell.innerHTML = `
+                    <div class="cell-top-row">
+                        <div class="cell-num${isToday ? ' cell-num-today' : ''}">${d}${todayBadge}</div>
+                    </div>
+                    <div class="cell-events">${evHtml}${extraBadge}</div>`;
+
+                // Click → open modal with ALL events for that day
+                cell.addEventListener('click', () => openDayModal(year, month, d, allEvents));
                 calGrid.appendChild(cell);
             }
         }
@@ -1165,6 +1268,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentMonth > 11) { currentMonth = 0; currentYear++; }
             renderCalendar(currentYear, currentMonth);
         });
+
+        const filterBar = document.getElementById('cal-filter-bar');
+        if (filterBar) {
+            filterBar.querySelectorAll('.cal-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBar.querySelectorAll('.cal-filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCalFilter = btn.dataset.cat;
+                    renderCalendar(currentYear, currentMonth);
+                });
+            });
+        }
     }
 
     // ─── ÁREA DO PROFESSOR ───

@@ -511,16 +511,37 @@
                     <div>
                         <h1 class="page-title">Calendário Escolar</h1>
                     </div>
-                    <div class="date-badge">JUNHO 2025</div>
                 </div>
 
                 <div class="cal-legend">
-                    <span class="cal-legend-item"><span class="cal-dot dot-aula"></span>Aulas</span>
                     <span class="cal-legend-item"><span class="cal-dot dot-prova"></span>Provas</span>
                     <span class="cal-legend-item"><span class="cal-dot dot-prazo"></span>Prazos</span>
-                    <span class="cal-legend-item"><span class="cal-dot dot-feriado"></span>Feriados</span>
                     <span class="cal-legend-item"><span class="cal-dot dot-evento"></span>Eventos</span>
-                    <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Recesso</span>
+                    <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Feriados</span>
+                </div>
+
+                <!-- ── FILTRO POR CATEGORIA ── -->
+                <div class="cal-filter-bar" id="cal-filter-bar">
+                    <span class="cal-filter-label">Filtrar:</span>
+                    <button class="cal-filter-btn active" data-cat="todas">Todos</button>
+                    <button class="cal-filter-btn" data-cat="event-prazo">Prazos</button>
+                    <button class="cal-filter-btn" data-cat="event-prova">Provas</button>
+                    <button class="cal-filter-btn" data-cat="event-feriado">Feriados</button>
+                    <button class="cal-filter-btn" data-cat="event-evento">Eventos</button>
+                </div>
+
+                <!-- ── MODAL DIA ── -->
+                <div class="cal-day-modal-overlay" id="cal-day-modal" style="display:none;">
+                    <div class="cal-day-modal">
+                        <div class="cal-day-modal-header">
+                            <div>
+                                <div class="cal-day-modal-title" id="cal-modal-title">—</div>
+                                <div class="cal-day-modal-sub" id="cal-modal-sub"></div>
+                            </div>
+                            <button class="cal-day-modal-close" id="cal-modal-close">✕</button>
+                        </div>
+                        <div class="cal-day-modal-body" id="cal-modal-body"></div>
+                    </div>
                 </div>
 
                 <div class="cal-nav">
@@ -539,49 +560,6 @@
                         <div class="calendar-header-day">Sáb</div>
                         <div class="calendar-header-day">Dom</div>
                         <!-- Células geradas pelo JS -->
-                    </div>
-                </div>
-
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Próximos Eventos</h2>
-                    </div>
-                    <div class="tasks-list" id="upcoming-events-list">
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Prova de Matemática — Funções</div>
-                                <div class="task-meta">Qui, 26 Jun · 3º ano A e B · Sala 12</div>
-                            </div>
-                            <span class="task-tag tag-mat">Mat</span>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Prazo: Redação Paraná — Mobilidade Urbana</div>
-                                <div class="task-meta">Sex, 27 Jun · Todos os alunos · Plataforma online</div>
-                            </div>
-                            <span class="task-tag tag-por">Port</span>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Feriado Municipal — Aniversário de Ibiporã</div>
-                                <div class="task-meta">Sáb, 28 Jun · Sem aulas · Municipal</div>
-                            </div>
-                            <span class="task-tag">Fer</span>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Simulado ENEM — Ciências da Natureza</div>
-                                <div class="task-meta">Ter, 1 Jul · 3º ano · Auditório</div>
-                            </div>
-                            <span class="task-tag tag-bio">Bio</span>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Recesso Escolar — Julho</div>
-                                <div class="task-meta">14 Jul – 25 Jul · Toda a escola · Calendário SEED-PR</div>
-                            </div>
-                            <span class="task-tag">Rec</span>
-                        </div>
                     </div>
                 </div>
             </div>
