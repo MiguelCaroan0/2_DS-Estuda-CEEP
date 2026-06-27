@@ -575,21 +575,25 @@
                 </div>
 
                 <div class="stats-row" style="grid-template-columns: repeat(4,1fr);">
-                    <div class="stat-card">
+                    <div class="stat-card stat-card--clickable" data-modal="modal-tarefas-ativas" title="Ver detalhes">
                         <div class="stat-label">Tarefas Ativas</div>
-                        <div class="stat-value accent-qui">12</div>
+                        <div class="stat-value accent-qui">4</div>
+                        <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card stat-card--clickable" data-modal="modal-alunos-ativos" title="Ver detalhes">
                         <div class="stat-label">Alunos Ativos</div>
-                        <div class="stat-value accent-bio">84</div>
+                        <div class="stat-value accent-bio">45</div>
+                        <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Tarefas Atrasadas</div>
+                    <div class="stat-card stat-card--clickable" data-modal="modal-nao-realizadas" title="Ver detalhes">
+                        <div class="stat-label">Tarefas Não Realizadas</div>
                         <div class="stat-value accent-mat">7</div>
+                        <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Tarefas Entregues</div>
+                    <div class="stat-card stat-card--clickable" data-modal="modal-realizadas" title="Ver detalhes">
+                        <div class="stat-label">Tarefas Passadas</div>
                         <div class="stat-value accent-port">23</div>
+                        <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
                 </div>
 
@@ -655,154 +659,162 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Sincronização de Plataformas</h2>
-                        <span class="section-note">Última sync: hoje às 08:14</span>
+                        <h2 class="section-title">Relatório de Tarefas</h2>
                     </div>
-                    <div class="sync-cards">
-                        <div class="sync-card">
-                            <div class="sync-icon sync-icon-pr">RP</div>
-                            <div class="sync-info">
-                                <div class="sync-name">Redação Paraná</div>
-                                <div class="sync-status sync-ok">● Conectado — 3 turmas sincronizadas</div>
-                            </div>
-                            <button class="btn btn-secondary sync-btn">Sincronizar</button>
-                        </div>
-                        <div class="sync-card">
-                            <div class="sync-icon sync-icon-gc">GC</div>
-                            <div class="sync-info">
-                                <div class="sync-name">Google Classroom</div>
-                                <div class="sync-status sync-ok">● Conectado — 6 turmas</div>
-                            </div>
-                            <button class="btn btn-secondary sync-btn">Sincronizar</button>
-                        </div>
-                        <div class="sync-card">
-                            <div class="sync-icon sync-icon-seed">SE</div>
-                            <div class="sync-info">
-                                <div class="sync-name">SEED-PR / Aula Paraná</div>
-                                <div class="sync-status sync-warn">● Pendente — verificar credenciais</div>
-                            </div>
-                            <button class="btn btn-secondary sync-btn">Conectar</button>
-                        </div>
-                    </div>
-                </div>
+                    <p class="modal-subtitle" style="margin-top:-6px;">Escolha a turma e a tarefa para ver quem entregou e quem ainda não entregou.</p>
 
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Acompanhamento dos Alunos</h2>
-                        <span class="section-note">Atualizado agora</span>
+                    <!-- Turmas do professor -->
+                    <div class="modal-turma-filter" id="rt-turma-filter">
+                        <button class="turma-filter-btn active" data-turma="3A">3º A (28)</button>
+                        <button class="turma-filter-btn" data-turma="3B">3º B (29)</button>
+                        <button class="turma-filter-btn" data-turma="2A">2º A (27)</button>
                     </div>
 
-                    <div class="student-tabs">
-                        <button class="student-tab active" data-tab="atrasados">Em Atraso (7)</button>
-                        <button class="student-tab" data-tab="destaque">Mais Dedicados</button>
-                        <button class="student-tab" data-tab="todos-alunos">Ver Todos</button>
-                    </div>
+                    <div class="rt-panel">
+                        <div class="rt-panel-controls">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label">Tarefa</label>
+                                <select class="form-input" id="rt-task-select"></select>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label">Status da entrega</label>
+                                <div class="tf-filter-group" id="rt-status-filters">
+                                    <button class="tf-filter-btn active" data-status="entregou">Entregaram</button>
+                                    <button class="tf-filter-btn" data-status="pendente">Não entregaram</button>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div id="tab-atrasados" class="student-tab-content">
-                        <div class="tasks-list">
-                            <div class="student-row task-item">
-                                <div class="student-avatar" style="background:var(--fis);">AN</div>
-                                <div class="task-body">
-                                    <div class="task-title">Ana Nascimento — 3º A</div>
-                                    <div class="task-meta">2 tarefas em atraso: Lista de Parábolas, Redação Paraná</div>
-                                </div>
-                                <span class="task-tag" style="background:rgba(255,107,157,0.2);color:var(--fis);">Atraso</span>
-                            </div>
-                            <div class="student-row task-item">
-                                <div class="student-avatar" style="background:var(--mat);">LF</div>
-                                <div class="task-body">
-                                    <div class="task-title">Lucas Ferreira — 3º B</div>
-                                    <div class="task-meta">1 tarefa em atraso: Estequiometria Cap. 8</div>
-                                </div>
-                                <span class="task-tag" style="background:rgba(255,107,157,0.2);color:var(--fis);">Atraso</span>
-                            </div>
-                            <div class="student-row task-item">
-                                <div class="student-avatar" style="background:var(--port);">MS</div>
-                                <div class="task-body">
-                                    <div class="task-title">Mariana Santos — 2º A</div>
-                                    <div class="task-meta">3 tarefas em atraso · Última atividade: há 5 dias</div>
-                                </div>
+                        <div class="rt-panel-summary">
+                            <div class="modal-stat-meta" id="rt-summary" style="margin-bottom:8px;"></div>
+                            <div class="entrega-progress-bar-wrap">
+                                <div class="entrega-progress-bar" id="rt-progress-bar" style="width:0%;"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <div id="tab-destaque" class="student-tab-content" style="display:none;">
-                        <div class="tasks-list">
-                            <div class="student-row task-item done">
-                                <div class="student-avatar">MK</div>
-                                <div class="task-body">
-                                    <div class="task-title">Maria Kato — 3º A</div>
-                                    <div class="task-meta">28h estudadas este mês · 52 ciclos Pomodoro · 100% das tarefas entregues</div>
-                                </div>
-                            </div>
-                            <div class="student-row task-item done">
-                                <div class="student-avatar">PO</div>
-                                <div class="task-body">
-                                    <div class="task-title">Pedro Oliveira — 3º B</div>
-                                    <div class="task-meta">22h estudadas · ofensiva de 12 dias · 95% de entregas</div>
-                                </div>
-                            </div>
-                            <div class="student-row task-item done">
-                                <div class="student-avatar">JL</div>
-                                <div class="task-body">
-                                    <div class="task-title">Julia Lima — 2º B</div>
-                                    <div class="task-meta">18h estudadas · 3 redações enviadas para o Redação Paraná</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="tab-todos-alunos" class="student-tab-content" style="display:none;">
-                        <div class="tasks-list">
-                            <div class="task-item">
-                                <div class="task-body">
-                                    <div class="task-title">Exibindo resumo — use filtros por turma para ver todos os 84 alunos.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-                            <button class="btn btn-secondary">3º A (28)</button>
-                            <button class="btn btn-secondary">3º B (29)</button>
-                            <button class="btn btn-secondary">2º A (27)</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Tarefas Publicadas</h2>
-                        <span class="section-note">Mais recentes primeiro</span>
-                    </div>
-                    <div class="tasks-list" id="prof-tasks-list">
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Lista de parábolas (ENEM 2022)</div>
-                                <div class="task-meta">Publicada 23 Jun · Vence hoje · 28/35 entregues · Redação Paraná sync</div>
-                            </div>
-                            <span class="task-tag tag-mat">Mat</span>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-body">
-                                <div class="task-title">Redação: Mobilidade Urbana</div>
-                                <div class="task-meta">Publicada 22 Jun · Vence hoje · 31/35 entregues · Redação Paraná</div>
-                            </div>
-                            <span class="task-tag tag-por">Port</span>
-                        </div>
-                        <div class="task-item done">
-                            <div class="task-body">
-                                <div class="task-title">Resumo: Genética Mendeliana</div>
-                                <div class="task-meta">Publicada 20 Jun · Venceu 24 Jun · 35/35 entregues ✓</div>
-                            </div>
-                            <span class="task-tag tag-bio">Bio</span>
-                        </div>
+                        <div class="rt-students-list" id="rt-students-list"></div>
                     </div>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <!-- ── TOAST CONTAINER ── -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- ── MODAL: TAREFAS ATIVAS ── -->
+    <div class="modal-overlay" id="modal-tarefas-ativas" style="display:none;">
+        <div class="modal-content modal-wide">
+            <div class="modal-header-row">
+                <div class="modal-title">Tarefas Ativas</div>
+                <button class="modal-close-x" data-close="modal-tarefas-ativas">✕</button>
+            </div>
+            <div class="modal-stat-list" id="modal-ativas-list">
+                <!-- Renderizado pelo JS -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="modal-tarefas-ativas">Fechar</button>
+                <button class="btn btn-primary" id="modal-ta-nova-btn">+ Nova Tarefa</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ── MODAL: ALUNOS ATIVOS ── -->
+    <div class="modal-overlay" id="modal-alunos-ativos" style="display:none;">
+        <div class="modal-content modal-wide">
+            <div class="modal-header-row">
+                <div class="modal-title">Alunos Ativos</div>
+                <button class="modal-close-x" data-close="modal-alunos-ativos">✕</button>
+            </div>
+            <p class="modal-subtitle">Alunos que realizaram ao menos uma atividade nos últimos 7 dias.</p>
+            <div class="modal-stat-list">
+                <div class="modal-stat-item">
+                    <div class="student-avatar">MK</div>
+                    <div class="modal-stat-body">
+                        <div class="modal-stat-title">Maria Kato — 3º A</div>
+                        <div class="modal-stat-meta">28h estudadas · 52 ciclos Pomodoro · 100% de entregas</div>
+                    </div>
+                    <span class="modal-badge modal-badge-ok">Destaque</span>
+                </div>
+                <div class="modal-stat-item">
+                    <div class="student-avatar">PO</div>
+                    <div class="modal-stat-body">
+                        <div class="modal-stat-title">Pedro Oliveira — 3º B</div>
+                        <div class="modal-stat-meta">22h estudadas · ofensiva de 12 dias</div>
+                    </div>
+                    <span class="modal-badge modal-badge-ok">Destaque</span>
+                </div>
+                <div class="modal-stat-item">
+                    <div class="student-avatar">JL</div>
+                    <div class="modal-stat-body">
+                        <div class="modal-stat-title">Julia Lima — 2º B</div>
+                        <div class="modal-stat-meta">18h estudadas · 3 redações enviadas</div>
+                    </div>
+                    <span class="modal-badge modal-badge-ok">Ativo</span>
+                </div>
+            </div>
+            <div class="modal-alunos-summary">
+                <div class="modal-alunos-turma">
+                    <span class="turma-chip selected">3º A (28)</span>
+                    <span class="turma-chip selected">3º B (29)</span>
+                    <span class="turma-chip">2º A (27)</span>
+                </div>
+                <p class="modal-stat-meta" style="margin-top:10px;">Total: <strong>45 alunos ativos</strong> de 84 matriculados</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="modal-alunos-ativos">Fechar</button>
+                <button class="btn btn-primary">Ver lista completa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MODAL: TAREFAS NÃO REALIZADAS ── -->
+    <div class="modal-overlay" id="modal-nao-realizadas" style="display:none;">
+        <div class="modal-content modal-wide">
+            <div class="modal-header-row">
+                <div class="modal-title">Tarefas Não Realizadas</div>
+                <button class="modal-close-x" data-close="modal-nao-realizadas">✕</button>
+            </div>
+            <p class="modal-subtitle">Alunos com entregas pendentes ou em atraso, agrupados por turma.</p>
+            <div id="modal-nao-realizadas-list">
+                <!-- Renderizado pelo JS -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="modal-nao-realizadas">Fechar</button>
+                <button class="btn btn-primary" id="modal-nr-notificar-btn">Enviar lembrete a todos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MODAL: TAREFAS REALIZADAS ── -->
+    <div class="modal-overlay" id="modal-realizadas" style="display:none;">
+        <div class="modal-content modal-wide">
+            <div class="modal-header-row">
+                <div class="modal-title">Tarefas Passadas</div>
+                <button class="modal-close-x" data-close="modal-realizadas">✕</button>
+            </div>
+            <p class="modal-subtitle">Tarefas encerradas — filtre por turma para ver as entregas.</p>
+
+            <!-- Filtro por turma -->
+            <div class="modal-turma-filter" id="modal-realizadas-turma-filter">
+                <button class="turma-filter-btn active" data-turma="3A">3º A</button>
+                <button class="turma-filter-btn" data-turma="3B">3º B</button>
+                <button class="turma-filter-btn" data-turma="2A">2º A</button>
+            </div>
+
+            <div class="modal-stat-list" id="modal-realizadas-list">
+                <!-- Renderizado pelo JS -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="modal-realizadas">Fechar</button>
+                <button class="btn btn-primary" id="modal-realizadas-export">Exportar relatório</button>
+            </div>
+        </div>
     </div>
 
     <!-- ── MODAL NOVA TAREFA (legado) ── -->

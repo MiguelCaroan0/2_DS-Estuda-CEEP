@@ -2438,13 +2438,6 @@ footer {
     margin-bottom: 4px;
 }
 
-.hist-tooltip-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-    flex-shrink: 0;
-}
-
 .hist-tooltip-total {
     margin-top: 8px;
     padding-top: 8px;
@@ -2495,4 +2488,544 @@ footer {
 
 .hist-search-input:focus {
     border-color: var(--borda-cinza);
+}
+/* ── TOAST SYSTEM ── */
+
+#toast-container {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #253320;
+    border: 1px solid var(--board-line);
+    border-radius: 10px;
+    padding: 13px 16px;
+    min-width: 280px;
+    max-width: 380px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    pointer-events: all;
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.toast--show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.toast--success { border-left: 3px solid var(--bio); }
+.toast--error   { border-left: 3px solid var(--fis); }
+.toast--warn    { border-left: 3px solid var(--qui); }
+.toast--info    { border-left: 3px solid var(--port); }
+
+.toast-icon {
+    font-size: 15px;
+    flex-shrink: 0;
+}
+.toast--success .toast-icon { color: var(--bio); }
+.toast--error   .toast-icon { color: var(--fis); }
+.toast--warn    .toast-icon { color: var(--qui); }
+.toast--info    .toast-icon { color: var(--port); }
+
+.toast-msg {
+    flex: 1;
+    font-size: 13.5px;
+    color: var(--branco);
+    line-height: 1.4;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--borda-cinza);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px;
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+}
+.toast-close:hover { opacity: 1; }
+
+/* ── PROFESSOR STAT CARDS CLICKABLE ── */
+
+.stat-card--clickable {
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    position: relative;
+}
+.stat-card--clickable:hover {
+    background: #2a3d32;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.stat-card--clickable:active {
+    transform: translateY(0);
+}
+
+.stat-card-hint {
+    font-size: 11px;
+    color: var(--borda-cinza);
+    opacity: 0.6;
+    margin-top: 6px;
+    transition: opacity 0.2s;
+}
+.stat-card--clickable:hover .stat-card-hint {
+    opacity: 1;
+    color: var(--bio);
+}
+
+/* ── MODAL ENHANCEMENTS ── */
+
+.modal-overlay {
+    transition: opacity 0.22s ease;
+}
+.modal-overlay.open {
+    opacity: 1;
+}
+.modal-overlay:not(.open)[style*="flex"] {
+    opacity: 0;
+}
+.modal-overlay.open .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+.modal-content {
+    transform: translateY(20px) scale(0.97);
+    opacity: 0;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.modal-wide {
+    max-width: 560px;
+    width: 100%;
+}
+
+.modal-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.modal-close-x {
+    background: none;
+    border: none;
+    color: var(--borda-cinza);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+}
+.modal-close-x:hover {
+    background: var(--board-line);
+    color: var(--branco);
+}
+
+.modal-subtitle {
+    font-size: 13px;
+    color: var(--borda-cinza);
+    margin: 0 0 18px;
+    opacity: 0.8;
+}
+
+.modal-stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--fundo);
+    border: 1px solid var(--board-line);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.modal-stat-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-stat-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--branco);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal-stat-meta {
+    font-size: 12px;
+    color: var(--borda-cinza);
+    margin-top: 2px;
+    opacity: 0.85;
+}
+
+.modal-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.modal-badge-ok    { background: rgba(111,207,122,0.18); color: var(--bio); }
+.modal-badge-warn  { background: rgba(255,209,102,0.18); color: var(--qui); }
+.modal-badge-error { background: rgba(255,107,157,0.18); color: var(--fis); }
+
+.modal-alunos-summary {
+    border-top: 1px solid var(--board-line);
+    padding-top: 14px;
+    margin-bottom: 18px;
+}
+
+.modal-alunos-turma {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+/* ── PROFESSOR: ENTREGA POR TURMA ── */
+
+.turma-delivery-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.turma-delivery-chip {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--board-line);
+    color: var(--borda-cinza);
+    border-radius: 99px;
+    padding: 2px 9px;
+    white-space: nowrap;
+}
+
+.entrega-progress-bar-wrap {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.entrega-progress-bar {
+    height: 100%;
+    background: var(--bio);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+}
+
+/* ── AÇÕES NAS TAREFAS ATIVAS ── */
+
+.ativa-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ativa-btn-row {
+    display: flex;
+    gap: 4px;
+}
+
+.ativa-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--board-line);
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--borda-cinza);
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.ativa-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.2);
+    transform: scale(1.08);
+}
+
+.ativa-btn-del:hover {
+    background: rgba(255,107,157,0.15);
+    border-color: var(--fis);
+}
+
+.ativa-btn-edit:hover {
+    background: rgba(255,209,102,0.15);
+    border-color: var(--qui);
+}
+
+.ativa-btn-prorrogar:hover {
+    background: rgba(95,179,232,0.15);
+    border-color: var(--port);
+}
+
+/* ── FILTROS DE TURMA NO MODAL ── */
+
+.modal-turma-filter {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.turma-filter-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--board-line);
+    border-radius: 99px;
+    color: var(--borda-cinza);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.turma-filter-btn.active,
+.turma-filter-btn:hover {
+    background: rgba(111,207,122,0.15);
+    border-color: var(--bio);
+    color: var(--bio);
+}
+
+/* ── PRORROGAR ATALHOS ── */
+
+.prorrogar-atalhos {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 16px;
+}
+
+.prorrogar-atalho-btn {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ── URGENTE HIGHLIGHT ── */
+
+.modal-ativa-item .tf-due-today {
+    color: var(--fis);
+    font-weight: 600;
+}
+/* ── VER MAIS (TAREFAS ATIVAS) ── */
+
+.ativa-ver-mais-row {
+    margin-top: 6px;
+}
+
+.ativa-ver-mais-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 0;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+
+.ativa-ver-mais-btn:hover {
+    opacity: 1;
+}
+
+.ativa-progresso-detalhe {
+    margin-top: 8px;
+}
+
+/* ── TAREFAS NÃO REALIZADAS — SEÇÕES POR TURMA ── */
+
+.nr-turma-section {
+    margin-bottom: 4px;
+}
+
+.nr-turma-section:last-child {
+    margin-bottom: 0;
+}
+
+.nr-turma-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 6px;
+    background: var(--surface-2, rgba(255,255,255,0.04));
+    border-top: 1px solid var(--border);
+}
+
+.nr-turma-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.nr-turma-count {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.nr-turma-section .modal-stat-list {
+    padding: 0;
+}
+
+/* ── TAREFAS REALIZADAS — NOMES DOS ALUNOS ── */
+
+.realizadas-nomes-detalhe {
+    margin-top: 10px;
+}
+
+.realizadas-turma-grupo {
+    margin-bottom: 10px;
+}
+
+.realizadas-turma-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.75;
+    margin-bottom: 6px;
+}
+
+.aluno-nomes-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.aluno-nome-chip {
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.07);
+    color: var(--text-secondary, var(--text));
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+/* ── NÃO REALIZADAS — cabeçalho de turma clicável ── */
+
+.nr-turma-header.nr-turma-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface-2, rgba(255,255,255,0.04));
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.nr-turma-header.nr-turma-toggle:hover {
+    background: rgba(255,255,255,0.07);
+}
+
+.nr-turma-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nr-turma-arrow {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* ── RELATÓRIO DE TAREFAS — painel único com mesmo fundo ── */
+
+.rt-panel {
+    background: var(--fundo-secundario);
+    border: 1px solid var(--board-line);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.rt-panel-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+}
+
+.rt-panel-summary {
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--board-line);
+}
+
+.rt-students-list {
+    border-top: 1px solid var(--board-line);
+    max-height: 228px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--borda-cinza) transparent;
+}
+
+.rt-students-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.rt-students-list::-webkit-scrollbar-thumb {
+    background: var(--borda-cinza);
+    border-radius: 99px;
+}
+
+.rt-students-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.rt-student-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--board-line);
+}
+
+.rt-student-row:last-child {
+    border-bottom: none;
+}
+
+.rt-student-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--branco);
 }

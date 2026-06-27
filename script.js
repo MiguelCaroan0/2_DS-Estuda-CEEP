@@ -987,7 +987,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (h <= 0) return;
                     const pctSubj = total > 0 ? Math.round((h / total) * 100) : 0;
                     html += `<div class="hist-tooltip-row">
-                        <span class="hist-tooltip-dot" style="background:${HIST_SUBJECTS[sk].color}"></span>
                         <span style="flex:1">${HIST_SUBJECTS[sk].name}</span>
                         <span style="color:var(--borda-cinza);font-size:10px;margin-right:4px">${pctSubj}%</span>
                         <span style="font-weight:700">${h.toFixed(1)}h</span>
@@ -1134,18 +1133,11 @@ document.addEventListener('DOMContentLoaded', () => {
             '2026-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
             '2026-6-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
             '2026-6-8':  [{ label: 'Física: Vetores', type: 'event-prazo' }],
-            '2026-6-13': [{ label: 'Recesso — Jul', type: 'event-recesso' }],
-            '2026-6-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
             '2026-6-26': [{ label: 'Prova Matemática', type: 'event-prova' }, { label: 'Prazo: Redação PR', type: 'event-prazo' }, { label: 'Simulado Bio', type: 'event-prova' }],
             '2026-6-27': [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
             '2026-6-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
             '2026-7-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
             '2026-7-9':  [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
-            '2026-7-14': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
-            '2026-7-15': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
-            '2026-7-16': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
-            '2026-7-17': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
-            '2026-7-18': [{ label: 'Recesso Escolar', type: 'event-recesso' }],
         };
 
         function eventMatchesFilter(type) {
@@ -1282,6 +1274,94 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ─── TOAST SYSTEM ───
+    function showToast(message, type = 'success', duration = 3500) {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+
+        const icons = { success: '✓', error: '✕', info: 'ℹ', warn: '⚠' };
+        toast.innerHTML = `
+            <span class="toast-icon">${icons[type] || icons.success}</span>
+            <span class="toast-msg">${message}</span>
+            <button class="toast-close" aria-label="Fechar">✕</button>`;
+
+        container.appendChild(toast);
+
+        requestAnimationFrame(() => toast.classList.add('toast--show'));
+
+        const dismiss = () => {
+            toast.classList.remove('toast--show');
+            toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+        };
+
+        toast.querySelector('.toast-close').addEventListener('click', dismiss);
+        setTimeout(dismiss, duration);
+    }
+
+    // ─── GENERIC MODAL SYSTEM ───
+    function openModal(id) {
+        const m = document.getElementById(id);
+        if (!m) return;
+        m.style.display = 'flex';
+        requestAnimationFrame(() => m.classList.add('open'));
+    }
+
+    function closeModal(id) {
+        const m = document.getElementById(id);
+        if (!m) return;
+        m.classList.remove('open');
+        m.addEventListener('transitionend', () => { m.style.display = 'none'; }, { once: true });
+    }
+
+    // Close buttons inside modals (data-close attribute)
+    document.addEventListener('click', e => {
+        const closeBtn = e.target.closest('[data-close]');
+        if (closeBtn) { closeModal(closeBtn.dataset.close); return; }
+
+        // Click on overlay background
+        if (e.target.classList.contains('modal-overlay') && e.target.id !== 'modal-task') {
+            closeModal(e.target.id);
+        }
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+        }
+    });
+
+    // Stat cards open their modals
+    document.querySelectorAll('.stat-card--clickable[data-modal]').forEach(card => {
+        card.addEventListener('click', () => openModal(card.dataset.modal));
+    });
+
+    // Modal: Tarefas Ativas → "Nova Tarefa" rola até o form
+    const modalTaNova = document.getElementById('modal-ta-nova-btn');
+    if (modalTaNova) {
+        modalTaNova.addEventListener('click', () => {
+            closeModal('modal-tarefas-ativas');
+            setTimeout(() => {
+                const profTitle = document.getElementById('prof-task-title');
+                if (profTitle) {
+                    profTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    profTitle.focus();
+                }
+            }, 300);
+        });
+    }
+
+    // Modal: Não Realizadas → "Enviar lembrete"
+    const modalNrNotificar = document.getElementById('modal-nr-notificar-btn');
+    if (modalNrNotificar) {
+        modalNrNotificar.addEventListener('click', () => {
+            closeModal('modal-nao-realizadas');
+            setTimeout(() => showToast('Lembretes enviados para 7 alunos com pendências!', 'success'), 300);
+        });
+    }
+
     // ─── ÁREA DO PROFESSOR ───
     const recipientBtns = document.querySelectorAll('.recipient-btn');
     const turmaSelectGroup = document.getElementById('turma-select-group');
@@ -1300,16 +1380,6 @@ document.addEventListener('DOMContentLoaded', () => {
         chip.addEventListener('click', () => chip.classList.toggle('selected'));
     });
 
-    document.querySelectorAll('.student-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.student-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            document.querySelectorAll('.student-tab-content').forEach(c => c.style.display = 'none');
-            const target = document.getElementById('tab-' + tab.dataset.tab);
-            if (target) target.style.display = 'block';
-        });
-    });
-
     const profPublishBtn = document.getElementById('prof-publish-btn');
     if (profPublishBtn) {
         profPublishBtn.addEventListener('click', () => {
@@ -1317,7 +1387,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const subject = document.getElementById('prof-task-subject').value;
             const due = document.getElementById('prof-task-due').value;
             const platform = document.getElementById('prof-task-platform').value;
-            if (!title) { alert('Informe o título da tarefa.'); return; }
+            if (!title) { showToast('Informe o título da tarefa.', 'warn'); return; }
 
             const list = document.getElementById('prof-tasks-list');
             const tagMap = { mat: 'Mat', por: 'Port', bio: 'Bio', qui: 'Qui', fis: 'Fís', his: 'His' };
@@ -1336,7 +1406,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('prof-task-title').value = '';
             document.getElementById('prof-task-desc').value = '';
             document.getElementById('prof-task-due').value = '';
-            alert(`Tarefa "${title}" publicada com sucesso!`);
+            showToast(`Tarefa "${title}" publicada com sucesso!`, 'success');
         });
     }
 
@@ -1351,4 +1421,408 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1200);
         });
     });
+
+    // ─── PROFESSOR: TAREFAS ATIVAS (dados + render + ações) ───────────────────
+
+    const TURMAS = {
+        '3A': { label: '3º A', total: 28 },
+        '3B': { label: '3º B', total: 29 },
+        '2A': { label: '2º A', total: 27 },
+    };
+
+    let ativasData = [
+        {
+            id: 'ta1', subject: 'mat', title: 'Lista de parábolas (ENEM 2022)',
+            due: '2026-06-30',
+            turmas: { '3A': { entregues: 24, total: 28 }, '3B': { entregues: 19, total: 29 } }
+        },
+        {
+            id: 'ta2', subject: 'por', title: 'Redação: Mobilidade Urbana',
+            due: '2026-06-30',
+            turmas: { '3A': { entregues: 28, total: 28 }, '3B': { entregues: 22, total: 29 }, '2A': { entregues: 17, total: 27 } }
+        },
+        {
+            id: 'ta3', subject: 'qui', title: 'Estequiometria — cap. 8',
+            due: '2026-06-30',
+            turmas: { '3A': { entregues: 8, total: 28 }, '3B': { entregues: 7, total: 29 } }
+        },
+        {
+            id: 'ta4', subject: 'fis', title: 'Resumo: Cinemática Vetorial',
+            due: '2026-06-30',
+            turmas: { '2A': { entregues: 5, total: 27 } }
+        },
+    ];
+
+    let realizadasData = [
+        {
+            id: 'tr1', subject: 'bio', title: 'Resumo: Genética Mendeliana',
+            dueLabel: '24 Jun',
+            turmas: {
+                '3A': { entregues: 26, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro'] },
+                '3B': { entregues: 29, total: 29, alunos: ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves', 'Bianca Coelho', 'Carlos Viana'] },
+                '2A': { entregues: 27, total: 27, alunos: ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão', 'Yuri Gaspar', 'Zelia Fontes', 'Adão Bastos', 'Brenda Valente', 'Cláudio Serpa'] }
+            }
+        },
+        {
+            id: 'tr2', subject: 'mat', title: 'Funções Quadráticas — revisão',
+            dueLabel: '20 Jun',
+            turmas: {
+                '3A': { entregues: 26, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro'] },
+                '3B': { entregues: 27, total: 29, alunos: ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves'] }
+            }
+        },
+        {
+            id: 'tr3', subject: 'por', title: 'Análise literária — Dom Casmurro',
+            dueLabel: '18 Jun',
+            turmas: {
+                '3A': { entregues: 25, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho'] },
+                '2A': { entregues: 22, total: 27, alunos: ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão'] }
+            }
+        },
+    ];
+
+    // ── Dados: Tarefas Não Realizadas (por turma) ──
+    const naoRealizadasData = {
+        '3A': [
+            { initials: 'AN', name: 'Ana Nascimento', color: 'var(--fis)', meta: '2 tarefas em atraso: Lista de Parábolas, Redação Paraná', status: 'error', label: 'Atraso' },
+            { initials: 'RP', name: 'Rafael Pires',   color: 'var(--qui)', meta: '1 tarefa pendente · Vence hoje', status: 'warn', label: 'Pendente' },
+        ],
+        '3B': [
+            { initials: 'LF', name: 'Lucas Ferreira', color: 'var(--mat)', meta: '1 tarefa em atraso: Estequiometria Cap. 8', status: 'error', label: 'Atraso' },
+            { initials: 'BS', name: 'Bruna Santana',  color: 'var(--port)', meta: '2 tarefas pendentes · Último acesso há 3 dias', status: 'warn', label: 'Pendente' },
+        ],
+        '2A': [
+            { initials: 'MS', name: 'Mariana Santos', color: 'var(--port)', meta: '3 tarefas em atraso · Última atividade: há 5 dias', status: 'error', label: 'Atraso' },
+            { initials: 'TO', name: 'Thiago Oliveira',color: 'var(--qui)',  meta: '1 tarefa em atraso: Análise Dom Casmurro', status: 'error', label: 'Atraso' },
+        ],
+    };
+
+    const TAG_MAP = { mat: 'Mat', por: 'Port', bio: 'Bio', qui: 'Qui', fis: 'Fís', his: 'His' };
+
+    function calcTurmasTotal(turmas) {
+        let entregues = 0, total = 0;
+        Object.values(turmas).forEach(t => { entregues += t.entregues; total += t.total; });
+        return { entregues, total, pct: total === 0 ? 0 : Math.round(entregues / total * 100) };
+    }
+
+    function badgeClassFromPct(pct) {
+        if (pct === 100) return 'modal-badge-ok';
+        if (pct >= 70) return 'modal-badge-ok';
+        if (pct >= 40) return 'modal-badge-warn';
+        return 'modal-badge-error';
+    }
+
+    function dueLabelFromDate(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr + 'T12:00:00');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const diff = Math.round((d - today) / 86400000);
+        if (diff === 0) return 'Vence hoje';
+        if (diff === 1) return 'Vence amanhã';
+        return 'Vence ' + d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+    }
+
+    // ─── RELATÓRIO DE TAREFAS (Área do Professor) ───
+    // Lista completa de alunos por turma (usada para o relatório de entregas).
+    const ROSTERS = {
+        '3A': ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro', 'Ana Nascimento', 'Rafael Pires'],
+        '3B': ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves', 'Bianca Coelho', 'Carlos Viana'],
+        '2A': ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão', 'Yuri Gaspar', 'Zelia Fontes', 'Mariana Santos', 'Brenda Valente', 'Thiago Oliveira'],
+    };
+
+    const RT_TURMA_LABEL = { '3A': '3º A', '3B': '3º B', '2A': '2º A' };
+    const RT_AVATAR_PALETTE = ['var(--mat)', 'var(--port)', 'var(--bio)', 'var(--qui)', 'var(--fis)', 'var(--hist)'];
+
+    function rtInitials(name) {
+        const parts = name.trim().split(' ');
+        return ((parts[0][0] || '') + (parts[parts.length - 1][0] || '')).toUpperCase();
+    }
+
+    function rtAvatarColor(name) {
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+        return RT_AVATAR_PALETTE[hash % RT_AVATAR_PALETTE.length];
+    }
+
+    // Junta tarefas ativas + passadas em uma lista única para o relatório.
+    function rtGetAllTarefas() {
+        const ativas = ativasData.map(t => ({
+            id: t.id, subject: t.subject, title: t.title, status: 'ativa',
+            dueLabel: dueLabelFromDate(t.due), turmas: t.turmas,
+        }));
+        const passadas = realizadasData.map(t => ({
+            id: t.id, subject: t.subject, title: t.title, status: 'passada',
+            dueLabel: 'Venceu ' + t.dueLabel, turmas: t.turmas,
+        }));
+        return [...ativas, ...passadas];
+    }
+
+    function rtTarefasDaTurma(turma) {
+        return rtGetAllTarefas().filter(t => t.turmas[turma]);
+    }
+
+    let rtTurma = '3A';
+    let rtTaskId = null;
+    let rtStatusFilter = 'entregou';
+
+    function rtPopulateTaskSelect() {
+        const select = document.getElementById('rt-task-select');
+        if (!select) return;
+        const tarefas = rtTarefasDaTurma(rtTurma);
+        if (!tarefas.length) {
+            select.innerHTML = '<option value="">Nenhuma tarefa para esta turma</option>';
+            rtTaskId = null;
+            return;
+        }
+        if (!rtTaskId || !tarefas.some(t => t.id === rtTaskId)) {
+            rtTaskId = tarefas[0].id;
+        }
+        select.innerHTML = tarefas.map(t =>
+            `<option value="${t.id}" ${t.id === rtTaskId ? 'selected' : ''}>${t.title} — ${t.dueLabel}</option>`
+        ).join('');
+    }
+
+    function renderRelatorioTarefas() {
+        rtPopulateTaskSelect();
+
+        const summaryEl = document.getElementById('rt-summary');
+        const progressBar = document.getElementById('rt-progress-bar');
+        const listEl = document.getElementById('rt-students-list');
+        if (!listEl) return;
+
+        const roster = ROSTERS[rtTurma] || [];
+        const tarefas = rtTarefasDaTurma(rtTurma);
+        const tarefa = tarefas.find(t => t.id === rtTaskId);
+
+        if (!tarefa) {
+            if (summaryEl) summaryEl.textContent = '';
+            if (progressBar) progressBar.style.width = '0%';
+            listEl.innerHTML = '<p class="modal-stat-meta" style="padding:16px">Nenhuma tarefa cadastrada para esta turma.</p>';
+            return;
+        }
+
+        const turmaInfo = tarefa.turmas[rtTurma];
+        const entregues = turmaInfo.entregues;
+        const total = turmaInfo.total;
+        const pct = total === 0 ? 0 : Math.round((entregues / total) * 100);
+
+        if (summaryEl) {
+            summaryEl.innerHTML = `<strong>${entregues}/${total}</strong> alunos entregaram (${pct}%) — ${RT_TURMA_LABEL[rtTurma] || rtTurma} · ${tarefa.title}`;
+        }
+        if (progressBar) progressBar.style.width = pct + '%';
+
+        // Os primeiros N alunos da lista (N = entregues) aparecem como "Entregou".
+        const alunos = roster.map((name, i) => ({ name, entregou: i < entregues }));
+        const filtrados = alunos.filter(a => rtStatusFilter === 'entregou' ? a.entregou : !a.entregou);
+
+        listEl.innerHTML = filtrados.map(a => `
+            <div class="rt-student-row">
+                <div class="student-avatar" style="background:${rtAvatarColor(a.name)};">${rtInitials(a.name)}</div>
+                <div class="rt-student-name">${a.name}</div>
+            </div>`).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhum aluno neste filtro.</p>';
+    }
+
+    const rtTurmaFilterEl = document.getElementById('rt-turma-filter');
+    if (rtTurmaFilterEl) {
+        rtTurmaFilterEl.addEventListener('click', e => {
+            const btn = e.target.closest('.turma-filter-btn');
+            if (!btn) return;
+            rtTurma = btn.dataset.turma;
+            rtTaskId = null;
+            rtTurmaFilterEl.querySelectorAll('.turma-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderRelatorioTarefas();
+        });
+    }
+
+    const rtTaskSelectEl = document.getElementById('rt-task-select');
+    if (rtTaskSelectEl) {
+        rtTaskSelectEl.addEventListener('change', () => {
+            rtTaskId = rtTaskSelectEl.value;
+            renderRelatorioTarefas();
+        });
+    }
+
+    const rtStatusFiltersEl = document.getElementById('rt-status-filters');
+    if (rtStatusFiltersEl) {
+        rtStatusFiltersEl.addEventListener('click', e => {
+            const btn = e.target.closest('.tf-filter-btn');
+            if (!btn) return;
+            rtStatusFilter = btn.dataset.status;
+            rtStatusFiltersEl.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderRelatorioTarefas();
+        });
+    }
+
+    renderRelatorioTarefas();
+
+    // ── Render: Tarefas Ativas ──
+    const ativasExpanded = {};
+
+    function renderModalAtivas() {
+        const list = document.getElementById('modal-ativas-list');
+        if (!list) return;
+        list.innerHTML = ativasData.map(ta => {
+            const { entregues, total, pct } = calcTurmasTotal(ta.turmas);
+            const bc = badgeClassFromPct(pct);
+            const dueText = dueLabelFromDate(ta.due);
+            const isUrgente = ta.due <= new Date().toISOString().slice(0, 10);
+            const turmasHtml = Object.entries(ta.turmas).map(([tk, tv]) => {
+                const tp = Math.round(tv.entregues / tv.total * 100);
+                return `<span class="turma-delivery-chip">${TURMAS[tk]?.label || tk}: ${tv.entregues}/${tv.total} (${tp}%)</span>`;
+            }).join('');
+            const isOpen = !!ativasExpanded[ta.id];
+
+            return `
+            <div class="modal-stat-item modal-ativa-item" data-id="${ta.id}">
+                <span class="task-tag tag-${ta.subject}">${TAG_MAP[ta.subject]}</span>
+                <div class="modal-stat-body">
+                    <div class="modal-stat-title">${ta.title}</div>
+                    <div class="modal-stat-meta ${isUrgente ? 'tf-due-today' : ''}">
+                        ${dueText} · <strong>${entregues}/${total} entregues</strong>
+                    </div>
+                    <div class="ativa-ver-mais-row">
+                        <button class="ativa-ver-mais-btn" data-id="${ta.id}" title="${isOpen ? 'Ocultar' : 'Ver progresso'}">
+                            ${isOpen ? '▲ Ocultar' : '▼ Ver progresso'}
+                        </button>
+                    </div>
+                    <div class="ativa-progresso-detalhe" style="display:${isOpen ? 'block' : 'none'};">
+                        <div class="turma-delivery-row">${turmasHtml}</div>
+                        <div class="entrega-progress-bar-wrap">
+                            <div class="entrega-progress-bar" style="width:${pct}%"></div>
+                        </div>
+                        <span class="modal-badge ${bc}" style="margin-top:6px;display:inline-block;">${pct}%</span>
+                    </div>
+                </div>
+                <div class="ativa-actions">
+                    <div class="ativa-btn-row">
+                        <button class="ativa-btn ativa-btn-del" data-id="${ta.id}" title="Excluir tarefa">🗑️</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhuma tarefa ativa no momento.</p>';
+
+        // Listener: toggle ver mais
+        list.querySelectorAll('.ativa-ver-mais-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+                ativasExpanded[id] = !ativasExpanded[id];
+                renderModalAtivas();
+            });
+        });
+
+        // Listener: excluir
+        list.querySelectorAll('.ativa-btn-del').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+                const ta = ativasData.find(t => t.id === id);
+                if (!ta) return;
+                ativasData = ativasData.filter(t => t.id !== id);
+                delete ativasExpanded[id];
+                renderModalAtivas();
+                showToast(`Tarefa "${ta.title}" excluída.`, 'success');
+            });
+        });
+    }
+
+    // ── Render: Tarefas Não Realizadas (agrupadas por turma) ──
+    const naoRealizadasExpanded = {};
+
+    function renderModalNaoRealizadas() {
+        const wrap = document.getElementById('modal-nao-realizadas-list');
+        if (!wrap) return;
+        const TURMA_LABELS = { '3A': '3º A', '3B': '3º B', '2A': '2º A' };
+
+        wrap.innerHTML = Object.entries(naoRealizadasData).map(([tk, alunos]) => {
+            if (!alunos.length) return '';
+            const isOpen = !!naoRealizadasExpanded[tk];
+            const itens = alunos.map(a => `
+                <div class="modal-stat-item">
+                    <div class="student-avatar" style="background:${a.color};">${a.initials}</div>
+                    <div class="modal-stat-body">
+                        <div class="modal-stat-title">${a.name}</div>
+                        <div class="modal-stat-meta">${a.meta}</div>
+                    </div>
+                    <span class="modal-badge modal-badge-${a.status}">${a.label}</span>
+                </div>`).join('');
+            return `
+                <div class="nr-turma-section">
+                    <button class="nr-turma-header nr-turma-toggle" data-turma="${tk}">
+                        <div class="nr-turma-header-left">
+                            <span class="nr-turma-label">${TURMA_LABELS[tk] || tk}</span>
+                            <span class="nr-turma-count">${alunos.length} aluno${alunos.length > 1 ? 's' : ''} com pendência</span>
+                        </div>
+                        <span class="nr-turma-arrow">${isOpen ? '▲' : '▼'}</span>
+                    </button>
+                    <div class="modal-stat-list nr-turma-alunos" style="display:${isOpen ? 'block' : 'none'};">${itens}</div>
+                </div>`;
+        }).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhum aluno com pendências.</p>';
+
+        wrap.querySelectorAll('.nr-turma-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tk = btn.dataset.turma;
+                naoRealizadasExpanded[tk] = !naoRealizadasExpanded[tk];
+                renderModalNaoRealizadas();
+            });
+        });
+    }
+
+    // ── Render: Tarefas Passadas — só contagem de entregas ──
+    let realizadasTurmaFilter = '3A';
+
+    function renderModalRealizadas() {
+        const list = document.getElementById('modal-realizadas-list');
+        if (!list) return;
+
+        list.innerHTML = realizadasData.map(tr => {
+            const turmasVisiveis = Object.entries(tr.turmas).filter(([tk]) =>
+                realizadasTurmaFilter === tk
+            );
+            if (!turmasVisiveis.length) return '';
+            let entregues = 0, total = 0;
+            turmasVisiveis.forEach(([, tv]) => { entregues += tv.entregues; total += tv.total; });
+
+            return `
+            <div class="modal-stat-item">
+                <span class="task-tag tag-${tr.subject}">${TAG_MAP[tr.subject]}</span>
+                <div class="modal-stat-body">
+                    <div class="modal-stat-title">${tr.title}</div>
+                    <div class="modal-stat-meta">Venceu ${tr.dueLabel} · <strong>${entregues}/${total} entregues</strong></div>
+                </div>
+            </div>`;
+        }).filter(Boolean).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhuma tarefa para esta turma.</p>';
+    }
+
+    // Filtro turma no modal realizadas
+    const realizadasTurmaFilterEl = document.getElementById('modal-realizadas-turma-filter');
+    if (realizadasTurmaFilterEl) {
+        realizadasTurmaFilterEl.addEventListener('click', e => {
+            const btn = e.target.closest('.turma-filter-btn');
+            if (!btn) return;
+            realizadasTurmaFilter = btn.dataset.turma;
+            realizadasTurmaFilterEl.querySelectorAll('.turma-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderModalRealizadas();
+        });
+    }
+
+    // Exportar relatório
+    const exportBtn = document.getElementById('modal-realizadas-export');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', () => showToast('Relatório exportado com sucesso!', 'success'));
+    }
+
+    // ── Abrir modais e renderizar ──
+    const origStatCardListener = document.querySelectorAll('.stat-card--clickable[data-modal]');
+    origStatCardListener.forEach(card => {
+        card.addEventListener('click', () => {
+            const id = card.dataset.modal;
+            if (id === 'modal-tarefas-ativas') renderModalAtivas();
+            if (id === 'modal-realizadas') renderModalRealizadas();
+            if (id === 'modal-nao-realizadas') renderModalNaoRealizadas();
+        });
+    });
+
+
 });
