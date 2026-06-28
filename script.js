@@ -34,212 +34,122 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 1000);
 
     // ─── GRADE DE HORÁRIOS SEMANAL (INÍCIO) ───
+    // Cada aula tem: subject, name, time, content (conteúdo da aula)
     const timetable = {
-        1: [
-            {
-                subject: 'mat', name: 'Matemática', time: '7h – 8h40', topics: [
-                    { text: 'Funções quadráticas', done: true },
-                    { text: 'Equações do 2º grau', done: true },
-                    { text: 'Gráficos de parábola', done: false },
-                    { text: 'Exercícios do ENEM', done: false },
-                ]
-            },
-            {
-                subject: 'por', name: 'Português', time: '9h – 10h20', topics: [
-                    { text: 'Figuras de linguagem', done: true },
-                    { text: 'Redação dissertativa', done: false },
-                    { text: 'Interpretação de texto', done: false },
-                ]
-            },
-            {
-                subject: 'qui', name: 'Química', time: '10h30 – 12h', topics: [
-                    { text: 'Estequiometria', done: false },
-                    { text: 'Reações de oxirredução', done: false },
-                ]
-            },
+        1: [ // Segunda
+            { subject: 'mat',  name: 'Matemática', time: '07h15 – 08h00', content: 'Funções quadráticas e parábolas' },
+            { subject: 'mat',  name: 'Matemática', time: '08h00 – 08h45', content: 'Exercícios do ENEM — cap. 4' },
+            { subject: 'por',  name: 'Português',  time: '08h45 – 09h30', content: 'Figuras de linguagem' },
+            { subject: 'por',  name: 'Português',  time: '09h30 – 10h15', content: 'Redação dissertativa — estrutura' },
+            { subject: 'qui',  name: 'Back-End',   time: '10h15 – 11h00', content: 'Node.js — fundamentos e módulos' },
+            { subject: 'qui',  name: 'Back-End',   time: '11h00 – 11h45', content: 'APIs REST — métodos HTTP' },
         ],
-        2: [
-            {
-                subject: 'bio', name: 'Biologia', time: '7h – 8h', topics: [
-                    { text: 'Genética mendeliana', done: true },
-                    { text: 'Mutações gênicas', done: true },
-                    { text: 'Engenharia genética', done: false },
-                ]
-            },
-            {
-                subject: 'fis', name: 'Física', time: '8h10 – 9h30', topics: [
-                    { text: 'Cinemática escalar', done: true },
-                    { text: 'Dinâmica (Newton)', done: false },
-                ]
-            },
-            {
-                subject: 'hist', name: 'História', time: '9h40 – 11h', topics: [
-                    { text: 'Primeira Guerra Mundial', done: false },
-                    { text: 'Revolução Russa', done: false },
-                ]
-            },
+        2: [ // Terça
+            { subject: 'bio',  name: 'Front-End',  time: '07h15 – 08h00', content: 'HTML semântico & CSS Grid' },
+            { subject: 'bio',  name: 'Front-End',  time: '08h00 – 08h45', content: 'JavaScript ES6+ — arrow functions e módulos' },
+            { subject: 'fis',  name: 'Física',     time: '08h45 – 09h30', content: 'Cinemática escalar — MRU e MRUV' },
+            { subject: 'fis',  name: 'Física',     time: '09h30 – 10h15', content: 'Dinâmica — 1ª e 2ª Lei de Newton' },
+            { subject: 'hist', name: 'História',   time: '10h15 – 11h00', content: 'Primeira Guerra Mundial — causas' },
+            { subject: 'hist', name: 'História',   time: '11h00 – 11h45', content: 'Revolução Russa — contexto' },
         ],
-        3: [
-            {
-                subject: 'mat', name: 'Matemática', time: '7h – 8h40', topics: [
-                    { text: 'Progressões aritméticas', done: false },
-                    { text: 'Progressões geométricas', done: false },
-                ]
-            },
-            {
-                subject: 'por', name: 'Português', time: '9h – 10h', topics: [
-                    { text: 'Crase e pontuação', done: false },
-                    { text: 'Concordância verbal', done: false },
-                ]
-            },
-            {
-                subject: 'bio', name: 'Biologia', time: '10h10 – 11h30', topics: [
-                    { text: 'Ecossistemas', done: false },
-                    { text: 'Cadeias alimentares', done: false },
-                ]
-            },
+        3: [ // Quarta
+            { subject: 'mat',  name: 'Matemática', time: '07h15 – 08h00', content: 'Progressões aritméticas (PA)' },
+            { subject: 'mat',  name: 'Matemática', time: '08h00 – 08h45', content: 'Progressões geométricas (PG)' },
+            { subject: 'por',  name: 'Português',  time: '08h45 – 09h30', content: 'Crase e pontuação — regras' },
+            { subject: 'por',  name: 'Português',  time: '09h30 – 10h15', content: 'Concordância verbal e nominal' },
+            { subject: 'bio',  name: 'Front-End',  time: '10h15 – 11h00', content: 'React — componentes e props' },
+            { subject: 'bio',  name: 'Front-End',  time: '11h00 – 11h45', content: 'Responsividade e acessibilidade web' },
         ],
-        4: [
-            {
-                subject: 'fis', name: 'Física', time: '7h – 8h30', topics: [
-                    { text: 'Energia cinética', done: false },
-                    { text: 'Energia potencial', done: false },
-                ]
-            },
-            {
-                subject: 'qui', name: 'Química', time: '8h40 – 10h', topics: [
-                    { text: 'Termoquímica', done: false },
-                    { text: 'Cinética química', done: false },
-                ]
-            },
+        4: [ // Quinta
+            { subject: 'fis',  name: 'Física',     time: '07h15 – 08h00', content: 'Energia cinética e potencial' },
+            { subject: 'fis',  name: 'Física',     time: '08h00 – 08h45', content: 'Trabalho e teorema trabalho-energia' },
+            { subject: 'qui',  name: 'Back-End',   time: '08h45 – 09h30', content: 'Banco de Dados SQL — consultas' },
+            { subject: 'qui',  name: 'Back-End',   time: '09h30 – 10h15', content: 'Autenticação JWT e middlewares' },
+            { subject: 'mat',  name: 'Matemática', time: '10h15 – 11h00', content: 'Logaritmos — definição e propriedades' },
+            { subject: 'por',  name: 'Português',  time: '11h00 – 11h45', content: 'Interpretação de texto — ENEM' },
         ],
-        5: [
-            {
-                subject: 'mat', name: 'Matemática', time: '7h – 8h', topics: [
-                    { text: 'Logaritmos', done: false },
-                    { text: 'Função logarítmica', done: false },
-                ]
-            },
-            {
-                subject: 'hist', name: 'História', time: '8h10 – 9h30', topics: [
-                    { text: 'Segunda Guerra Mundial', done: false },
-                    { text: 'Guerra Fria', done: false },
-                ]
-            },
-            {
-                subject: 'por', name: 'Português', time: '9h40 – 11h', topics: [
-                    { text: 'Simulado de redação', done: false },
-                ]
-            },
+        5: [ // Sexta
+            { subject: 'hist', name: 'História',   time: '07h15 – 08h00', content: 'Segunda Guerra Mundial — fases' },
+            { subject: 'hist', name: 'História',   time: '08h00 – 08h45', content: 'Guerra Fria — blocos e conflitos' },
+            { subject: 'mat',  name: 'Matemática', time: '08h45 – 09h30', content: 'Função logarítmica — gráficos' },
+            { subject: 'bio',  name: 'Front-End',  time: '09h30 – 10h15', content: 'Projeto prático — Landing Page' },
+            { subject: 'por',  name: 'Português',  time: '10h15 – 11h00', content: 'Simulado de redação' },
+            { subject: 'fis',  name: 'Física',     time: '11h00 – 11h45', content: 'Revisão — lista de exercícios ENEM' },
         ],
-        6: [],
-        0: [],
+        6: [], // Sábado
+        0: [], // Domingo
     };
 
-    const topicState = {};
 
     function updateProgressCard() {
-        let done = 0, total = 0;
-        Object.entries(timetable).forEach(([day, subjects]) => {
-            subjects.forEach((subj, si) => {
-                subj.topics.forEach((t, ti) => {
-                    total++;
-                    const key = `${day}-${si}-${ti}`;
-                    if (key in topicState ? topicState[key] : t.done) done++;
-                });
-            });
-        });
+        // Conta aulas da semana inteira (seg–sex) como "total"
+        let total = 0;
+        [1,2,3,4,5].forEach(d => { total += (timetable[d] || []).length; });
 
-        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-        const circumference = 2 * Math.PI * 32;
-
+        const pct = 0; // progresso de aulas não é checkável — mantém elementos existentes neutros
+        const arc = document.getElementById('prog-arc');
+        const progPct = document.getElementById('prog-pct');
         const progDone = document.getElementById('prog-done');
         const progTotal = document.getElementById('prog-total');
-        const progPct = document.getElementById('prog-pct');
-        const progBar = document.getElementById('prog-bar');
-        const arc = document.getElementById('prog-arc');
         const sub = document.getElementById('prog-sub');
+        const progBar = document.getElementById('prog-bar');
 
-        if (progDone) progDone.textContent = done;
         if (progTotal) progTotal.textContent = total;
-        if (progPct) progPct.textContent = pct + '%';
-        if (progBar) progBar.style.width = pct + '%';
-        if (arc) arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
-
-        if (sub) {
-            const left = total - done;
-            if (pct === 100) {
-                sub.textContent = '🏆 Parabéns! Todos os tópicos concluídos!';
-                if (progDone) progDone.style.color = 'var(--qui)';
-                if (arc) arc.style.stroke = 'var(--qui)';
-            } else if (pct >= 70) {
-                sub.textContent = `Quase lá! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
-            } else {
-                sub.textContent = `Continue firme! Faltam ${left} tópico${left > 1 ? 's' : ''}.`;
-            }
-        }
+        if (progDone)  progDone.textContent  = 0;
+        if (progPct)   progPct.textContent   = '—';
+        if (progBar)   progBar.style.width   = '0%';
+        if (sub)       sub.textContent       = `${total} aulas esta semana`;
     }
 
     function renderSubjectGrid(dayOfWeek) {
-        const grid = document.getElementById('inicio-subject-grid');
+        const grid       = document.getElementById('inicio-subject-grid');
         const emptyState = document.getElementById('day-empty-state');
-        const note = document.getElementById('day-filter-note');
         if (!grid) return;
 
-        const subjects = timetable[dayOfWeek] || [];
+        const aulas = timetable[dayOfWeek] || [];
         grid.innerHTML = '';
 
-        if (subjects.length === 0) {
+        if (aulas.length === 0) {
             grid.style.display = 'none';
-            emptyState.style.display = 'block';
+            if (emptyState) emptyState.style.display = 'block';
             return;
         }
 
         grid.style.display = '';
-        emptyState.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'none';
 
-        subjects.forEach((subj, si) => {
-            const doneCnt = subj.topics.filter((t, ti) => {
-                const k = `${dayOfWeek}-${si}-${ti}`;
-                return k in topicState ? topicState[k] : t.done;
-            }).length;
+        // Agrupa aulas consecutivas da mesma matéria para exibição em card único
+        const groups = [];
+        aulas.forEach(aula => {
+            const last = groups[groups.length - 1];
+            if (last && last.subject === aula.subject) {
+                last.aulas.push(aula);
+            } else {
+                groups.push({ subject: aula.subject, name: aula.name, aulas: [aula] });
+            }
+        });
 
-            const topicsHtml = subj.topics.map((t, ti) => {
-                const k = `${dayOfWeek}-${si}-${ti}`;
-                const isDone = k in topicState ? topicState[k] : t.done;
-                return `<li class="topic-item${isDone ? ' done' : ''}" data-day="${dayOfWeek}" data-si="${si}" data-ti="${ti}">
-                    <span class="topic-dot"></span><span>${t.text}</span>
-                </li>`;
-            }).join('');
-
+        groups.forEach(group => {
             const card = document.createElement('article');
             card.className = 'subject-card';
-            card.dataset.subject = subj.subject;
+            card.dataset.subject = group.subject;
+
+            const aulasHtml = group.aulas.map(a => `
+                <div class="aula-item">
+                    <span class="aula-time">${a.time}</span>
+                    <span class="aula-content">${a.content}</span>
+                </div>`).join('');
+
             card.innerHTML = `
                 <div class="subject-tab"></div>
                 <div class="subject-body">
                     <div class="subject-head">
-                        <span class="subject-name">${subj.name}</span>
-                    </div>  
-                    <div class="topics">
-                        <p class="topics-label">${doneCnt}/${subj.topics.length} tópicos concluídos</p>
-                        <ul class="topic-list">${topicsHtml}</ul>
+                        <span class="subject-name">${group.name}</span>
+                        <span class="aula-count">${group.aulas.length} aula${group.aulas.length > 1 ? 's' : ''}</span>
                     </div>
+                    <div class="aulas-list">${aulasHtml}</div>
                 </div>`;
             grid.appendChild(card);
-        });
-
-        grid.querySelectorAll('.topic-item').forEach(li => {
-            li.addEventListener('click', () => {
-                const day = li.dataset.day;
-                const si = parseInt(li.dataset.si);
-                const ti = parseInt(li.dataset.ti);
-                const k = `${day}-${si}-${ti}`;
-                const cur = k in topicState ? topicState[k] : timetable[day][si].topics[ti].done;
-                topicState[k] = !cur;
-                renderSubjectGrid(parseInt(day));
-                updateProgressCard();
-            });
         });
     }
 
@@ -288,6 +198,98 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDaysWeek();
     updateProgressCard();
 
+    // ─── RESUMO RÁPIDO (cards do início) ───
+    function updateInicioSummary() {
+        const now = new Date();
+        const todayDow = now.getDay();
+
+        // — Card 1: Progresso do dia (aulas) —
+        const todayAulas = timetable[todayDow] || [];
+        const totalAulas = todayAulas.length;
+        const circumference = 2 * Math.PI * 28;
+
+        const arc = document.getElementById('isc-day-arc');
+        const pctEl = document.getElementById('isc-day-pct');
+        const fractionEl = document.getElementById('isc-day-fraction');
+        const subEl = document.getElementById('isc-day-sub');
+
+        // Estima quantas aulas já ocorreram baseado na hora atual
+        const nowH = now.getHours() + now.getMinutes() / 60;
+        let aulasConcluidas = 0;
+        todayAulas.forEach(a => {
+            const startH = parseInt(a.time.split('h')[0]) + (a.time.includes('h1') ? 0.25 : 0);
+            if (nowH > startH + 0.75) aulasConcluidas++;
+        });
+        const dayPct = totalAulas === 0 ? 0 : Math.round((aulasConcluidas / totalAulas) * 100);
+
+        if (arc) {
+            arc.style.strokeDasharray = circumference;
+            arc.style.strokeDashoffset = circumference - (dayPct / 100) * circumference;
+            arc.style.stroke = dayPct === 100 ? 'var(--bio)' : 'var(--qui)';
+        }
+        if (pctEl)      pctEl.textContent      = totalAulas === 0 ? '—' : dayPct + '%';
+        if (fractionEl) fractionEl.textContent  = totalAulas === 0 ? '—' : `${aulasConcluidas}/${totalAulas}`;
+        if (subEl)      subEl.textContent       = totalAulas === 0 ? 'sem aulas hoje' : 'aulas concluídas';
+
+        // — Card 2: Tarefas pendentes hoje —
+        const todayStr = now.toISOString().slice(0, 10);
+        const pendentes = taskList.filter(t => !t.done);
+        const vencendoHoje = pendentes.filter(t => t.due === todayStr);
+        const atrasadas = pendentes.filter(t => t.due && t.due < todayStr);
+
+        const taskCountEl = document.getElementById('isc-tasks-count');
+        const taskSubEl   = document.getElementById('isc-tasks-sub');
+        const taskIcon    = document.getElementById('isc-tasks-icon');
+
+        if (taskCountEl) taskCountEl.textContent = pendentes.length;
+        if (taskSubEl) {
+            if (vencendoHoje.length > 0) {
+                taskSubEl.textContent = `⚠️ ${vencendoHoje.length} vencem hoje!`;
+                taskSubEl.className = 'isc-sub isc-tasks-sub--urgent';
+            } else if (atrasadas.length > 0) {
+                taskSubEl.textContent = `${atrasadas.length} em atraso`;
+                taskSubEl.className = 'isc-sub isc-tasks-sub--urgent';
+            } else {
+                taskSubEl.textContent = 'a fazer';
+                taskSubEl.className = 'isc-sub';
+            }
+        }
+        if (taskIcon) {
+            const urgent = vencendoHoje.length > 0 || atrasadas.length > 0;
+            taskIcon.className = `isc-icon-wrap isc-icon--tasks${urgent ? ' urgent' : ''}`;
+        }
+
+        // — Card 4: Horas planejadas hoje —
+        const dowToKey = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+        const todayKey = dowToKey[todayDow];
+        const agendaToday = agendaSchedule[todayKey] || [];
+        const estudoSessions = agendaToday.filter(e => !e.type || e.type !== 'aula');
+        // cada sessão = 1h estimada; aulas fixas são 45min cada
+        const aulaCount = agendaToday.filter(e => e.type === 'aula').length;
+        const estudoCount = estudoSessions.length;
+        const totalMin = aulaCount * 45 + estudoCount * 60;
+        const horas = Math.floor(totalMin / 60);
+        const min = totalMin % 60;
+
+        const hoursEl = document.getElementById('isc-hours-value');
+        const hoursSub = document.getElementById('isc-hours-sub');
+        if (hoursEl) {
+            if (totalMin === 0) {
+                hoursEl.textContent = '0h';
+            } else {
+                hoursEl.textContent = min > 0 ? `${horas}h${String(min).padStart(2,'0')}` : `${horas}h`;
+            }
+        }
+        if (hoursSub) {
+            const parts = [];
+            if (aulaCount) parts.push(`${aulaCount} aulas`);
+            if (estudoCount) parts.push(`${estudoCount} sessão${estudoCount > 1 ? 'es' : ''} extra`);
+            hoursSub.textContent = parts.length ? parts.join(' + ') : 'nada agendado';
+        }
+    }
+
+    updateInicioSummary();
+
     // ─── SPA ROUTING ───
     const navItems = document.querySelectorAll('.nav-item');
     const pageViews = document.querySelectorAll('.page-view');
@@ -315,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetId === 'agenda') initAgenda();
         if (targetId === 'tarefas') initTarefas();
         if (targetId === 'historico') initHistorico();
+        if (targetId === 'materias' && window._matRenderGrid) window._matRenderGrid();
         window.scrollTo(0, 0);
     }
 
@@ -351,8 +354,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const AGENDA_SUBJECTS = {
         mat: { name: 'Matemática', tag: 'Mat', cssVar: '--mat' },
         por: { name: 'Português', tag: 'Port', cssVar: '--port' },
-        bio: { name: 'Biologia', tag: 'Bio', cssVar: '--bio' },
-        qui: { name: 'Química', tag: 'Qui', cssVar: '--qui' },
+        bio: { name: 'Front-End', tag: 'FE', cssVar: '--bio' },
+        qui: { name: 'Back-End', tag: 'BE', cssVar: '--qui' },
         fis: { name: 'Física', tag: 'Fís', cssVar: '--fis' },
         his: { name: 'História', tag: 'His', cssVar: '--hist' },
     };
@@ -364,19 +367,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const AI_PLAN = {
         seg: [
-            { time: '14:00', subject: 'qui', title: 'Estequiometria — cap. 8' },
+            { time: '14:00', subject: 'qui', title: 'APIs REST — exercícios' },
         ],
         ter: [
             { time: '14:00', subject: 'his', title: 'Era Vargas — revisão' },
         ],
         qua: [
-            { time: '14:00', subject: 'bio', title: 'Engenharia genética' },
+            { time: '14:00', subject: 'bio', title: 'React - Componentes' },
         ],
         qui: [
             { time: '14:00', subject: 'mat', title: 'Revisão geral — lista ENEM' },
         ],
         sex: [
-            { time: '14:00', subject: 'bio', title: 'Revisão Biologia — Ecossistemas' },
+            { time: '14:00', subject: 'bio', title: 'Revisão Front-End — Responsividade' },
         ],
         sab: [], dom: [],
     };
@@ -567,13 +570,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function agendaOpenModal() {
-        const m = document.getElementById('agenda-modal');
-        if (m) m.style.display = 'flex';
+        openModal('agenda-modal');
     }
 
     function agendaCloseModal() {
-        const m = document.getElementById('agenda-modal');
-        if (m) m.style.display = 'none';
+        closeModal('agenda-modal');
     }
 
     function initAgenda() {
@@ -641,8 +642,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const TASK_SUBJECTS = {
         mat: { name: 'Matemática', tag: 'Mat', color: 'var(--mat)', bg: 'rgba(255,138,91,0.15)' },
         por: { name: 'Português', tag: 'Port', color: 'var(--port)', bg: 'rgba(95,179,232,0.15)' },
-        bio: { name: 'Biologia', tag: 'Bio', color: 'var(--bio)', bg: 'rgba(111,207,122,0.15)' },
-        qui: { name: 'Química', tag: 'Qui', color: 'var(--qui)', bg: 'rgba(255,209,102,0.15)' },
+        bio: { name: 'Front-End', tag: 'FE', color: 'var(--bio)', bg: 'rgba(111,207,122,0.15)' },
+        qui: { name: 'Back-End', tag: 'BE', color: 'var(--qui)', bg: 'rgba(255,209,102,0.15)' },
         fis: { name: 'Física', tag: 'Fís', color: 'var(--fis)', bg: 'rgba(255,107,157,0.15)' },
         his: { name: 'História', tag: 'His', color: 'var(--hist)', bg: 'rgba(199,146,234,0.15)' },
     };
@@ -654,12 +655,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let taskList = [
         { id: 1, title: 'Resolver lista de parábolas (ENEM 2022)', desc: 'Vence hoje · 20 questões · Integrado do Classroom', subject: 'mat', priority: 'alta', done: false, due: '2025-06-25' },
         { id: 2, title: 'Escrever redação sobre mobilidade urbana', desc: 'Vence hoje · mín. 30 linhas · Redação Paraná', subject: 'por', priority: 'alta', done: false, due: '2025-06-25' },
-        { id: 3, title: 'Exercícios de estequiometria — cap. 8', desc: 'Vence qui, 26 jun · pág. 112–118 · Livro Didático', subject: 'qui', priority: 'media', done: false, due: '2025-06-26' },
+        { id: 3, title: 'Exercícios de APIs REST', desc: 'Vence qui, 26 jun · Projeto Back-End', subject: 'qui', priority: 'media', done: false, due: '2025-06-26' },
         { id: 4, title: 'Resumo: Cinemática vetorial', desc: 'Vence sex, 27 jun · 1 página · Caderno de Física', subject: 'fis', priority: 'media', done: false, due: '2025-06-27' },
-        { id: 5, title: 'Mapa mental — Engenharia genética', desc: 'Vence sáb, 28 jun · Atividade de Biologia', subject: 'bio', priority: 'baixa', done: false, due: '2025-06-28' },
+        { id: 5, title: 'Projeto React - Landing Page', desc: 'Vence sáb, 28 jun · Atividade de Front-End', subject: 'bio', priority: 'baixa', done: false, due: '2025-06-28' },
         { id: 6, title: 'Rever anotações — Funções quadráticas', desc: 'Concluída ontem', subject: 'mat', priority: 'media', done: true, due: '2025-06-24' },
         { id: 7, title: 'Ler capítulo sobre Era Vargas', desc: 'Concluída seg, 23 jun', subject: 'his', priority: 'baixa', done: true, due: '2025-06-23' },
-        { id: 8, title: 'Exercícios — Genética mendeliana', desc: 'Concluída seg, 23 jun', subject: 'bio', priority: 'media', done: true, due: '2025-06-23' },
+        { id: 8, title: 'Exercícios — HTML & CSS', desc: 'Concluída seg, 23 jun', subject: 'bio', priority: 'media', done: true, due: '2025-06-23' },
     ];
     let nextTaskId = 9;
     let taskFilter = 'todas';
@@ -694,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = taskList.find(t => t.id === id);
         if (t) t.done = !t.done;
         tarefasRender();
+        updateInicioSummary();
     }
 
     function taskDelete(id) {
@@ -802,13 +804,12 @@ document.addEventListener('DOMContentLoaded', () => {
         m.querySelector('#tf-modal-subject').value = prefill?.subject || 'mat';
         m.querySelector('#tf-modal-priority').value = prefill?.priority || 'media';
         m.querySelector('#tf-modal-due').value = prefill?.due || '';
-        m.style.display = 'flex';
+        openModal('tf-modal');
         setTimeout(() => m.querySelector('#tf-modal-title').focus(), 50);
     }
 
     function tarefasCloseModal() {
-        const m = document.getElementById('tf-modal');
-        if (m) m.style.display = 'none';
+        closeModal('tf-modal');
     }
 
     function initTarefas() {
@@ -880,8 +881,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const HIST_SUBJECTS = {
         mat: { name: 'Matemática', tag: 'Mat', color: 'var(--mat)', cssClass: 'tag-mat' },
         por: { name: 'Português',  tag: 'Port', color: 'var(--port)', cssClass: 'tag-por' },
-        bio: { name: 'Biologia',   tag: 'Bio',  color: 'var(--bio)',  cssClass: 'tag-bio' },
-        qui: { name: 'Química',    tag: 'Qui',  color: 'var(--qui)',  cssClass: 'tag-qui' },
+        bio: { name: 'Front-End',   tag: 'FE',  color: 'var(--bio)',  cssClass: 'tag-bio' },
+        qui: { name: 'Back-End',    tag: 'BE',  color: 'var(--qui)',  cssClass: 'tag-qui' },
         fis: { name: 'Física',     tag: 'Fís',  color: 'var(--fis)',  cssClass: 'tag-fis' },
         his: { name: 'História',   tag: 'His',  color: 'var(--hist)', cssClass: 'tag-his' },
     };
@@ -891,7 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: 'Seg', today: false, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
         { label: 'Ter', today: false, subjects: { mat: 0, por: 1.0, bio: 1.0, qui: 0, fis: 0.5, his: 1.0 } },
         { label: 'Qua', today: false, subjects: { mat: 2.0, por: 0, bio: 0.5, qui: 0, fis: 0, his: 0 } },
-        { label: 'Qui', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
+        { label: 'BE', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
         { label: 'Sex', today: false, subjects: { mat: 1.0, por: 1.0, bio: 0.5, qui: 0, fis: 0, his: 0.5 } },
         { label: 'Sáb', today: false, subjects: { mat: 0.5, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
         { label: 'Hoje', today: true,  subjects: { mat: 0.8, por: 0, bio: 1.2, qui: 0.5, fis: 0, his: 0 } },
@@ -909,13 +910,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const HIST_SESSIONS = [
         { title: 'Revisão de Funções e Gráficos', meta: '25 Jun', subject: 'mat' },
         { title: 'Fichamento de Ditadura Militar', meta: '25 Jun', subject: 'his' },
-        { title: 'Engenharia Genética — cap. 5', meta: '25 Jun', subject: 'bio' },
-        { title: 'Estequiometria — Lista de Exercícios', meta: '24 Jun', subject: 'qui' },
+        { title: 'React - Componentes', meta: '25 Jun', subject: 'bio' },
+        { title: 'Node.js - APIs REST', meta: '24 Jun', subject: 'qui' },
         { title: 'Redação Dissertativa — Simulado', meta: '24 Jun', subject: 'por' },
         { title: 'Cinemática Escalar — Revisão', meta: '23 Jun', subject: 'fis' },
         { title: 'Progressões Aritméticas e Geométricas', meta: '23 Jun', subject: 'mat' },
         { title: 'Interpretação de Texto — ENEM 2023', meta: '22 Jun', subject: 'por' },
-        { title: 'Ecossistemas e Cadeias Alimentares', meta: '22 Jun', subject: 'bio' },
+        { title: 'Acessibilidade Web', meta: '22 Jun', subject: 'bio' },
         { title: 'Era Vargas — Resumo e Mapa Mental', meta: '21 Jun', subject: 'his' },
     ];
 
@@ -1390,7 +1391,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!title) { showToast('Informe o título da tarefa.', 'warn'); return; }
 
             const list = document.getElementById('prof-tasks-list');
-            const tagMap = { mat: 'Mat', por: 'Port', bio: 'Bio', qui: 'Qui', fis: 'Fís', his: 'His' };
+            const tagMap = { mat: 'Mat', por: 'Port', bio: 'FE', qui: 'BE', fis: 'Fís', his: 'His' };
             const dueText = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : 'sem prazo';
             const plabels = { interna: 'Estuda CEEP', 'redacao-pr': 'Redação Paraná', classroom: 'Google Classroom', livro: 'Livro Didático' };
 
@@ -1442,7 +1443,7 @@ document.addEventListener('DOMContentLoaded', () => {
             turmas: { '3A': { entregues: 28, total: 28 }, '3B': { entregues: 22, total: 29 }, '2A': { entregues: 17, total: 27 } }
         },
         {
-            id: 'ta3', subject: 'qui', title: 'Estequiometria — cap. 8',
+            id: 'ta3', subject: 'qui', title: 'APIs REST — exercícios',
             due: '2026-06-30',
             turmas: { '3A': { entregues: 8, total: 28 }, '3B': { entregues: 7, total: 29 } }
         },
@@ -1455,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let realizadasData = [
         {
-            id: 'tr1', subject: 'bio', title: 'Resumo: Genética Mendeliana',
+            id: 'tr1', subject: 'bio', title: 'Resumo: HTML & CSS',
             dueLabel: '24 Jun',
             turmas: {
                 '3A': { entregues: 26, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro'] },
@@ -1488,7 +1489,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { initials: 'RP', name: 'Rafael Pires',   color: 'var(--qui)', meta: '1 tarefa pendente · Vence hoje', status: 'warn', label: 'Pendente' },
         ],
         '3B': [
-            { initials: 'LF', name: 'Lucas Ferreira', color: 'var(--mat)', meta: '1 tarefa em atraso: Estequiometria Cap. 8', status: 'error', label: 'Atraso' },
+            { initials: 'LF', name: 'Lucas Ferreira', color: 'var(--mat)', meta: '1 tarefa em atraso: APIs REST', status: 'error', label: 'Atraso' },
             { initials: 'BS', name: 'Bruna Santana',  color: 'var(--port)', meta: '2 tarefas pendentes · Último acesso há 3 dias', status: 'warn', label: 'Pendente' },
         ],
         '2A': [
@@ -1497,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
     };
 
-    const TAG_MAP = { mat: 'Mat', por: 'Port', bio: 'Bio', qui: 'Qui', fis: 'Fís', his: 'His' };
+    const TAG_MAP = { mat: 'Mat', por: 'Port', bio: 'FE', qui: 'BE', fis: 'Fís', his: 'His' };
 
     function calcTurmasTotal(turmas) {
         let entregues = 0, total = 0;
@@ -1824,5 +1825,529 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
+    // ══════════════════════════════════════════════
+    // ── MATÉRIAS — GRADE REATIVA + MODALS + ARQUIVOS
+    // ══════════════════════════════════════════════
+
+    // Mural / avisos por matéria (último recado do professor)
+    const MATERIAS_MURAL = {
+        mat: { msg: 'Prova de Funções dia 02/07 — estudem os exercícios do cap. 4.', date: 'hoje' },
+        por: { msg: 'Redação sobre mobilidade urbana vence sexta. Mín. 30 linhas.', date: 'ontem' },
+        bio: { msg: 'Projeto React deve ser entregue via GitHub até sexta.', date: '2 dias atrás' },
+        qui: { msg: 'Documentação das APIs no Notion da turma.', date: '3 dias atrás' },
+        fis: { msg: 'Simulado de Cinemática marcado para qui, 03/07.', date: '4 dias atrás' },
+        his: { msg: 'Parabéns pela participação no seminário! Notas lançadas.', date: '1 semana atrás' },
+    };
+
+    const MATERIAS_DATA = {
+        mat: {
+            name: 'Matemática', tag: 'Mat', color: 'var(--mat)', colorHex: '#FF8A5B',
+            prof: 'Prof. Carlos Mendes',
+            topicos: [
+                { text: 'Funções quadráticas', done: true,  day: 'Seg' },
+                { text: 'Equações do 2º grau', done: true,  day: 'Seg' },
+                { text: 'Gráficos de parábola', done: false, day: 'Seg' },
+                { text: 'Exercícios do ENEM',   done: false, day: 'Seg' },
+                { text: 'Progressões aritméticas', done: false, day: 'Qua' },
+                { text: 'Progressões geométricas', done: false, day: 'Qua' },
+                { text: 'Logaritmos',           done: false, day: 'Sex' },
+                { text: 'Função logarítmica',   done: false, day: 'Sex' },
+            ],
+            arquivos: [
+                { id: 'mat-1', title: 'Slides — Funções Quadráticas', type: 'slide', url: 'https://docs.google.com/presentation', meta: 'Enviado por Prof. Carlos · 12 jun' },
+                { id: 'mat-2', title: 'Apostila ENEM — Matemática',   type: 'pdf',   url: 'https://drive.google.com',             meta: 'PDF · 48 págs · 08 jun' },
+                { id: 'mat-3', title: 'Videoaula: Progressões (Khan)', type: 'video', url: 'https://youtu.be',                    meta: 'YouTube · 22 min' },
+            ]
+        },
+        por: {
+            name: 'Português', tag: 'Port', color: 'var(--port)', colorHex: '#5FB3E8',
+            prof: 'Profª. Patrícia Souza',
+            topicos: [
+                { text: 'Figuras de linguagem',   done: true,  day: 'Seg' },
+                { text: 'Redação dissertativa',   done: false, day: 'Seg' },
+                { text: 'Interpretação de texto', done: false, day: 'Seg' },
+                { text: 'Crase e pontuação',      done: false, day: 'Qua' },
+                { text: 'Concordância verbal',    done: false, day: 'Qua' },
+                { text: 'Simulado de redação',    done: false, day: 'Sex' },
+            ],
+            arquivos: [
+                { id: 'por-1', title: 'Guia de Redação Paraná 2025',    type: 'pdf',   url: 'https://drive.google.com', meta: 'PDF oficial · Secretaria de Educação' },
+                { id: 'por-2', title: 'Slides — Figuras de Linguagem',  type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Profª. Patrícia · 10 jun' },
+            ]
+        },
+        bio: {
+            name: 'Front-End', tag: 'FE', color: 'var(--bio)', colorHex: '#6FCF7A',
+            prof: 'Profª. Helena Costa',
+            topicos: [
+                { text: 'HTML & CSS',          done: true,  day: 'Ter' },
+                { text: 'JavaScript ES6+',     done: true,  day: 'Ter' },
+                { text: 'React - Componentes', done: false, day: 'Ter' },
+                { text: 'Responsividade',       done: false, day: 'Qua' },
+                { text: 'Acessibilidade Web',   done: false, day: 'Qua' },
+            ],
+            arquivos: [
+                { id: 'bio-1', title: 'Slides — HTML & CSS',        type: 'slide', url: 'https://docs.google.com',   meta: 'Enviado por Profª. Helena · 15 jun' },
+                { id: 'bio-2', title: 'Vídeo: Introdução ao React', type: 'video', url: 'https://youtu.be',          meta: 'YouTube · 22 min' },
+                { id: 'bio-3', title: 'MDN Web Docs — CSS',          type: 'link',  url: 'https://developer.mozilla.org', meta: 'Documentação oficial' },
+            ]
+        },
+        qui: {
+            name: 'Back-End', tag: 'BE', color: 'var(--qui)', colorHex: '#FFD166',
+            prof: 'Prof. Ricardo Dias',
+            topicos: [
+                { text: 'Node.js - Fundamentos', done: false, day: 'Seg' },
+                { text: 'APIs REST',             done: false, day: 'Seg' },
+                { text: 'Termoquímica',           done: false, day: 'Qui' },
+                { text: 'Cinética química',       done: false, day: 'Qui' },
+            ],
+            arquivos: [
+                { id: 'qui-1', title: 'Documentação Node.js',          type: 'link',  url: 'https://nodejs.org',        meta: 'Recurso online' },
+                { id: 'qui-2', title: 'Slides — APIs REST',            type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Prof. Ricardo · 18 jun' },
+            ]
+        },
+        fis: {
+            name: 'Física', tag: 'Fís', color: 'var(--fis)', colorHex: '#FF6B9D',
+            prof: 'Prof. André Santos',
+            topicos: [
+                { text: 'Cinemática escalar',  done: true,  day: 'Ter' },
+                { text: 'Dinâmica (Newton)',   done: false, day: 'Ter' },
+                { text: 'Energia cinética',    done: false, day: 'Qui' },
+                { text: 'Energia potencial',   done: false, day: 'Qui' },
+            ],
+            arquivos: [
+                { id: 'fis-1', title: 'Slides — Cinemática',       type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Prof. André · 05 jun' },
+                { id: 'fis-2', title: 'Simulação: Leis de Newton', type: 'link',  url: 'https://phet.colorado.edu',meta: 'PhET Colorado' },
+            ]
+        },
+        his: {
+            name: 'História', tag: 'His', color: 'var(--hist)', colorHex: '#C792EA',
+            prof: 'Profª. Júlia Lima',
+            topicos: [
+                { text: 'Primeira Guerra Mundial',  done: true, day: 'Ter' },
+                { text: 'Revolução Russa',          done: true, day: 'Ter' },
+                { text: 'Segunda Guerra Mundial',   done: true, day: 'Sex' },
+                { text: 'Guerra Fria',              done: true, day: 'Sex' },
+            ],
+            arquivos: [
+                { id: 'his-1', title: 'Documentário: Primeira Guerra', type: 'video', url: 'https://youtu.be',          meta: 'YouTube · 45 min' },
+                { id: 'his-2', title: 'Linha do Tempo — Séc. XX',      type: 'pdf',   url: 'https://drive.google.com', meta: 'PDF · Enviado por Profª. Júlia' },
+            ]
+        }
+    };
+
+    // ── Estado runtime ──
+    const matTopicoState  = {};  // chave: 'mat-0' → bool
+    const matArquivosExtra = {}; // arquivos adicionados pelo aluno
+
+    function getMatArquivos(subj) {
+        return [...(MATERIAS_DATA[subj].arquivos || []), ...(matArquivosExtra[subj] || [])];
+    }
+
+    function matTopicoDone(subj, idx) {
+        const key = `${subj}-${idx}`;
+        return (key in matTopicoState) ? matTopicoState[key] : MATERIAS_DATA[subj].topicos[idx].done;
+    }
+
+    function matCalcProgress(subj) {
+        const tops = MATERIAS_DATA[subj].topicos;
+        if (!tops.length) return 0;
+        return Math.round(tops.filter((t, i) => matTopicoDone(subj, i)).length / tops.length * 100);
+    }
+
+    // Contagem real de pendentes vinda de taskList
+    function matCountPending(subj) {
+        return taskList.filter(t => t.subject === subj && !t.done).length;
+    }
+
+    // ── Constantes de UI ──
+    const TYPE_ICON  = { slide: '🖼️', video: '▶️', pdf: '📄', link: '🔗' };
+    const TYPE_LABEL = { slide: 'Slide', video: 'Vídeo', pdf: 'PDF', link: 'Link' };
+
+    // ── Estado de filtros ──
+    let matSearchVal      = '';
+    let matProgressFilter = 'todas';
+    let matViewMode       = 'grid';
+
+    // ── Render da grade ──
+    function matRenderGrid() {
+        const grid  = document.getElementById('mat-subject-grid');
+        const empty = document.getElementById('mat-empty');
+        if (!grid) return;
+
+        grid.className = 'subject-grid' + (matViewMode === 'list' ? ' list-mode' : '');
+
+        const search = matSearchVal.toLowerCase();
+        const keys = Object.keys(MATERIAS_DATA).filter(k => {
+            const m = MATERIAS_DATA[k];
+            const pct = matCalcProgress(k);
+            const match = m.name.toLowerCase().includes(search) || m.prof.toLowerCase().includes(search);
+            if (!match) return false;
+            if (matProgressFilter === 'ok')      return pct >= 70;
+            if (matProgressFilter === 'atencao') return pct < 70;
+            return true;
+        });
+
+        if (!keys.length) {
+            grid.innerHTML = '';
+            if (empty) empty.style.display = '';
+            return;
+        }
+        if (empty) empty.style.display = 'none';
+
+        grid.innerHTML = keys.map(k => {
+            const m    = MATERIAS_DATA[k];
+            const pct  = matCalcProgress(k);
+            const pend = matCountPending(k); // real, vinda de taskList
+            const mural = MATERIAS_MURAL[k];
+
+            const badgeHtml = pend > 0
+                ? `<span class="subject-badge subject-badge-warn">${pend} pendente${pend > 1 ? 's' : ''}</span>`
+                : `<span class="subject-badge subject-badge-ok">Em dia ✓</span>`;
+
+            const muralHtml = mural
+                ? `<div class="subject-mural">
+                       <span class="subject-mural-icon">📌</span>
+                       <span class="subject-mural-msg">${mural.msg}</span>
+                       <span class="subject-mural-date">${mural.date}</span>
+                   </div>`
+                : '';
+
+            return `
+            <article class="subject-card" data-subject="${k}" data-open-materia="${k}">
+                <div class="subject-tab"></div>
+                <div class="subject-body">
+                    <div class="subject-head">
+                        <span class="subject-name">${m.name}</span>
+                        ${badgeHtml}
+                    </div>
+                    <div class="topics">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                            <span style="font-size:12px;color:#5B5444;font-weight:600;">Progresso</span>
+                            <span style="font-size:12px;font-weight:700;">${pct}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar ${k}" style="width:${pct}%;"></div>
+                        </div>
+                        <p style="margin:8px 0 4px;font-size:12px;color:#7A7265;">${m.prof}</p>
+                    </div>
+                    ${muralHtml}
+                    <p class="subject-card-hint-open">Clique para detalhes →</p>
+                </div>
+            </article>`;
+        }).join('');
+
+        // Atualiza pills de stats (usa taskList para pendências reais)
+        const all   = Object.keys(MATERIAS_DATA);
+        const concl = all.filter(k => matCalcProgress(k) === 100).length;
+        const pends = all.filter(k => matCountPending(k) > 0).length;
+        const avg   = Math.round(all.reduce((s, k) => s + matCalcProgress(k), 0) / all.length);
+        const sc = document.getElementById('mat-stat-conc');
+        const sp = document.getElementById('mat-stat-pend');
+        const sa = document.getElementById('mat-stat-avg');
+        if (sc) sc.textContent = concl;
+        if (sp) sp.textContent = pends;
+        if (sa) sa.textContent = avg + '%';
+
+        // Abre modal ao clicar
+        grid.querySelectorAll('[data-open-materia]').forEach(card => {
+            card.addEventListener('click', () => matOpenModal(card.dataset.openMateria));
+        });
+    }
+
+    // Registra globalmente para que navigateTo possa chamar antes do primeiro render
+    window._matRenderGrid = matRenderGrid;
+
+    // ── Filtros e view-toggle ──
+    document.getElementById('mat-search')?.addEventListener('input', e => {
+        matSearchVal = e.target.value;
+        matRenderGrid();
+    });
+
+    document.getElementById('mat-progress-filters')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-mf]');
+        if (!btn) return;
+        matProgressFilter = btn.dataset.mf;
+        document.querySelectorAll('#mat-progress-filters [data-mf]')
+            .forEach(b => b.classList.toggle('active', b === btn));
+        matRenderGrid();
+    });
+
+    document.getElementById('mat-view-grid')?.addEventListener('click', () => {
+        matViewMode = 'grid';
+        document.getElementById('mat-view-grid').classList.add('active');
+        document.getElementById('mat-view-list').classList.remove('active');
+        matRenderGrid();
+    });
+
+    document.getElementById('mat-view-list')?.addEventListener('click', () => {
+        matViewMode = 'list';
+        document.getElementById('mat-view-list').classList.add('active');
+        document.getElementById('mat-view-grid').classList.remove('active');
+        matRenderGrid();
+    });
+
+    // ── Modal de Matéria ──
+    let matModalActive = null;
+    let matModalTab    = 'topicos';
+    let mmFileType     = 'slide';
+    let mmFileFormOpen = false;
+
+    function matUpdateModalHeader(subj) {
+        const m    = MATERIAS_DATA[subj];
+        const pct  = matCalcProgress(subj);
+        const tops = m.topicos;
+        const doneCount = tops.filter((t, i) => matTopicoDone(subj, i)).length;
+        const pendCount = matCountPending(subj);
+
+        const circumference = 2 * Math.PI * 32;
+        const arc = document.getElementById('mm-ring-arc');
+        if (arc) {
+            arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+        }
+        const pctEl = document.getElementById('mm-ring-pct');
+        if (pctEl) pctEl.textContent = pct + '%';
+
+        const tdEl = document.getElementById('mm-topics-done');
+        if (tdEl) tdEl.textContent = `${doneCount}/${tops.length}`;
+
+        const tpEl = document.getElementById('mm-tasks-pend');
+        if (tpEl) tpEl.textContent = pendCount;
+    }
+
+    function matOpenModal(subj) {
+        matModalActive = subj;
+        matModalTab    = 'topicos';
+        mmFileFormOpen = false;
+
+        const m       = MATERIAS_DATA[subj];
+        const overlay = document.getElementById('modal-materia');
+        if (!overlay) return;
+
+        // Esconde o form de adicionar link
+        const addForm = document.getElementById('mm-add-file-form');
+        if (addForm) addForm.style.display = 'none';
+
+        // Cabeçalho com gradiente na cor da matéria
+        const header = document.getElementById('mm-header');
+        if (header) header.style.background =
+            `linear-gradient(135deg, ${m.colorHex}dd, ${m.colorHex}88)`;
+
+        const tagEl  = document.getElementById('mm-tag');
+        const nameEl = document.getElementById('mm-name');
+        const profEl = document.getElementById('mm-prof');
+        if (tagEl)  tagEl.textContent  = m.tag;
+        if (nameEl) nameEl.textContent = m.name;
+        if (profEl) profEl.textContent = m.prof;
+
+        // Mural no modal (aba Tópicos — topo)
+        const muralEl = document.getElementById('mm-mural-banner');
+        const mural   = MATERIAS_MURAL[subj];
+        if (muralEl) {
+            if (mural) {
+                muralEl.style.display = '';
+                muralEl.innerHTML = `<span class="mm-mural-icon">📌</span>
+                    <div class="mm-mural-body">
+                        <span class="mm-mural-label">Recado do professor</span>
+                        <span class="mm-mural-text">${mural.msg}</span>
+                    </div>
+                    <span class="mm-mural-date">${mural.date}</span>`;
+            } else {
+                muralEl.style.display = 'none';
+            }
+        }
+
+        matUpdateModalHeader(subj);
+        matRenderModalPanels(subj);
+        openModal('modal-materia');
+    }
+
+    function matRenderModalPanels(subj) {
+        matRenderTabTopicos(subj);
+        matRenderTabTarefas(subj);
+        matRenderTabArquivos(subj);
+
+        document.querySelectorAll('.mm-tab')
+            .forEach(t => t.classList.toggle('active', t.dataset.mmtab === matModalTab));
+
+        ['topicos', 'tarefas', 'arquivos'].forEach(tab => {
+            const p = document.getElementById(`mm-panel-${tab}`);
+            if (p) p.style.display = (tab === matModalTab) ? '' : 'none';
+        });
+    }
+
+    function matRenderTabTopicos(subj) {
+        const list = document.getElementById('mm-topicos-list');
+        if (!list) return;
+        const tops = MATERIAS_DATA[subj].topicos;
+        list.innerHTML = tops.map((t, i) => {
+            const done = matTopicoDone(subj, i);
+            return `<div class="mm-topico-item${done ? ' done' : ''}" data-subj="${subj}" data-idx="${i}">
+                <div class="mm-topico-dot"></div>
+                <span class="mm-topico-text">${t.text}</span>
+                <span class="mm-topico-day">${t.day}</span>
+            </div>`;
+        }).join('');
+
+        list.querySelectorAll('.mm-topico-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const s   = item.dataset.subj;
+                const idx = parseInt(item.dataset.idx);
+                const key = `${s}-${idx}`;
+                matTopicoState[key] = !matTopicoDone(s, idx);
+                matRenderTabTopicos(s);
+                matUpdateModalHeader(s);
+                matRenderGrid(); // atualiza barra de progresso no card
+            });
+        });
+    }
+
+    function matRenderTabTarefas(subj) {
+        const wrap = document.getElementById('mm-tarefas-list');
+        if (!wrap) return;
+        const related = taskList.filter(t => t.subject === subj);
+        if (!related.length) {
+            wrap.innerHTML = '<div class="mm-tarefa-empty">📭 Nenhuma tarefa para esta matéria.</div>';
+            return;
+        }
+        wrap.innerHTML = related.map(t => {
+            const sc = TASK_SUBJECTS[t.subject] || { tag: t.subject };
+            const dueClass = t.done ? '' : taskDueClass(t);
+            return `<div class="mm-tarefa-item${t.done ? ' done' : ''}">
+                <span class="task-tag tag-${t.subject}">${sc.tag}</span>
+                <div>
+                    <div class="mm-tarefa-title">${t.title}</div>
+                    <div class="mm-tarefa-meta ${dueClass}">${t.desc}</div>
+                </div>
+                ${t.done ? '<span style="margin-left:auto;font-size:18px;">✅</span>' : ''}
+            </div>`;
+        }).join('');
+    }
+
+    function matRenderTabArquivos(subj) {
+        const list = document.getElementById('mm-arquivos-list');
+        if (!list) return;
+        const arqs = getMatArquivos(subj);
+        if (!arqs.length) {
+            list.innerHTML = `<div class="mm-arquivo-empty">
+                <div class="mm-arquivo-empty-icon">📂</div>
+                <div class="mm-arquivo-empty-text">Nenhum arquivo ainda.<br>Clique em "+ Adicionar link" para começar.</div>
+            </div>`;
+            return;
+        }
+        list.innerHTML = arqs.map(a => `
+            <div class="mm-arquivo-item" data-url="${a.url}">
+                <div class="mm-arquivo-icon">${TYPE_ICON[a.type] || '🔗'}</div>
+                <div class="mm-arquivo-info">
+                    <div class="mm-arquivo-title">${a.title}</div>
+                    <div class="mm-arquivo-meta">${TYPE_LABEL[a.type] || 'Link'} · ${a.meta}</div>
+                </div>
+                <span class="mm-arquivo-arrow">↗</span>
+                <button class="mm-arquivo-del" data-aid="${a.id}" title="Remover">✕</button>
+            </div>`).join('');
+
+        // Abrir link (exceto se clicar no botão remover)
+        list.querySelectorAll('.mm-arquivo-item').forEach(item => {
+            item.addEventListener('click', e => {
+                if (e.target.closest('.mm-arquivo-del')) return;
+                window.open(item.dataset.url, '_blank');
+            });
+        });
+
+        list.querySelectorAll('.mm-arquivo-del').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const aid = btn.dataset.aid;
+                MATERIAS_DATA[subj].arquivos =
+                    MATERIAS_DATA[subj].arquivos.filter(a => a.id !== aid);
+                if (matArquivosExtra[subj])
+                    matArquivosExtra[subj] = matArquivosExtra[subj].filter(a => a.id !== aid);
+                matRenderTabArquivos(subj);
+                showToast('Arquivo removido.', 'success');
+            });
+        });
+    }
+
+    // ── Tabs internas do modal ──
+    document.querySelector('.mm-tabs')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-mmtab]');
+        if (!btn || !matModalActive) return;
+        matModalTab = btn.dataset.mmtab;
+        document.querySelectorAll('.mm-tab')
+            .forEach(t => t.classList.toggle('active', t === btn));
+        ['topicos', 'tarefas', 'arquivos'].forEach(tab => {
+            const p = document.getElementById(`mm-panel-${tab}`);
+            if (p) p.style.display = (tab === matModalTab) ? '' : 'none';
+        });
+    });
+
+    // ── Fechar modal ──
+    document.getElementById('mm-close')?.addEventListener('click', () => {
+        closeModal('modal-materia');
+    });
+    document.getElementById('modal-materia')?.addEventListener('click', function(e) {
+        if (e.target === this) closeModal('modal-materia');
+    });
+
+    // ── Formulário de adicionar arquivo ──
+    document.getElementById('mm-add-file-btn')?.addEventListener('click', () => {
+        mmFileFormOpen = !mmFileFormOpen;
+        const form = document.getElementById('mm-add-file-form');
+        if (form) form.style.display = mmFileFormOpen ? '' : 'none';
+    });
+
+    document.getElementById('mm-file-cancel')?.addEventListener('click', () => {
+        mmFileFormOpen = false;
+        const form = document.getElementById('mm-add-file-form');
+        if (form) form.style.display = 'none';
+    });
+
+    document.getElementById('mm-file-types')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-type]');
+        if (!btn) return;
+        mmFileType = btn.dataset.type;
+        document.querySelectorAll('#mm-file-types [data-type]')
+            .forEach(b => b.classList.toggle('active', b === btn));
+    });
+
+    document.getElementById('mm-file-confirm')?.addEventListener('click', () => {
+        const titleEl = document.getElementById('mm-file-title');
+        const urlEl   = document.getElementById('mm-file-url');
+        const title   = titleEl?.value.trim();
+        const url     = urlEl?.value.trim();
+
+        if (!title || !url) {
+            showToast('Preencha o título e a URL.', 'warn');
+            return;
+        }
+        if (!matModalActive) return;
+
+        const subj = matModalActive;
+        if (!matArquivosExtra[subj]) matArquivosExtra[subj] = [];
+        matArquivosExtra[subj].push({
+            id:    `${subj}-extra-${Date.now()}`,
+            title, type: mmFileType, url,
+            meta: 'Adicionado por você'
+        });
+
+        if (titleEl) titleEl.value = '';
+        if (urlEl)   urlEl.value   = '';
+        mmFileFormOpen = false;
+        const form = document.getElementById('mm-add-file-form');
+        if (form) form.style.display = 'none';
+
+        matRenderTabArquivos(subj);
+        showToast(`"${title}" adicionado!`, 'success');
+    });
+
+    // ── Inicialização ──
+    // Primeira carga se já estiver na rota #materias
+    if (window.location.hash === '#materias') matRenderGrid();
+
+    // Garante render ao retornar para a aba (complementa navigateTo via window._matRenderGrid)
+    setTimeout(() => {
+        const view = document.getElementById('view-materias');
+        if (view && view.classList.contains('active')) matRenderGrid();
+    }, 100);
 
 });
