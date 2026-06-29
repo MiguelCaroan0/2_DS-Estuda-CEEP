@@ -603,7 +603,6 @@ footer {
 .nav-item:hover:not(.active) {
     color: var(--branco);
     background: rgba(255, 255, 255, 0.02);
-    transform: translateX(4px);
 }
 
 .subject-card {
