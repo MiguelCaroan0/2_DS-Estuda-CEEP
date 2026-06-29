@@ -81,26 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    function updateProgressCard() {
-        // Conta aulas da semana inteira (seg–sex) como "total"
-        let total = 0;
-        [1,2,3,4,5].forEach(d => { total += (timetable[d] || []).length; });
-
-        const pct = 0; // progresso de aulas não é checkável — mantém elementos existentes neutros
-        const arc = document.getElementById('prog-arc');
-        const progPct = document.getElementById('prog-pct');
-        const progDone = document.getElementById('prog-done');
-        const progTotal = document.getElementById('prog-total');
-        const sub = document.getElementById('prog-sub');
-        const progBar = document.getElementById('prog-bar');
-
-        if (progTotal) progTotal.textContent = total;
-        if (progDone)  progDone.textContent  = 0;
-        if (progPct)   progPct.textContent   = '—';
-        if (progBar)   progBar.style.width   = '0%';
-        if (sub)       sub.textContent       = `${total} aulas esta semana`;
-    }
-
     function renderSubjectGrid(dayOfWeek) {
         const grid       = document.getElementById('inicio-subject-grid');
         const emptyState = document.getElementById('day-empty-state');
@@ -182,30 +162,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.querySelectorAll('.day').forEach(x => x.classList.remove('today'));
                 d.classList.add('today');
                 const dow = parseInt(d.dataset.dow);
-                const label = d.querySelector('.d-label').textContent;
-                const num = d.querySelector('.d-num').textContent;
-                const note = document.getElementById('day-filter-note');
-                if (note) note.textContent = `${label}, dia ${num}`;
                 renderSubjectGrid(dow);
             });
         });
 
         renderSubjectGrid(todayDow);
-        const note = document.getElementById('day-filter-note');
-        if (note) note.textContent = `Hoje · ${labels[todayDow]}`;
     }
 
     renderDaysWeek();
-    updateProgressCard();
 
     // ─── RESUMO RÁPIDO (cards do início) ───
+    // OBS: a função abaixo é definida aqui, mas só é CHAMADA mais abaixo
+    // (depois que `taskList` e `agendaSchedule` já existirem), para evitar
+    // o ReferenceError de "variável usada antes de ser inicializada" que
+    // travava o resto do script (incluindo a navegação entre abas).
     function updateInicioSummary() {
         const now = new Date();
         const todayDow = now.getDay();
 
-        // — Card 1: Progresso do dia (aulas) —
-        const todayAulas = timetable[todayDow] || [];
-        const totalAulas = todayAulas.length;
+        // — Card 1: Progresso do dia (aulas fixas + itens da agenda do aluno) —
         const circumference = 2 * Math.PI * 28;
 
         const arc = document.getElementById('isc-day-arc');
@@ -213,13 +188,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const fractionEl = document.getElementById('isc-day-fraction');
         const subEl = document.getElementById('isc-day-sub');
 
-        // Estima quantas aulas já ocorreram baseado na hora atual
+        // Aulas fixas da grade horária (timetable)
+        const todayAulas = timetable[todayDow] || [];
+
+        // Itens adicionados pelo aluno na agenda (exclui aulas fixas duplicadas)
+        const dowToKeyMap = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+        const todayKeyMap = dowToKeyMap[todayDow];
+        const agendaTodayItems = agendaSchedule[todayKeyMap] || [];
+        // Pega apenas itens do aluno que NÃO são do tipo 'aula' (aulas fixas já estão no timetable)
+        const agendaExtras = agendaTodayItems.filter(e => e.type !== 'aula' && e.subject);
+
+        // Total combinado: aulas fixas + sessões extras do aluno
+        const totalAulas = todayAulas.length + agendaExtras.length;
+
+        // Estima quantas já ocorreram/foram concluídas com base na hora atual
         const nowH = now.getHours() + now.getMinutes() / 60;
         let aulasConcluidas = 0;
+
+        // Aulas fixas: cada uma dura ~45min, verifica se já passou o horário de início + 45min
         todayAulas.forEach(a => {
             const startH = parseInt(a.time.split('h')[0]) + (a.time.includes('h1') ? 0.25 : 0);
             if (nowH > startH + 0.75) aulasConcluidas++;
         });
+
+        // Sessões extras da agenda: cada uma dura ~60min
+        agendaExtras.forEach(e => {
+            const parts = e.time.split(':');
+            const startH = parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
+            if (nowH > startH + 1.0) aulasConcluidas++;
+        });
+
         const dayPct = totalAulas === 0 ? 0 : Math.round((aulasConcluidas / totalAulas) * 100);
 
         if (arc) {
@@ -229,7 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (pctEl)      pctEl.textContent      = totalAulas === 0 ? '—' : dayPct + '%';
         if (fractionEl) fractionEl.textContent  = totalAulas === 0 ? '—' : `${aulasConcluidas}/${totalAulas}`;
-        if (subEl)      subEl.textContent       = totalAulas === 0 ? 'sem aulas hoje' : 'aulas concluídas';
+        if (subEl) {
+            if (totalAulas === 0) {
+                subEl.textContent = 'sem aulas hoje';
+            } else {
+                const partes = [];
+                if (todayAulas.length) partes.push(`${todayAulas.length} fix${todayAulas.length > 1 ? 'as' : 'a'}`);
+                if (agendaExtras.length) partes.push(`${agendaExtras.length} extra${agendaExtras.length > 1 ? 's' : ''}`);
+                subEl.textContent = partes.join(' + ') + ' concluídas';
+            }
+        }
 
         // — Card 2: Tarefas pendentes hoje —
         const todayStr = now.toISOString().slice(0, 10);
@@ -287,8 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hoursSub.textContent = parts.length ? parts.join(' + ') : 'nada agendado';
         }
     }
-
-    updateInicioSummary();
 
     // ─── SPA ROUTING ───
     const navItems = document.querySelectorAll('.nav-item');
@@ -555,18 +560,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function agendaUpdateSummary() {
-        let totalAulas = 0;
+        // Conta apenas sessões extras adicionadas pelo aluno (ignora aulas fixas)
+        let totalExtras = 0;
         Object.values(agendaSchedule).forEach(day => {
-            day.forEach(e => { if (e.subject) totalAulas++; });
+            day.forEach(e => {
+                if (e.subject && e.type !== 'aula') totalExtras++;
+            });
         });
-        const horasEst = totalAulas * 1.5;
 
-        const elAulas = document.getElementById('agenda-sum-aulas');
-        const elHoras = document.getElementById('agenda-sum-horas');
-        const elMeta = document.getElementById('agenda-sum-meta');
-        if (elAulas) elAulas.textContent = totalAulas;
-        if (elHoras) elHoras.textContent = horasEst.toFixed(0) + 'h';
-        if (elMeta) elMeta.textContent = Math.min(100, Math.round(totalAulas / 15 * 100)) + '%';
+        // Horas: cada sessão extra = 60min
+        const totalMin = totalExtras * 60;
+        const horas = Math.floor(totalMin / 60);
+        const min = totalMin % 60;
+        const horasStr = totalMin === 0 ? '0h' : (min > 0 ? `${horas}h${String(min).padStart(2,'0')}` : `${horas}h`);
+
+        // Meta: baseada em extras sobre 15 sessões
+        const META = 15;
+        const metaPct = Math.min(100, Math.round(totalExtras / META * 100));
+        const circumference = 2 * Math.PI * 28;
+
+        const elAulas    = document.getElementById('agenda-sum-aulas');
+        const elAulasSub = document.getElementById('agenda-sum-aulas-sub');
+        const elHoras    = document.getElementById('agenda-sum-horas');
+        const elMeta     = document.getElementById('agenda-sum-meta');
+        const elMetaVal  = document.getElementById('agenda-sum-meta-val');
+        const arc        = document.getElementById('agenda-meta-arc');
+
+        if (elHoras)    elHoras.textContent    = horasStr;
+        if (elAulas)    elAulas.textContent    = totalExtras;
+        if (elAulasSub) elAulasSub.textContent = totalExtras === 0 ? 'nenhuma extra agendada' : 'sessões extras esta semana';
+        if (elMeta)     elMeta.textContent     = metaPct + '%';
+        if (elMetaVal)  elMetaVal.textContent  = `${totalExtras}/${META}`;
+        if (arc) {
+            arc.style.strokeDasharray  = circumference;
+            arc.style.strokeDashoffset = circumference - (metaPct / 100) * circumference;
+            arc.style.stroke = metaPct >= 100 ? 'var(--bio)' : 'var(--mat)';
+        }
+
+        // Atualiza o card de progresso do dia na aba Início
+        updateInicioSummary();
     }
 
     function agendaOpenModal() {
@@ -667,6 +699,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let taskSubjFilter = 'todas';
     let taskSortBy = 'prazo';
     let tarefasInitialized = false;
+
+    // Agora sim: taskList e agendaSchedule já existem, então é seguro chamar.
+    updateInicioSummary();
 
     const TODAY_DATE = new Date().toISOString().slice(0, 10);
 
@@ -1100,9 +1135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         histRenderSessions();
     }
 
-    // Hook into navigation
-    const _origNavigateTo = navigateTo;
-
     // ─── CALENDÁRIO ESCOLAR ───
     const calGrid = document.getElementById('school-calendar-grid');
     const calMonthLabel = document.getElementById('cal-month-label');
@@ -1323,7 +1355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (closeBtn) { closeModal(closeBtn.dataset.close); return; }
 
         // Click on overlay background
-        if (e.target.classList.contains('modal-overlay') && e.target.id !== 'modal-task') {
+        if (e.target.classList.contains('modal-overlay')) {
             closeModal(e.target.id);
         }
     });
@@ -1391,9 +1423,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!title) { showToast('Informe o título da tarefa.', 'warn'); return; }
 
             const list = document.getElementById('prof-tasks-list');
+            if (!list) return;
             const tagMap = { mat: 'Mat', por: 'Port', bio: 'FE', qui: 'BE', fis: 'Fís', his: 'His' };
             const dueText = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : 'sem prazo';
             const plabels = { interna: 'Estuda CEEP', 'redacao-pr': 'Redação Paraná', classroom: 'Google Classroom', livro: 'Livro Didático' };
+
+            const emptyState = list.querySelector('.prof-tasks-empty');
+            if (emptyState) emptyState.remove();
 
             list.insertAdjacentHTML('afterbegin', `
                 <div class="task-item">

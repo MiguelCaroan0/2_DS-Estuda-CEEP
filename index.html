@@ -107,9 +107,8 @@
                             <div class="isc-ring-pct" id="isc-day-pct">0%</div>
                         </div>
                         <div class="isc-body">
-                            <div class="isc-label">Progresso do dia</div>
+                            <div class="isc-label">Aulas Concluídas</div>
                             <div class="isc-value" id="isc-day-fraction">—</div>
-                            <div class="isc-sub" id="isc-day-sub">tópicos concluídos</div>
                         </div>
                     </div>
 
@@ -123,7 +122,6 @@
                         <div class="isc-body">
                             <div class="isc-label">Tarefas pendentes</div>
                             <div class="isc-value" id="isc-tasks-count">—</div>
-                            <div class="isc-sub isc-tasks-sub" id="isc-tasks-sub">a fazer</div>
                         </div>
                     </div>
 
@@ -135,7 +133,6 @@
                         <div class="isc-body">
                             <div class="isc-label">Ofensiva atual</div>
                             <div class="isc-value accent-mat">5 dias</div>
-                            <div class="isc-sub">estudando seguido</div>
                         </div>
                     </div>
 
@@ -147,9 +144,8 @@
                             </svg>
                         </div>
                         <div class="isc-body">
-                            <div class="isc-label">Horas planejadas hoje</div>
+                            <div class="isc-label">Horas de estudos hoje</div>
                             <div class="isc-value" id="isc-hours-value">—</div>
-                            <div class="isc-sub" id="isc-hours-sub">na agenda</div>
                         </div>
                     </div>
 
@@ -195,27 +191,67 @@
                     <button class="btn btn-primary" id="agenda-btn-apply-banner">Aplicar plano</button>
                 </div>
 
-                <div class="agenda-summary-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Horas planejadas</div>
-                        <div class="stat-value accent-qui" id="agenda-sum-horas">—</div>
-                        <div class="stat-sub">esta semana</div>
+                <div class="inicio-summary-row">
+
+                    <!-- Card 1: Horas planejadas -->
+                    <div class="inicio-summary-card">
+                        <div class="isc-icon-wrap isc-icon--hours">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Horas planejadas</div>
+                            <div class="isc-value accent-qui" id="agenda-sum-horas">—</div>
+                            <div class="isc-sub">esta semana</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Sessões</div>
-                        <div class="stat-value accent-port" id="agenda-sum-aulas">—</div>
-                        <div class="stat-sub">aulas agendadas</div>
+
+                    <!-- Card 2: Sessões agendadas -->
+                    <div class="inicio-summary-card">
+                        <div class="isc-icon-wrap isc-icon--sessions">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Sessões</div>
+                            <div class="isc-value accent-port" id="agenda-sum-aulas">—</div>
+                            <div class="isc-sub" id="agenda-sum-aulas-sub">agendadas esta semana</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Ofensiva</div>
-                        <div class="stat-value accent-bio">5 dias</div>
-                        <div class="stat-sub">estudando seguido</div>
+
+                    <!-- Card 3: Ofensiva -->
+                    <div class="inicio-summary-card">
+                        <div class="isc-icon-wrap isc-icon--streak">
+                            <span style="font-size:28px;line-height:1;">🔥</span>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Ofensiva atual</div>
+                            <div class="isc-value accent-bio">5 dias</div>
+                            <div class="isc-sub">estudando seguido</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Meta semanal</div>
-                        <div class="stat-value accent-mat" id="agenda-sum-meta">—</div>
-                        <div class="stat-sub">concluída</div>
+
+                    <!-- Card 4: Meta semanal -->
+                    <div class="inicio-summary-card">
+                        <div class="isc-ring-wrap">
+                            <svg class="isc-ring" viewBox="0 0 72 72">
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="var(--mat)" stroke-width="6"
+                                    stroke-dasharray="176" stroke-dashoffset="176"
+                                    stroke-linecap="round" transform="rotate(-90 36 36)"
+                                    id="agenda-meta-arc"/>
+                            </svg>
+                            <div class="isc-ring-pct" id="agenda-sum-meta">—</div>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Meta semanal</div>
+                            <div class="isc-value" id="agenda-sum-meta-val">—</div>
+                            <div class="isc-sub">sessões / meta de 15</div>
+                        </div>
                     </div>
+
                 </div>
 
                  <div class="agenda-action-row">
@@ -686,6 +722,11 @@
                             <button class="btn btn-primary" id="prof-publish-btn">Publicar Tarefa</button>
                         </div>
                     </div>
+
+                    <div class="modal-subtitle" style="margin-top:18px;">Tarefas publicadas recentemente</div>
+                    <div id="prof-tasks-list">
+                        <p class="modal-stat-meta prof-tasks-empty" style="padding:14px 0;">Nenhuma tarefa publicada ainda nesta sessão.</p>
+                    </div>
                 </div>
                 <div class="section">
                     <div class="section-head">
@@ -929,46 +970,6 @@
                 <button class="btn btn-secondary" data-close="modal-realizadas">Fechar</button>
                 <button class="btn btn-primary" id="modal-realizadas-export">Exportar relatório</button>
             </div>
-        </div>
-    </div>
-
-    <!-- ── MODAL NOVA TAREFA (legado) ── -->
-    <div class="modal-overlay" id="modal-task">
-        <div class="modal-content">
-            <div class="modal-title">Nova Tarefa</div>
-            <form id="form-task">
-                <div class="form-group">
-                    <label class="form-label" for="task-title-input">Título da Atividade</label>
-                    <input type="text" id="task-title-input" class="form-input" placeholder="Ex: Exercícios de Gravitação" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="task-desc-input">Descrição / Prazo</label>
-                    <input type="text" id="task-desc-input" class="form-input" placeholder="Ex: Vence sexta-feira · pág. 45" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="task-subject-input">Matéria</label>
-                    <select id="task-subject-input" class="form-input">
-                        <option value="mat">Matemática</option>
-                        <option value="por">Português</option>
-                        <option value="bio">Front-End</option>
-                        <option value="qui">Back-End</option>
-                        <option value="fis">Física</option>
-                        <option value="his">História</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="task-priority-input">Prioridade</label>
-                    <select id="task-priority-input" class="form-input">
-                        <option value="baixa">Baixa (Verde)</option>
-                        <option value="media" selected>Média (Amarelo)</option>
-                        <option value="alta">Alta (Rosa)</option>
-                    </select>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" id="btn-cancel-task">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
-                </div>
-            </form>
         </div>
     </div>
 
