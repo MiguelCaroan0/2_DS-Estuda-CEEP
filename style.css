@@ -1961,27 +1961,3 @@ footer {
     gap: 14px;
 }
  
-/* ── Responsividade básica ── */
-@media (max-width: 680px) {
-    .tf-controls {
-        flex-direction: column;
-        align-items: flex-start;
-    }
- 
-    .tf-controls-right {
-        width: 100%;
-        justify-content: space-between;
-    }
- 
-    .tf-sort {
-        flex: 1;
-    }
- 
-    .tf-modal-row {
-        grid-template-columns: 1fr;
-    }
- 
-    .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
