@@ -2470,4 +2470,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (view && view.classList.contains('active')) matRenderGrid();
     }, 100);
 
+    // ── MENU MOBILE (hamburguer) ──
+    const mobileMenuBtn  = document.getElementById('mobile-menu-btn');
+    const sidebarEl      = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebarEl?.classList.add('open');
+        sidebarOverlay?.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebarEl?.classList.remove('open');
+        sidebarOverlay?.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    mobileMenuBtn?.addEventListener('click', () => {
+        sidebarEl?.classList.contains('open') ? closeSidebar() : openSidebar();
+    });
+
+    sidebarOverlay?.addEventListener('click', closeSidebar);
+
+    // Fecha o drawer ao navegar por um item do menu
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) closeSidebar();
+        });
+    });
+
 });

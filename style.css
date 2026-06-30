@@ -3912,3 +3912,208 @@ footer {
     margin-top: 2px;
     flex-shrink: 0;
 }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE (≤ 768px)
+══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── Variáveis ── */
+    :root {
+        --header-h: 56px;
+        --sidebar-w: 0px;
+    }
+
+    /* ── Header ── */
+    .top-header {
+        padding: 0 16px;
+        justify-content: space-between;
+    }
+
+    #logo-header {
+        height: 38px;
+        width: 38px;
+    }
+
+    .top-header-name {
+        font-size: 15px;
+    }
+
+    /* ── Botão hamburguer ── */
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        color: var(--branco);
+        font-size: 22px;
+        line-height: 1;
+    }
+
+    /* ── Sidebar vira drawer deslizante ── */
+    .sidebar {
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        z-index: 200;
+        top: var(--header-h);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Overlay escuro atrás do drawer */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 199;
+    }
+
+    .sidebar-overlay.open {
+        display: block;
+    }
+
+    /* ── Main: sem margin-left ── */
+    .main {
+        margin-left: 0;
+    }
+
+    /* ── Content: padding menor ── */
+    .content {
+        padding: 24px 16px 48px;
+    }
+
+    /* ── Títulos de página ── */
+    .page-title {
+        font-size: 26px;
+    }
+
+    /* ── Stats row: 2 colunas ── */
+    .stats-row,
+    #view-tarefas .stats-row,
+    #view-historico .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Resumo rápido do início: 2 colunas ── */
+    .inicio-summary-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Agenda summary: 2 colunas ── */
+    .agenda-summary-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Grade de dias da semana: scroll horizontal ── */
+    #inicio-days-week,
+    .agenda-days-week {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+    }
+
+    .stats-row-week {
+        grid-template-columns: repeat(7, minmax(44px, 1fr));
+    }
+
+    /* ── Matérias: 1 coluna ── */
+    .mat-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    #mat-subject-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Home hero ── */
+    .home-hero {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* ── Subject grid do início: 1 coluna ── */
+    .subject-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Área do professor: stats em 2 colunas ── */
+    .prof-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px;
+    }
+
+    /* ── Modais: tela cheia ── */
+    .modal-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0;
+        border-radius: 16px 16px 0 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-overlay {
+        align-items: flex-end;
+    }
+
+    /* ── Agenda planner row: coluna de hora menor ── */
+    .agenda-planner-row {
+        grid-template-columns: 48px 1fr;
+    }
+
+    /* ── Filtros de turma: wrap ── */
+    .turma-filter-row,
+    .tf-filter-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* ── Tabela de Relatório de Tarefas ── */
+    .rt-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* ── Calendário: menor ── */
+    .cal-grid {
+        gap: 4px;
+    }
+
+    .cal-day {
+        min-height: 44px;
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    /* ── Tarefas: lista compacta ── */
+    .task-item {
+        padding: 12px 14px;
+    }
+
+    /* ── Histórico: cards menores ── */
+    .hist-card {
+        padding: 14px;
+    }
+}
+
+/* ── Hamburguer: escondido no desktop ── */
+.mobile-menu-btn {
+    display: none;
+}
