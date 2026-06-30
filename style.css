@@ -44,6 +44,7 @@ body {
     display: flex;
     align-items: center;
     padding: 0 32px;
+    z-index: 100;
 }
 
 .top-header-brand {
@@ -186,6 +187,8 @@ body {
 .content {
     padding: 48px 48px 64px;
     max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* ── PAGE HEADER ── */
@@ -206,6 +209,17 @@ body {
     margin: 0;
 }
 
+/* ── CENTRALIZAÇÃO: títulos/subtítulos de páginas específicas ── */
+
+#view-agenda .page-header,
+#view-tarefas .page-header,
+#view-historico .page-header,
+#view-materias .page-header,
+#view-calendario .page-header {
+    justify-content: center;
+    text-align: center;
+}
+
 /* ── STATS ROW ── */
 
 .stats-row {
@@ -220,6 +234,27 @@ body {
     border: 1px solid var(--board-line);
     border-radius: 12px;
     padding: 18px 20px;
+}
+
+/* Tarefas e Histórico têm 3 cards — usar 3 colunas para ficarem centralizados/equilibrados na linha */
+#view-tarefas .stats-row,
+#view-historico .stats-row {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-card--icon {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+}
+
+.stat-card--icon .stat-label {
+    margin-bottom: 4px;
+}
+
+.stat-card--icon .stat-value {
+    font-size: 26px;
 }
 
 .stat-label {
@@ -282,6 +317,7 @@ body {
     border: 1px solid var(--board-line);
     border-radius: 10px;
     padding: 10px 4px;
+    background-color: var(--fundo-secundario);
 }
 
 .d-label {
@@ -298,8 +334,8 @@ body {
 }
 
 .day.today {
-    background: var(--branco);
-    color: var(--fundo);
+    background: var(--fundo-secundario);
+    color: var(--branco);
     border-color: var(--branco);
 }
 
@@ -316,11 +352,14 @@ body {
 }
 
 .subject-card {
-    background: var(--branco);
-    color: var(--fundo);
+    background: var(--fundo-secundario);
+    color: var(--branco);
     border-radius: 4px 4px 10px 10px;
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
     overflow: hidden;
+    border-right:2px solid  rgb(101, 101, 101);
+    border-left: 2px solid rgb(101, 101, 101);
+    border-bottom:2px solid  rgb(101, 101, 101);
 }
 
 .subject-tab {
@@ -370,7 +409,7 @@ body {
 .aula-time {
     font-size: 11px;
     font-weight: 700;
-    color: var(--fundo);
+    color: var(--branco);
     white-space: nowrap;
     min-width: 110px;
     flex-shrink: 0;
@@ -379,7 +418,7 @@ body {
 
 .aula-content {
     font-size: 13px;
-    color: var(--fundo);
+    color: var(--branco);
     line-height: 1.4;
 }
 
@@ -395,14 +434,14 @@ body {
 /* keep old topic classes for matérias modal compatibility */
 .topics {
     margin-top: 12px;
-    border-top: 1px dashed #D4CFC4;
+    border-top: 1px dashed rgba(255,255,255,0.12);
     padding-top: 10px;
 }
 
 .topics-label {
     font-size: 12px;
     font-weight: 600;
-    color: #5B5444;
+    color: var(--branco);
     margin: 0 0 8px;
 }
 
@@ -875,7 +914,6 @@ footer {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
 }
 
 .cal-legend-item {
@@ -902,14 +940,20 @@ footer {
 /* ── FILTRO POR CATEGORIA ── */
 .cal-filter-bar {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 14px;
     margin-bottom: 20px;
     padding: 12px 16px;
     background: var(--fundo-secundario);
     border: 1px solid var(--board-line);
     border-radius: 12px;
+}
+
+.cal-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .cal-filter-label {
@@ -1528,6 +1572,10 @@ footer {
 .isc-icon--streak { background: rgba(255,138,91,0.12); color: var(--mat); }
 .isc-icon--hours  { background: rgba(95,179,232,0.12); color: var(--port); }
 .isc-icon--sessions { background: rgba(95,179,232,0.12); color: var(--port); }
+.isc-icon--pending  { background: rgba(255,138,91,0.12);  color: var(--mat); }
+.isc-icon--done     { background: rgba(111,207,122,0.12); color: var(--bio); }
+.isc-icon--due      { background: rgba(255,209,102,0.12); color: var(--qui); }
+.isc-icon--due.urgent { background: rgba(255,107,157,0.14); color: var(--fis); }
 
 /* Text */
 .isc-body {
@@ -1561,12 +1609,6 @@ footer {
 .isc-tasks-sub--urgent {
     color: var(--fis);
     font-weight: 600;
-}
-
-@media (max-width: 860px) {
-    .inicio-summary-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
 /* ── TODAY SUBJECTS STRIP ── */
@@ -1923,6 +1965,14 @@ footer {
     opacity: 1;
 }
  
+.agenda-slot--blocked {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    cursor: not-allowed;
+    opacity: 0.3;
+}
+ 
 /* Slot preenchido — evento */
 .agenda-slot--filled {
     padding: 6px 10px;
@@ -2154,15 +2204,18 @@ footer {
 /* Seletor de ordenação */
 .tf-sort {
     width: auto;
-    padding: 7px 12px;
-    font-size: 12px;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
     cursor: pointer;
 }
- 
-/* Botão nova tarefa */
+
 .tf-new-btn {
-    white-space: nowrap;
+    height: 38px;
+    padding: 0 16px;
+    font-size: 13px;
 }
+
  
 /* ── Cards de tarefa (nova versão) ── */
  
@@ -3019,41 +3072,84 @@ footer {
     margin-top: 8px;
 }
 
-/* ── TAREFAS NÃO REALIZADAS — SEÇÕES POR TURMA ── */
+/* ── TAREFAS NÃO REALIZADAS / ALUNOS DESTAQUES — SEÇÕES POR TURMA ── */
 
 .nr-turma-section {
-    margin-bottom: 4px;
+    margin-bottom: 10px;
+    border: 1px solid var(--board-line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
 }
 
 .nr-turma-section:last-child {
     margin-bottom: 0;
 }
 
+/* Cor de identidade por turma (barra lateral) */
+.nr-turma-section[data-turma="3A"] { --turma-color: var(--mat); }
+.nr-turma-section[data-turma="3B"] { --turma-color: var(--port); }
+.nr-turma-section[data-turma="2A"] { --turma-color: var(--bio); }
+
 .nr-turma-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 16px 6px;
-    background: var(--surface-2, rgba(255,255,255,0.04));
-    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.04);
+    border-left: 4px solid var(--turma-color, var(--qui));
 }
 
 .nr-turma-label {
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.85;
+    color: var(--branco);
 }
 
 .nr-turma-count {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--borda-cinza);
+    background: rgba(255,255,255,0.08);
+    padding: 3px 10px;
+    border-radius: 99px;
 }
 
 .nr-turma-section .modal-stat-list {
-    padding: 0;
+    padding: 10px 12px 12px;
+    margin-bottom: 0;
+}
+
+/* ── NÃO REALIZADAS — cabeçalho de turma clicável ── */
+
+.nr-turma-header.nr-turma-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    border-left: 4px solid var(--turma-color, var(--qui));
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.nr-turma-header.nr-turma-toggle:hover {
+    background: rgba(255,255,255,0.09);
+}
+
+.nr-turma-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nr-turma-arrow {
+    font-size: 11px;
+    color: var(--borda-cinza);
+    opacity: 0.7;
 }
 
 /* ── TAREFAS REALIZADAS — NOMES DOS ALUNOS ── */
@@ -3093,38 +3189,6 @@ footer {
     white-space: nowrap;
 }
 
-/* ── NÃO REALIZADAS — cabeçalho de turma clicável ── */
-
-.nr-turma-header.nr-turma-toggle {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--surface-2, rgba(255,255,255,0.04));
-    border: none;
-    border-top: 1px solid var(--border);
-    padding: 10px 16px;
-    cursor: pointer;
-    text-align: left;
-    transition: background 0.15s;
-}
-
-.nr-turma-header.nr-turma-toggle:hover {
-    background: rgba(255,255,255,0.07);
-}
-
-.nr-turma-header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nr-turma-arrow {
-    font-size: 11px;
-    color: var(--text-muted);
-    opacity: 0.7;
-}
-
 /* ── RELATÓRIO DE TAREFAS — painel único com mesmo fundo ── */
 
 .rt-panel {
@@ -3136,35 +3200,71 @@ footer {
 
 .rt-panel-controls {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
-    padding: 20px;
+    padding: 20px 20px 5px;
+}
+
+.rt-panel-controls--2col {
+    grid-template-columns: 1fr 1fr;
+}
+
+.rt-panel-controls--inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px;
+    grid-template-columns: unset;
+}
+
+.hist-search-input--full {
+    width: 220px;
 }
 
 .rt-panel-summary {
-    padding: 12px 20px 16px;
-    border-top: 1px solid var(--board-line);
+    padding: 14px 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rt-summary-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.rt-stat-num {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--branco);
+    line-height: 1;
+}
+
+.rt-stat-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--borda-cinza);
+}
+
+.rt-stat-pct {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bio);
+}
+
+.rt-stat-pct--pend {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fis);
 }
 
 .rt-students-list {
-    border-top: 1px solid var(--board-line);
-    max-height: 228px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--borda-cinza) transparent;
-}
-
-.rt-students-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.rt-students-list::-webkit-scrollbar-thumb {
-    background: var(--borda-cinza);
-    border-radius: 99px;
-}
-
-.rt-students-list::-webkit-scrollbar-track {
-    background: transparent;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .rt-student-row {
@@ -3184,16 +3284,125 @@ footer {
     font-weight: 600;
     color: var(--branco);
 }
+
+/* ── Tarefas publicadas recentemente (card) ── */
+.prof-pub-header {
+    padding: 15px 20px 0;
+    border-bottom: 1px solid var(--board-line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.prof-pub-header--no-border {
+    border-bottom: none;
+}
+
+.prof-pub-list {
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--borda-cinza) transparent;
+}
+
+.prof-pub-list::-webkit-scrollbar { width: 6px; }
+.prof-pub-list::-webkit-scrollbar-thumb { background: var(--borda-cinza); border-radius: 99px; }
+.prof-pub-list::-webkit-scrollbar-track { background: transparent; }
+
+.prof-pub-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--board-line);
+    transition: background 0.12s;
+}
+
+.prof-pub-item:last-child { border-bottom: none; }
+.prof-pub-item:hover { background: rgba(255,255,255,0.03); }
+
+.prof-pub-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Grid de chips de alunos ── */
+.rt-chips-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+}
+
+
+
+
+/* Card interno que abriga todos os nomes */
+.rt-chips-inner {
+    background: var(--fundo-primario);
+    border: 1px solid var(--board-line);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 176px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--borda-cinza) transparent;
+}
+
+.rt-chips-inner::-webkit-scrollbar { width: 6px; }
+.rt-chips-inner::-webkit-scrollbar-thumb { background: var(--borda-cinza); border-radius: 99px; }
+.rt-chips-inner::-webkit-scrollbar-track { background: transparent; }
+
+.rt-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--board-line);
+    cursor: default;
+    transition: background 0.12s;
+}
+
+.rt-chip:last-child {
+    border-bottom: none;
+}
+
+.rt-chip:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.rt-chip-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.rt-chip-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--branco);
+    white-space: nowrap;
+}
 /* ═══════════════════════════════════════════════
    MATÉRIAS — GRADE REATIVA + MODALS
 ═══════════════════════════════════════════════ */
 
 /* Stats rápidos topo */
 .mat-stats-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
 }
 .mat-stat-pill {
     display: flex;
@@ -3650,7 +3859,7 @@ footer {
     padding: 7px 10px;
     margin: 8px 0 4px;
     font-size: 11px;
-    color: #3A3020;
+    color: var(--branco);
     line-height: 1.35;
     position: relative;
 }

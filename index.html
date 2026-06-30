@@ -201,7 +201,7 @@
                             </svg>
                         </div>
                         <div class="isc-body">
-                            <div class="isc-label">Horas planejadas</div>
+                            <div class="isc-label">Horas de Estudo</div>
                             <div class="isc-value accent-qui" id="agenda-sum-horas">—</div>
                             <div class="isc-sub">esta semana</div>
                         </div>
@@ -262,7 +262,7 @@
 
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title" id="agenda-planner-title">Quarta-feira, 25 jun</h2>
+                        <h2 class="section-title" id="agenda-planner-title">Quarta-Feira, 25 jun</h2>
                         <div class="agenda-day-nav">
                             <button class="agenda-nav-btn" id="agenda-nav-prev" aria-label="Dia anterior">&#8592;</button>
                             <button class="agenda-nav-btn" id="agenda-nav-next" aria-label="Próximo dia">&#8594;</button>
@@ -289,7 +289,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="agenda-modal-title">Título / Tópico</label>
-                        <input type="text" id="agenda-modal-title" class="form-input" placeholder="Ex: Funções do 2º grau">
+                        <input type="text" id="agenda-modal-title" class="form-input">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="agenda-modal-time">Horário</label>
@@ -329,20 +329,38 @@
 
                 <!-- Stats rápidos -->
                 <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Pendentes</div>
-                        <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
-                        <div class="stat-sub">a fazer</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--pending">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Pendentes</div>
+                            <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Concluídas</div>
-                        <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
-                        <div class="stat-sub">finalizadas</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--done">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Concluídas</div>
+                            <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Vencem hoje</div>
-                        <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
-                        <div class="stat-sub">prazo hoje</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--due" id="tf-stat-hoje-icon">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Vencem hoje</div>
+                            <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
+                        </div>
                     </div>
                 </div>
 
@@ -350,8 +368,7 @@
                 <div class="tf-controls">
                     <div class="tf-controls-left">
                         <div class="tf-filter-group" id="tf-status-filters">
-                            <button class="tf-filter-btn active" data-filter="todas">Todas</button>
-                            <button class="tf-filter-btn" data-filter="pendentes">Pendentes</button>
+                            <button class="tf-filter-btn active" data-filter="pendentes">Pendentes</button>
                             <button class="tf-filter-btn" data-filter="concluidas">Concluídas</button>
                         </div>
                         <div class="tf-divider"></div>
@@ -437,17 +454,43 @@
                 </div>
 
                 <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Tempo Mensal</div>
-                        <div class="stat-value accent-qui">28h45</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--hours">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Tempo Mensal</div>
+                            <div class="stat-value accent-qui">28h45</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Frequência</div>
-                        <div class="stat-value accent-bio">94%</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--done">
+                            <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Cabeça -->
+                                <circle cx="38" cy="28" r="16"/>
+                                <!-- Corpo -->
+                                <path d="M8 85 C8 62 68 62 68 85"/>
+                                <!-- Círculo do check -->
+                                <circle cx="72" cy="72" r="20" fill="none"/>
+                                <!-- Check -->
+                                <polyline points="62,72 69,80 83,63"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Frequência</div>
+                            <div class="stat-value accent-bio">94%</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Sequência de Estudo</div>
-                        <div class="stat-value accent-mat">5 dias</div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="isc-icon-wrap isc-icon--streak">
+                            <span style="font-size:26px;line-height:1;">🔥</span>
+                        </div>
+                        <div class="isc-body">
+                            <div class="stat-label">Sequência de Estudo</div>
+                            <div class="stat-value accent-mat">5 dias</div>
+                        </div>
                     </div>
                 </div>
 
@@ -475,33 +518,40 @@
 
                 <!-- ── SESSÕES RECENTES: FILTROS + BUSCA ── -->
                 <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Sessões Recentes</h2>
-                        <span class="section-note" id="hist-session-count">Últimas sessões</span>
-                    </div>
-
-                    <div class="hist-controls">
-                        <div class="hist-search-wrap">
-                            <svg class="hist-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                            <input class="hist-search-input" id="hist-search" type="text" placeholder="Buscar sessão...">
+                    <div class="rt-panel">
+                        <div class="prof-pub-header prof-pub-header--no-border">
+                            <span class="section-title">Tarefas Realizadas</span>
                         </div>
-                        <div class="tf-filter-group" id="hist-subj-filters">
-                            <button class="tf-subj-btn active" data-subj="todas">Todas</button>
-                            <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
-                            <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
-                            <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">FE</button>
-                            <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">BE</button>
-                            <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
-                            <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+
+                        <div class="rt-panel-controls rt-panel-controls--inline">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label">Buscar</label>
+                                <div class="hist-search-wrap">
+                                    <svg class="hist-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                    <input class="hist-search-input hist-search-input--full" id="hist-search" type="text" placeholder="Buscar sessão...">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label">Matéria</label>
+                                <div class="tf-filter-group" id="hist-subj-filters">
+                                    <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                                    <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
+                                    <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
+                                    <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">FE</button>
+                                    <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">BE</button>
+                                    <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
+                                    <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tasks-list" id="hist-sessions-list"></div>
+                        <div class="rt-students-list" id="hist-sessions-list"></div>
 
-                    <div class="tf-empty" id="hist-empty" style="display:none;">
-                        <div class="tf-empty-icon">🔍</div>
-                        <div class="tf-empty-title">Nenhuma sessão encontrada</div>
-                        <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
+                        <div class="tf-empty" id="hist-empty" style="display:none;">
+                            <div class="tf-empty-icon">🔍</div>
+                            <div class="tf-empty-title">Nenhuma sessão encontrada</div>
+                            <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -518,18 +568,43 @@
                 </div>
 
                 <!-- Stats rápidos de matérias -->
-                <div class="mat-stats-row">
-                    <div class="mat-stat-pill">
-                        <span class="mat-stat-dot" style="background:var(--bio)"></span>
-                        <span id="mat-stat-conc">0</span> concluídas
+                <div class="inicio-summary-row mat-stats-row">
+                    <div class="inicio-summary-card">
+                        <div class="isc-icon-wrap isc-icon--done">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Matérias 100%</div>
+                            <div class="isc-value accent-bio" id="mat-stat-conc">0</div>
+                        </div>
                     </div>
-                    <div class="mat-stat-pill">
-                        <span class="mat-stat-dot" style="background:var(--mat)"></span>
-                        <span id="mat-stat-pend">0</span> com pendências
+                    <div class="inicio-summary-card">
+                        <div class="isc-icon-wrap isc-icon--pending">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Com Pendências</div>
+                            <div class="isc-value accent-mat" id="mat-stat-pend">0</div>
+                        </div>
                     </div>
-                    <div class="mat-stat-pill">
-                        <span class="mat-stat-dot" style="background:var(--qui)"></span>
-                        Média de progresso: <strong id="mat-stat-avg">—</strong>
+                    <div class="inicio-summary-card">
+                        <div class="isc-ring-wrap">
+                            <svg class="isc-ring" viewBox="0 0 72 72">
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="var(--qui)" stroke-width="6"
+                                    stroke-dasharray="176" stroke-dashoffset="176"
+                                    stroke-linecap="round" transform="rotate(-90 36 36)"
+                                    id="mat-stat-avg-arc"/>
+                            </svg>
+                            <div class="isc-ring-pct" id="mat-stat-avg">—</div>
+                        </div>
+                        <div class="isc-body">
+                            <div class="isc-label">Média de Progresso geral das matérias</div>
+                        </div>
                     </div>
                 </div>
 
@@ -559,7 +634,6 @@
 
                 <!-- Estado vazio -->
                 <div id="mat-empty" style="display:none;" class="tf-empty">
-                    <div class="tf-empty-icon">📚</div>
                     <div class="tf-empty-title">Nenhuma matéria encontrada</div>
                     <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
                 </div>
@@ -577,21 +651,23 @@
                     </div>
                 </div>
 
-                <div class="cal-legend">
-                    <span class="cal-legend-item"><span class="cal-dot dot-prova"></span>Provas</span>
-                    <span class="cal-legend-item"><span class="cal-dot dot-prazo"></span>Prazos</span>
-                    <span class="cal-legend-item"><span class="cal-dot dot-evento"></span>Eventos</span>
-                    <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Feriados</span>
-                </div>
-
                 <!-- ── FILTRO POR CATEGORIA ── -->
                 <div class="cal-filter-bar" id="cal-filter-bar">
-                    <span class="cal-filter-label">Filtrar:</span>
-                    <button class="cal-filter-btn active" data-cat="todas">Todos</button>
-                    <button class="cal-filter-btn" data-cat="event-prazo">Prazos</button>
-                    <button class="cal-filter-btn" data-cat="event-prova">Provas</button>
-                    <button class="cal-filter-btn" data-cat="event-feriado">Feriados</button>
-                    <button class="cal-filter-btn" data-cat="event-evento">Eventos</button>
+                    <div class="cal-filter-row">
+                        <span class="cal-filter-label">Filtrar:</span>
+                        <button class="cal-filter-btn active" data-cat="todas">Todos</button>
+                        <button class="cal-filter-btn" data-cat="event-prazo">Prazos</button>
+                        <button class="cal-filter-btn" data-cat="event-prova">Provas</button>
+                        <button class="cal-filter-btn" data-cat="event-feriado">Feriados</button>
+                        <button class="cal-filter-btn" data-cat="event-evento">Eventos</button>
+                    </div>
+
+                    <div class="cal-legend">
+                        <span class="cal-legend-item"><span class="cal-dot dot-prova"></span>Provas</span>
+                        <span class="cal-legend-item"><span class="cal-dot dot-prazo"></span>Prazos</span>
+                        <span class="cal-legend-item"><span class="cal-dot dot-evento"></span>Eventos</span>
+                        <span class="cal-legend-item"><span class="cal-dot dot-recesso"></span>Feriados</span>
+                    </div>
                 </div>
 
                 <!-- ── MODAL DIA ── -->
@@ -645,18 +721,18 @@
                         <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
                     <div class="stat-card stat-card--clickable" data-modal="modal-alunos-ativos" title="Ver detalhes">
-                        <div class="stat-label">Alunos Ativos</div>
-                        <div class="stat-value accent-bio">45</div>
+                        <div class="stat-label">Alunos Destaques</div>
+                        <div class="stat-value accent-bio">9</div>
                         <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
                     <div class="stat-card stat-card--clickable" data-modal="modal-nao-realizadas" title="Ver detalhes">
-                        <div class="stat-label">Tarefas Não Realizadas</div>
-                        <div class="stat-value accent-mat">7</div>
+                        <div class="stat-label">Alunos Pendentes</div>
+                        <div class="stat-value accent-mat">8</div>
                         <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
                     <div class="stat-card stat-card--clickable" data-modal="modal-realizadas" title="Ver detalhes">
-                        <div class="stat-label">Tarefas Passadas</div>
-                        <div class="stat-value accent-port">23</div>
+                        <div class="stat-label">Histórico de Tarefas</div>
+                        <div class="stat-value accent-port" id="prof-historico-count">23</div>
                         <div class="stat-card-hint">Ver detalhes →</div>
                     </div>
                 </div>
@@ -713,8 +789,6 @@
                                 <span class="turma-chip">3º A</span>
                                 <span class="turma-chip">3º B</span>
                                 <span class="turma-chip">2º A</span>
-                                <span class="turma-chip">2º B</span>
-                                <span class="turma-chip">1º A</span>
                             </div>
                         </div>
                         <div>
@@ -723,29 +797,32 @@
                         </div>
                     </div>
 
-                    <div class="modal-subtitle" style="margin-top:18px;">Tarefas publicadas recentemente</div>
-                    <div id="prof-tasks-list">
-                        <p class="modal-stat-meta prof-tasks-empty" style="padding:14px 0;">Nenhuma tarefa publicada ainda nesta sessão.</p>
+                    <div class="rt-panel" style="margin-top:18px;">
+                        <div class="prof-pub-header">
+                            <span class="section-title">Tarefas publicadas recentemente</span>
+                        </div>
+                        <div id="prof-tasks-list" class="prof-pub-list">
+                            <p class="modal-stat-meta prof-tasks-empty" style="padding:14px 20px;">Nenhuma tarefa publicada ainda nesta sessão.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Relatório de Tarefas</h2>
-                    </div>
-                    <p class="modal-subtitle" style="margin-top:-6px;">Escolha a turma e a tarefa para ver quem entregou e quem ainda não entregou.</p>
-
-                    <!-- Turmas do professor -->
-                    <div class="modal-turma-filter" id="rt-turma-filter">
-                        <button class="turma-filter-btn active" data-turma="3A">3º A (28)</button>
-                        <button class="turma-filter-btn" data-turma="3B">3º B (29)</button>
-                        <button class="turma-filter-btn" data-turma="2A">2º A (27)</button>
-                    </div>
-
                     <div class="rt-panel">
+                        <div class="prof-pub-header prof-pub-header--no-border">
+                            <span class="section-title">Relatório de Tarefas</span>
+                        </div>
                         <div class="rt-panel-controls">
                             <div class="form-group" style="margin-bottom:0;">
                                 <label class="form-label">Tarefa</label>
                                 <select class="form-input" id="rt-task-select"></select>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label">Turmas</label>
+                                <div class="tf-filter-group" id="rt-turma-filter">
+                                    <button class="turma-filter-btn tf-filter-btn active" data-turma="3A">3º A</button>
+                                    <button class="turma-filter-btn tf-filter-btn" data-turma="3B">3º B</button>
+                                    <button class="turma-filter-btn tf-filter-btn" data-turma="2A">2º A</button>
+                                </div>
                             </div>
                             <div class="form-group" style="margin-bottom:0;">
                                 <label class="form-label">Status da entrega</label>
@@ -757,7 +834,7 @@
                         </div>
 
                         <div class="rt-panel-summary">
-                            <div class="modal-stat-meta" id="rt-summary" style="margin-bottom:8px;"></div>
+                            <div class="rt-summary-stat" id="rt-summary"></div>
                             <div class="entrega-progress-bar-wrap">
                                 <div class="entrega-progress-bar" id="rt-progress-bar" style="width:0%;"></div>
                             </div>
@@ -825,35 +902,9 @@
             <!-- Painel: Arquivos / Links Úteis -->
             <div class="mm-panel" id="mm-panel-arquivos" style="display:none;">
                 <div class="mm-arquivos-header">
-                    <p class="mm-arquivos-sub">Slides, apostilas, vídeos e links enviados pelo professor.</p>
-                    <button class="btn btn-secondary mm-add-file-btn" id="mm-add-file-btn">+ Adicionar link</button>
+                    <p class="section-title">Arquivos de apoio</p>
                 </div>
                 <div id="mm-arquivos-list" class="mm-arquivos-list"></div>
-
-                <!-- Mini form para adicionar link -->
-                <div class="mm-add-file-form" id="mm-add-file-form" style="display:none;">
-                    <div class="form-group">
-                        <label class="form-label">Título do recurso</label>
-                        <input type="text" class="form-input" id="mm-file-title" placeholder="Ex: Slides — Funções Quadráticas">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">URL / Link</label>
-                        <input type="url" class="form-input" id="mm-file-url" placeholder="https://...">
-                    </div>
-                    <div class="mm-file-type-row">
-                        <label class="form-label">Tipo</label>
-                        <div class="mm-file-types" id="mm-file-types">
-                            <button class="mm-type-btn active" data-type="slide">🖼️ Slide</button>
-                            <button class="mm-type-btn" data-type="video">▶️ Vídeo</button>
-                            <button class="mm-type-btn" data-type="pdf">📄 PDF</button>
-                            <button class="mm-type-btn" data-type="link">🔗 Link</button>
-                        </div>
-                    </div>
-                    <div class="modal-actions" style="margin-top:12px;">
-                        <button class="btn btn-secondary" id="mm-file-cancel">Cancelar</button>
-                        <button class="btn btn-primary" id="mm-file-confirm">Salvar</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -879,60 +930,26 @@
     </div>
 
 
-    <!-- ── MODAL: ALUNOS ATIVOS ── -->
+    <!-- ── MODAL: ALUNOS DESTAQUES ── -->
     <div class="modal-overlay" id="modal-alunos-ativos" style="display:none;">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
-                <div class="modal-title">Alunos Ativos</div>
+                <div class="modal-title">Alunos Destaques</div>
                 <button class="modal-close-x" data-close="modal-alunos-ativos">✕</button>
             </div>
-            <p class="modal-subtitle">Alunos que realizaram ao menos uma atividade nos últimos 7 dias.</p>
-            <div class="modal-stat-list">
-                <div class="modal-stat-item">
-                    <div class="student-avatar">MK</div>
-                    <div class="modal-stat-body">
-                        <div class="modal-stat-title">Maria Kato — 3º A</div>
-                        <div class="modal-stat-meta">28h estudadas · 52 ciclos Pomodoro · 100% de entregas</div>
-                    </div>
-                    <span class="modal-badge modal-badge-ok">Destaque</span>
-                </div>
-                <div class="modal-stat-item">
-                    <div class="student-avatar">PO</div>
-                    <div class="modal-stat-body">
-                        <div class="modal-stat-title">Pedro Oliveira — 3º B</div>
-                        <div class="modal-stat-meta">22h estudadas · ofensiva de 12 dias</div>
-                    </div>
-                    <span class="modal-badge modal-badge-ok">Destaque</span>
-                </div>
-                <div class="modal-stat-item">
-                    <div class="student-avatar">JL</div>
-                    <div class="modal-stat-body">
-                        <div class="modal-stat-title">Julia Lima — 2º B</div>
-                        <div class="modal-stat-meta">18h estudadas · 3 redações enviadas</div>
-                    </div>
-                    <span class="modal-badge modal-badge-ok">Ativo</span>
-                </div>
-            </div>
-            <div class="modal-alunos-summary">
-                <div class="modal-alunos-turma">
-                    <span class="turma-chip selected">3º A (28)</span>
-                    <span class="turma-chip selected">3º B (29)</span>
-                    <span class="turma-chip">2º A (27)</span>
-                </div>
-                <p class="modal-stat-meta" style="margin-top:10px;">Total: <strong>45 alunos ativos</strong> de 84 matriculados</p>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" data-close="modal-alunos-ativos">Fechar</button>
-                <button class="btn btn-primary">Ver lista completa</button>
+            <p class="modal-subtitle">Os 3 alunos com melhor desempenho de cada turma nos últimos 7 dias.</p>
+
+            <div id="modal-alunos-destaques-list">
+                <!-- Renderizado pelo JS -->
             </div>
         </div>
     </div>
 
-    <!-- ── MODAL: TAREFAS NÃO REALIZADAS ── -->
+    <!-- ── MODAL: ALUNOS PENDENTES ── -->
     <div class="modal-overlay" id="modal-nao-realizadas" style="display:none;">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
-                <div class="modal-title">Tarefas Não Realizadas</div>
+                <div class="modal-title">Alunos Pendentes</div>
                 <button class="modal-close-x" data-close="modal-nao-realizadas">✕</button>
             </div>
             <p class="modal-subtitle">Alunos com entregas pendentes ou em atraso, agrupados por turma.</p>
@@ -946,11 +963,11 @@
         </div>
     </div>
 
-    <!-- ── MODAL: TAREFAS REALIZADAS ── -->
+    <!-- ── MODAL: HISTÓRICO DE TAREFAS ── -->
     <div class="modal-overlay" id="modal-realizadas" style="display:none;">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
-                <div class="modal-title">Tarefas Passadas</div>
+                <div class="modal-title">Histórico de Tarefas</div>
                 <button class="modal-close-x" data-close="modal-realizadas">✕</button>
             </div>
             <p class="modal-subtitle">Tarefas encerradas — filtre por turma para ver as entregas.</p>

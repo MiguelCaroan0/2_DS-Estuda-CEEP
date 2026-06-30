@@ -172,10 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDaysWeek();
 
     // ─── RESUMO RÁPIDO (cards do início) ───
-    // OBS: a função abaixo é definida aqui, mas só é CHAMADA mais abaixo
-    // (depois que `taskList` e `agendaSchedule` já existirem), para evitar
-    // o ReferenceError de "variável usada antes de ser inicializada" que
-    // travava o resto do script (incluindo a navegação entre abas).
+    
     function updateInicioSummary() {
         const now = new Date();
         const todayDow = now.getDay();
@@ -270,9 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const dowToKey = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
         const todayKey = dowToKey[todayDow];
         const agendaToday = agendaSchedule[todayKey] || [];
-        const estudoSessions = agendaToday.filter(e => !e.type || e.type !== 'aula');
-        // cada sessão = 1h estimada; aulas fixas são 45min cada
-        const aulaCount = agendaToday.filter(e => e.type === 'aula').length;
+        // Aulas fixas: conta as do timetable (cada uma = 45min)
+        const aulaCount = todayAulas.length;
+        // Sessões extras: itens da agenda que não são do tipo 'aula' (cada uma = 60min)
+        const estudoSessions = agendaToday.filter(e => e.type !== 'aula' && e.subject);
         const estudoCount = estudoSessions.length;
         const totalMin = aulaCount * 45 + estudoCount * 60;
         const horas = Math.floor(totalMin / 60);
@@ -476,7 +474,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (agendaActiveDay === 'sab' || agendaActiveDay === 'dom') {
             area.innerHTML = `
                 <div class="agenda-empty-state">
-                    <div class="day-empty-icon">🎉</div>
                     <div class="day-empty-title">Fim de semana livre</div>
                     <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
                 </div>`;
@@ -507,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ev) {
                 const subj = ev.subject || 'intervalo';
                 const isIntervalo = ev.type === 'intervalo';
-                const isSchool = ev.school;
+                const isSchool = ev.school || ev.type === 'aula';
                 slot.classList.add('agenda-slot--filled');
 
                 const subjInfo = AGENDA_SUBJECTS[subj];
@@ -537,13 +534,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             } else {
-                slot.classList.add('agenda-slot--empty');
-                slot.innerHTML = `<span class="agenda-slot-hint">+ adicionar</span>`;
-                slot.addEventListener('click', () => {
-                    const sel = document.getElementById('agenda-modal-time');
-                    if (sel) sel.value = h;
-                    agendaOpenModal();
-                });
+                const hNum = parseInt(h.split(':')[0]);
+                if (hNum >= 13) {
+                    slot.classList.add('agenda-slot--empty');
+                    slot.innerHTML = `<span class="agenda-slot-hint">+ adicionar</span>`;
+                    slot.addEventListener('click', () => {
+                        const sel = document.getElementById('agenda-modal-time');
+                        if (sel) sel.value = h;
+                        agendaOpenModal();
+                    });
+                } else {
+                    slot.classList.add('agenda-slot--blocked');
+                }
             }
 
             slotWrap.appendChild(slot);
@@ -620,10 +622,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const view = document.getElementById('view-agenda');
         if (!view) return;
 
-        // Populate the horário select with AGENDA_HOURS options
+        // Populate o select apenas com horários a partir das 13h (extras do aluno)
         const timeSelect = document.getElementById('agenda-modal-time');
         if (timeSelect) {
-            timeSelect.innerHTML = AGENDA_HOURS.map(h => `<option value="${h}">${h}</option>`).join('');
+            const horasExtras = AGENDA_HOURS.filter(h => parseInt(h.split(':')[0]) >= 13);
+            timeSelect.innerHTML = horasExtras.map(h => `<option value="${h}">${h}</option>`).join('');
         }
 
         const navPrev = document.getElementById('agenda-nav-prev');
@@ -635,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('agenda-btn-apply-banner').addEventListener('click', agendaApplyAIPlan);
 
         document.getElementById('agenda-btn-clear').addEventListener('click', () => {
-            agendaSchedule[agendaActiveDay] = [];
+            agendaSchedule[agendaActiveDay] = agendaSchedule[agendaActiveDay].filter(e => e.type === 'aula');
             agendaUpdateSummary();
             agendaRenderPlanner();
         });
@@ -685,17 +688,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const PRIO_ORDER = { alta: 0, media: 1, baixa: 2 };
 
     let taskList = [
-        { id: 1, title: 'Resolver lista de parábolas (ENEM 2022)', desc: 'Vence hoje · 20 questões · Integrado do Classroom', subject: 'mat', priority: 'alta', done: false, due: '2025-06-25' },
-        { id: 2, title: 'Escrever redação sobre mobilidade urbana', desc: 'Vence hoje · mín. 30 linhas · Redação Paraná', subject: 'por', priority: 'alta', done: false, due: '2025-06-25' },
-        { id: 3, title: 'Exercícios de APIs REST', desc: 'Vence qui, 26 jun · Projeto Back-End', subject: 'qui', priority: 'media', done: false, due: '2025-06-26' },
-        { id: 4, title: 'Resumo: Cinemática vetorial', desc: 'Vence sex, 27 jun · 1 página · Caderno de Física', subject: 'fis', priority: 'media', done: false, due: '2025-06-27' },
-        { id: 5, title: 'Projeto React - Landing Page', desc: 'Vence sáb, 28 jun · Atividade de Front-End', subject: 'bio', priority: 'baixa', done: false, due: '2025-06-28' },
+        { id: 1, title: 'Resolver lista de parábolas (ENEM 2022)', desc: 'Vence seg, 29 jun · 20 questões · Integrado do Classroom', subject: 'mat', priority: 'alta', done: false, due: '2026-06-29' },
+        { id: 2, title: 'Escrever redação sobre mobilidade urbana', desc: 'Vence seg, 29 jun · mín. 30 linhas · Redação Paraná', subject: 'por', priority: 'alta', done: false, due: '2026-06-29' },
+        { id: 3, title: 'Exercícios de APIs REST', desc: 'Vence ter, 30 jun · Projeto Back-End', subject: 'qui', priority: 'media', done: false, due: '2026-06-30' },
+        { id: 4, title: 'Resumo: Cinemática vetorial', desc: 'Vence ter, 30 jun · 1 página · Caderno de Física', subject: 'fis', priority: 'media', done: false, due: '2026-06-30' },
+        { id: 5, title: 'Projeto React - Landing Page', desc: 'Vence qua, 01 jul · Atividade de Front-End', subject: 'bio', priority: 'baixa', done: false, due: '2026-07-01' },
         { id: 6, title: 'Rever anotações — Funções quadráticas', desc: 'Concluída ontem', subject: 'mat', priority: 'media', done: true, due: '2025-06-24' },
         { id: 7, title: 'Ler capítulo sobre Era Vargas', desc: 'Concluída seg, 23 jun', subject: 'his', priority: 'baixa', done: true, due: '2025-06-23' },
         { id: 8, title: 'Exercícios — HTML & CSS', desc: 'Concluída seg, 23 jun', subject: 'bio', priority: 'media', done: true, due: '2025-06-23' },
     ];
     let nextTaskId = 9;
-    let taskFilter = 'todas';
+    let taskFilter = 'pendentes';
     let taskSubjFilter = 'todas';
     let taskSortBy = 'prazo';
     let tarefasInitialized = false;
@@ -799,14 +802,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!filtered.length) {
             listEl.innerHTML = `
                 <div class="tf-empty">
-                    <div class="tf-empty-icon">✅</div>
                     <div class="tf-empty-title">Nenhuma tarefa aqui</div>
                     <div class="tf-empty-sub">Tudo em ordem por este filtro!</div>
                 </div>`;
             return;
         }
 
-        if (taskFilter === 'todas' && taskSubjFilter === 'todas') {
+        if (taskSubjFilter === 'todas') {
             const pList = filtered.filter(t => !t.done);
             const cList = filtered.filter(t => t.done);
             let html = '';
@@ -900,9 +902,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             taskList.unshift({ id: nextTaskId++, title, desc: descFinal, subject, priority, done: false, due });
 
-            taskFilter = 'todas';
+            taskFilter = 'pendentes';
             taskSubjFilter = 'todas';
-            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todas'));
+            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'pendentes'));
             view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.toggle('active', b.dataset.subj === 'todas'));
 
             tarefasCloseModal();
@@ -924,13 +926,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Data: horas por matéria por dia (semana)
     const HIST_DATA_SEMANA = [
-        { label: 'Seg', today: false, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
+        { label: 'Hoje', today: true, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
         { label: 'Ter', today: false, subjects: { mat: 0, por: 1.0, bio: 1.0, qui: 0, fis: 0.5, his: 1.0 } },
         { label: 'Qua', today: false, subjects: { mat: 2.0, por: 0, bio: 0.5, qui: 0, fis: 0, his: 0 } },
         { label: 'BE', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
         { label: 'Sex', today: false, subjects: { mat: 1.0, por: 1.0, bio: 0.5, qui: 0, fis: 0, his: 0.5 } },
         { label: 'Sáb', today: false, subjects: { mat: 0.5, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
-        { label: 'Hoje', today: true,  subjects: { mat: 0.8, por: 0, bio: 1.2, qui: 0.5, fis: 0, his: 0 } },
+        { label: 'Dom', today: false,  subjects: { mat: 0, por: 0, bio: 0, qui: 0.5, fis: 0, his: 0 } },
     ];
 
     // Data: horas por matéria por semana (mês)
@@ -997,16 +999,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const group = document.createElement('div');
             group.className = 'hist-bar-group';
 
-            const totalLbl = document.createElement('div');
-            totalLbl.className = 'hist-bar-total-label';
-            totalLbl.textContent = total > 0 ? total.toFixed(1) + 'h' : '';
-
             // Single solid bar — neutral color, highlight on hover
             const bar = document.createElement('div');
             bar.className = 'hist-bar-solid' + (d.today ? ' hist-bar-today' : '');
             bar.style.height = pct + '%';
 
-            group.appendChild(totalLbl);
             group.appendChild(bar);
             barsRow.appendChild(group);
 
@@ -1432,12 +1429,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (emptyState) emptyState.remove();
 
             list.insertAdjacentHTML('afterbegin', `
-                <div class="task-item">
-                    <div class="task-body">
-                        <div class="task-title">${title}</div>
-                        <div class="task-meta">Publicada agora · Vence ${dueText} · 0 entregues · ${plabels[platform] || platform}</div>
-                    </div>
+                <div class="prof-pub-item">
                     <span class="task-tag tag-${subject}">${tagMap[subject]}</span>
+                    <div class="prof-pub-item-body">
+                        <div class="rt-chip-name">${title}</div>
+                        <div class="modal-stat-meta" style="font-size:11px;margin-top:2px;">Vence ${dueText} · ${plabels[platform] || platform}</div>
+                    </div>
                 </div>`);
 
             document.getElementById('prof-task-title').value = '';
@@ -1517,6 +1514,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
     ];
+
+    // Atualiza o card "Histórico de Tarefas" com a quantidade real de tarefas presentes neste card.
+    const profHistoricoCountEl = document.getElementById('prof-historico-count');
+    if (profHistoricoCountEl) profHistoricoCountEl.textContent = realizadasData.length;
+
+    // ── Dados: Alunos Destaques (3 por turma) ──
+    const alunosDestaquesData = {
+        '3A': [
+            { initials: 'MK', name: 'Maria Kato', color: 'var(--mat)', meta: '28h estudadas · 100% de entregas', badge: 'Destaque' },
+            { initials: 'RC', name: 'Rafael Costa', color: 'var(--port)', meta: '24h estudadas · ofensiva de 9 dias', badge: 'Destaque' },
+            { initials: 'BN', name: 'Beatriz Nunes', color: 'var(--bio)', meta: '21h estudadas · 100% de entregas', badge: 'Ativo' },
+        ],
+        '3B': [
+            { initials: 'PO', name: 'Pedro Oliveira', color: 'var(--mat)', meta: '22h estudadas · ofensiva de 12 dias', badge: 'Destaque' },
+            { initials: 'AV', name: 'Amanda Vieira', color: 'var(--port)', meta: '19h estudadas · 100% de entregas', badge: 'Destaque' },
+            { initials: 'HC', name: 'Hugo Cardoso', color: 'var(--bio)', meta: '17h estudadas · 4 redações enviadas', badge: 'Ativo' },
+        ],
+        '2A': [
+            { initials: 'JL', name: 'Julia Lima', color: 'var(--mat)', meta: '18h estudadas · 3 redações enviadas', badge: 'Destaque' },
+            { initials: 'AF', name: 'Alice Fonseca', color: 'var(--port)', meta: '16h estudadas · ofensiva de 6 dias', badge: 'Ativo' },
+            { initials: 'BM', name: 'Bento Macedo', color: 'var(--bio)', meta: '14h estudadas · 100% de entregas', badge: 'Ativo' },
+        ],
+    };
+
+    const alunosDestaquesExpanded = {};
+
+    function renderModalAlunosDestaques() {
+        const wrap = document.getElementById('modal-alunos-destaques-list');
+        if (!wrap) return;
+        const TURMA_LABELS = { '3A': '3º A', '3B': '3º B', '2A': '2º A' };
+
+        wrap.innerHTML = Object.entries(alunosDestaquesData).map(([tk, alunos]) => {
+            const isOpen = !!alunosDestaquesExpanded[tk];
+            const itens = alunos.map(a => `
+                <div class="modal-stat-item">
+                    <div class="student-avatar" style="background:${a.color};">${a.initials}</div>
+                    <div class="modal-stat-body">
+                        <div class="modal-stat-title">${a.name}</div>
+                        <div class="modal-stat-meta">${a.meta}</div>
+                    </div>
+                    <span class="modal-badge modal-badge-ok">${a.badge}</span>
+                </div>`).join('');
+            return `
+                <div class="nr-turma-section" data-turma="${tk}">
+                    <button class="nr-turma-header nr-turma-toggle" data-turma="${tk}">
+                        <div class="nr-turma-header-left">
+                            <span class="nr-turma-label">${TURMA_LABELS[tk] || tk}</span>
+                            <span class="nr-turma-count">Top 3 da turma</span>
+                        </div>
+                        <span class="nr-turma-arrow">${isOpen ? '▲' : '▼'}</span>
+                    </button>
+                    <div class="modal-stat-list nr-turma-alunos" style="display:${isOpen ? 'block' : 'none'};">${itens}</div>
+                </div>`;
+        }).join('');
+
+        wrap.querySelectorAll('.nr-turma-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tk = btn.dataset.turma;
+                alunosDestaquesExpanded[tk] = !alunosDestaquesExpanded[tk];
+                renderModalAlunosDestaques();
+            });
+        });
+    }
 
     // ── Dados: Tarefas Não Realizadas (por turma) ──
     const naoRealizadasData = {
@@ -1616,7 +1676,7 @@ document.addEventListener('DOMContentLoaded', () => {
             rtTaskId = tarefas[0].id;
         }
         select.innerHTML = tarefas.map(t =>
-            `<option value="${t.id}" ${t.id === rtTaskId ? 'selected' : ''}>${t.title} — ${t.dueLabel}</option>`
+            `<option value="${t.id}" ${t.id === rtTaskId ? 'selected' : ''}>${t.title}</option>`
         ).join('');
     }
 
@@ -1645,7 +1705,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const pct = total === 0 ? 0 : Math.round((entregues / total) * 100);
 
         if (summaryEl) {
-            summaryEl.innerHTML = `<strong>${entregues}/${total}</strong> alunos entregaram (${pct}%) — ${RT_TURMA_LABEL[rtTurma] || rtTurma} · ${tarefa.title}`;
+            const naoEntregaram = total - entregues;
+            const pctNao = total === 0 ? 0 : Math.round((naoEntregaram / total) * 100);
+            const isEntregouView = rtStatusFilter === 'entregou';
+            if (isEntregouView) {
+                summaryEl.innerHTML = `
+                    <span class="rt-stat-num">${entregues}/${total}</span>
+                    <span class="rt-stat-label">alunos fizeram a tarefa</span>
+                    <span class="rt-stat-pct">${pct}%</span>`;
+            } else {
+                summaryEl.innerHTML = `
+                    <span class="rt-stat-num">${naoEntregaram}/${total}</span>
+                    <span class="rt-stat-label">alunos não fizeram a tarefa</span>
+                    <span class="rt-stat-pct--pend">${pctNao}%</span>`;
+            }
         }
         if (progressBar) progressBar.style.width = pct + '%';
 
@@ -1653,11 +1726,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const alunos = roster.map((name, i) => ({ name, entregou: i < entregues }));
         const filtrados = alunos.filter(a => rtStatusFilter === 'entregou' ? a.entregou : !a.entregou);
 
-        listEl.innerHTML = filtrados.map(a => `
-            <div class="rt-student-row">
-                <div class="student-avatar" style="background:${rtAvatarColor(a.name)};">${rtInitials(a.name)}</div>
-                <div class="rt-student-name">${a.name}</div>
-            </div>`).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhum aluno neste filtro.</p>';
+        if (!filtrados.length) {
+            listEl.innerHTML = '<p class="modal-stat-meta" style="padding:16px">Nenhum aluno neste filtro.</p>';
+            return;
+        }
+        const isEntregou = rtStatusFilter === 'entregou';
+        listEl.innerHTML = `
+            <div class="rt-chips-container ${isEntregou ? 'rt-chips--ok' : 'rt-chips--pend'}">
+                <div class="rt-chips-inner">
+                    ${filtrados.map(a => `
+                        <div class="rt-chip">
+                            <div class="rt-chip-avatar" style="background:${rtAvatarColor(a.name)};">${rtInitials(a.name)}</div>
+                            <span class="rt-chip-name">${a.name}</span>
+                        </div>`).join('')}
+                </div>
+            </div>`;
     }
 
     const rtTurmaFilterEl = document.getElementById('rt-turma-filter');
@@ -1785,7 +1868,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="modal-badge modal-badge-${a.status}">${a.label}</span>
                 </div>`).join('');
             return `
-                <div class="nr-turma-section">
+                <div class="nr-turma-section" data-turma="${tk}">
                     <button class="nr-turma-header nr-turma-toggle" data-turma="${tk}">
                         <div class="nr-turma-header-left">
                             <span class="nr-turma-label">${TURMA_LABELS[tk] || tk}</span>
@@ -1858,6 +1941,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (id === 'modal-tarefas-ativas') renderModalAtivas();
             if (id === 'modal-realizadas') renderModalRealizadas();
             if (id === 'modal-nao-realizadas') renderModalNaoRealizadas();
+            if (id === 'modal-alunos-ativos') renderModalAlunosDestaques();
         });
     });
 
@@ -1914,7 +1998,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         bio: {
             name: 'Front-End', tag: 'FE', color: 'var(--bio)', colorHex: '#6FCF7A',
-            prof: 'Profª. Helena Costa',
+            prof: 'Profª. Paola Figueira',
             topicos: [
                 { text: 'HTML & CSS',          done: true,  day: 'Ter' },
                 { text: 'JavaScript ES6+',     done: true,  day: 'Ter' },
@@ -1930,7 +2014,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         qui: {
             name: 'Back-End', tag: 'BE', color: 'var(--qui)', colorHex: '#FFD166',
-            prof: 'Prof. Ricardo Dias',
+            prof: 'Profª. Paola Figueira',
             topicos: [
                 { text: 'Node.js - Fundamentos', done: false, day: 'Seg' },
                 { text: 'APIs REST',             done: false, day: 'Seg' },
@@ -2059,13 +2143,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="topics">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                            <span style="font-size:12px;color:#5B5444;font-weight:600;">Progresso</span>
-                            <span style="font-size:12px;font-weight:700;">${pct}%</span>
+                            <span style="font-size:12px;color:var(--branco);font-weight:600;">Progresso</span>
+                            <span style="font-size:12px;font-weight:700;color:var(--branco);">${pct}%</span>
                         </div>
                         <div class="progress-container">
                             <div class="progress-bar ${k}" style="width:${pct}%;"></div>
                         </div>
-                        <p style="margin:8px 0 4px;font-size:12px;color:#7A7265;">${m.prof}</p>
+                        <p style="margin:8px 0 4px;font-size:12px;color:var(--branco);">${m.prof}</p>
                     </div>
                     ${muralHtml}
                     <p class="subject-card-hint-open">Clique para detalhes →</p>
@@ -2084,6 +2168,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sc) sc.textContent = concl;
         if (sp) sp.textContent = pends;
         if (sa) sa.textContent = avg + '%';
+        const arc = document.getElementById('mat-stat-avg-arc');
+        if (arc) arc.style.strokeDashoffset = 176 - (176 * avg / 100);
 
         // Abre modal ao clicar
         grid.querySelectorAll('[data-open-materia]').forEach(card => {
@@ -2278,8 +2364,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mm-arquivo-title">${a.title}</div>
                     <div class="mm-arquivo-meta">${TYPE_LABEL[a.type] || 'Link'} · ${a.meta}</div>
                 </div>
-                <span class="mm-arquivo-arrow">↗</span>
-                <button class="mm-arquivo-del" data-aid="${a.id}" title="Remover">✕</button>
             </div>`).join('');
 
         // Abrir link (exceto se clicar no botão remover)
