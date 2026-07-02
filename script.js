@@ -929,7 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: 'Seg', today: false, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
         { label: 'Ter', today: false, subjects: { mat: 0, por: 1.0, bio: 1.0, qui: 0, fis: 0.5, his: 1.0 } },
         { label: 'Qua', today: false, subjects: { mat: 2.0, por: 0, bio: 0.5, qui: 0, fis: 0, his: 0 } },
-        { label: 'BE', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
+        { label: 'Qui', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
         { label: 'Hoje', today: true, subjects: { mat: 1.0, por: 1.0, bio: 0.5, qui: 0, fis: 0, his: 0.5 } },
         { label: 'Sáb', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
         { label: 'Dom', today: false,  subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
