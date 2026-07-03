@@ -4116,3 +4116,56 @@ footer {
 .mobile-menu-btn {
     display: none;
 }
+
+/* ══════════════════════════════════════════════════
+   ── ESTILOS MIGRADOS DO INDEX.HTML (inline styles) ──
+   ══════════════════════════════════════════════════ */
+
+/* Ícone de emoji (🔥) nos cards de ofensiva/sequência */
+.isc-icon--streak span {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.stat-card--icon .isc-icon--streak span {
+    font-size: 26px;
+    line-height: 1;
+}
+
+/* Cores dinâmicas dos botões de matéria (--sc) */
+.tf-subj-btn[data-subj="mat"] { --sc: var(--mat); }
+.tf-subj-btn[data-subj="por"] { --sc: var(--port); }
+.tf-subj-btn[data-subj="bio"] { --sc: var(--bio); }
+.tf-subj-btn[data-subj="qui"] { --sc: var(--qui); }
+.tf-subj-btn[data-subj="fis"] { --sc: var(--fis); }
+.tf-subj-btn[data-subj="his"] { --sc: var(--hist); }
+
+/* Grupo de formulário sem margem inferior (usado em filtros/linhas compactas) */
+.form-group--tight {
+    margin-bottom: 0;
+}
+
+/* Grid de estatísticas com 4 colunas (relatório de tarefas do professor) */
+.stats-row--4col {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Estado inicial oculto do seletor de turma (exibido via JS ao escolher "Por turma") */
+#turma-select-group {
+    display: none;
+}
+
+/* Painel de tarefas do professor com espaçamento superior */
+.rt-panel--spaced {
+    margin-top: 18px;
+}
+
+/* Mensagem de "nenhuma tarefa publicada" */
+.prof-tasks-empty {
+    padding: 14px 20px;
+}
+
+/* Barra de progresso de entregas começa zerada (JS define a largura real) */
+.entrega-progress-bar {
+    width: 0;
+}

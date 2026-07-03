@@ -132,7 +132,7 @@
                     <!-- Card 3: Ofensiva -->
                     <div class="inicio-summary-card">
                         <div class="isc-icon-wrap isc-icon--streak">
-                            <span style="font-size:28px;line-height:1;">🔥</span>
+                            <span>🔥</span>
                         </div>
                         <div class="isc-body">
                             <div class="isc-label">Ofensiva atual</div>
@@ -170,7 +170,7 @@
                     </div>
 
                     <!-- Estado vazio (fim de semana / sem aulas) -->
-                    <div class="day-empty-state" id="day-empty-state" style="display:none;">
+                    <div class="day-empty-state" id="day-empty-state">
                         <div class="day-empty-title">Nenhuma aula hoje</div>
                         <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
                     </div>
@@ -228,7 +228,7 @@
                     <!-- Card 3: Ofensiva -->
                     <div class="inicio-summary-card">
                         <div class="isc-icon-wrap isc-icon--streak">
-                            <span style="font-size:28px;line-height:1;">🔥</span>
+                            <span>🔥</span>
                         </div>
                         <div class="isc-body">
                             <div class="isc-label">Ofensiva atual</div>
@@ -277,7 +277,7 @@
             </div>
 
             <!-- Modal adicionar aula -->
-            <div class="modal-overlay" id="agenda-modal" style="display:none;">
+            <div class="modal-overlay" id="agenda-modal">
                 <div class="modal-content">
                     <div class="modal-title">Adicionar aula</div>
                     <div class="form-group">
@@ -378,12 +378,12 @@
                         <div class="tf-divider"></div>
                         <div class="tf-filter-group" id="tf-subj-filters">
                             <button class="tf-subj-btn active" data-subj="todas">Todas</button>
-                            <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
-                            <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
-                            <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">FE</button>
-                            <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">BE</button>
-                            <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
-                            <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+                            <button class="tf-subj-btn" data-subj="mat">Mat</button>
+                            <button class="tf-subj-btn" data-subj="por">Port</button>
+                            <button class="tf-subj-btn" data-subj="bio">FE</button>
+                            <button class="tf-subj-btn" data-subj="qui">BE</button>
+                            <button class="tf-subj-btn" data-subj="fis">Fís</button>
+                            <button class="tf-subj-btn" data-subj="his">His</button>
                         </div>
                     </div>
                     <div class="tf-controls-right">
@@ -403,7 +403,7 @@
             </div>
 
             <!-- Modal nova tarefa -->
-            <div class="modal-overlay" id="tf-modal" style="display:none;">
+            <div class="modal-overlay" id="tf-modal">
                 <div class="modal-content">
                     <div class="modal-title">Nova Tarefa</div>
                     <div class="form-group">
@@ -489,7 +489,7 @@
                     </div>
                     <div class="stat-card stat-card--icon">
                         <div class="isc-icon-wrap isc-icon--streak">
-                            <span style="font-size:26px;line-height:1;">🔥</span>
+                            <span>🔥</span>
                         </div>
                         <div class="isc-body">
                             <div class="stat-label">Sequência de Estudo</div>
@@ -517,7 +517,7 @@
                             <div class="hist-x-labels" id="hist-x-labels"></div>
                         </div>
                     </div>
-                    <div class="hist-tooltip" id="hist-tooltip" style="display:none;"></div>
+                    <div class="hist-tooltip" id="hist-tooltip"></div>
                 </div>
 
                 <!-- ── SESSÕES RECENTES: FILTROS + BUSCA ── -->
@@ -528,30 +528,30 @@
                         </div>
 
                         <div class="rt-panel-controls rt-panel-controls--inline">
-                            <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-group form-group--tight">
                                 <label class="form-label">Buscar</label>
                                 <div class="hist-search-wrap">
                                     <svg class="hist-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                                     <input class="hist-search-input hist-search-input--full" id="hist-search" type="text" placeholder="Buscar sessão...">
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-group form-group--tight">
                                 <label class="form-label">Matéria</label>
                                 <div class="tf-filter-group" id="hist-subj-filters">
                                     <button class="tf-subj-btn active" data-subj="todas">Todas</button>
-                                    <button class="tf-subj-btn" data-subj="mat"  style="--sc:var(--mat)">Mat</button>
-                                    <button class="tf-subj-btn" data-subj="por"  style="--sc:var(--port)">Port</button>
-                                    <button class="tf-subj-btn" data-subj="bio"  style="--sc:var(--bio)">FE</button>
-                                    <button class="tf-subj-btn" data-subj="qui"  style="--sc:var(--qui)">BE</button>
-                                    <button class="tf-subj-btn" data-subj="fis"  style="--sc:var(--fis)">Fís</button>
-                                    <button class="tf-subj-btn" data-subj="his"  style="--sc:var(--hist)">His</button>
+                                    <button class="tf-subj-btn" data-subj="mat">Mat</button>
+                                    <button class="tf-subj-btn" data-subj="por">Port</button>
+                                    <button class="tf-subj-btn" data-subj="bio">FE</button>
+                                    <button class="tf-subj-btn" data-subj="qui">BE</button>
+                                    <button class="tf-subj-btn" data-subj="fis">Fís</button>
+                                    <button class="tf-subj-btn" data-subj="his">His</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="rt-students-list" id="hist-sessions-list"></div>
 
-                        <div class="tf-empty" id="hist-empty" style="display:none;">
+                        <div class="tf-empty" id="hist-empty">
                             <div class="tf-empty-icon">🔍</div>
                             <div class="tf-empty-title">Nenhuma sessão encontrada</div>
                             <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
@@ -637,7 +637,7 @@
                 <div class="subject-grid" id="mat-subject-grid"></div>
 
                 <!-- Estado vazio -->
-                <div id="mat-empty" style="display:none;" class="tf-empty">
+                <div id="mat-empty" class="tf-empty">
                     <div class="tf-empty-title">Nenhuma matéria encontrada</div>
                     <div class="tf-empty-sub">Tente outro filtro ou termo de busca.</div>
                 </div>
@@ -675,7 +675,7 @@
                 </div>
 
                 <!-- ── MODAL DIA ── -->
-                <div class="cal-day-modal-overlay" id="cal-day-modal" style="display:none;">
+                <div class="cal-day-modal-overlay" id="cal-day-modal">
                     <div class="cal-day-modal">
                         <div class="cal-day-modal-header">
                             <div>
@@ -718,7 +718,7 @@
                     </div>
                 </div>
 
-                <div class="stats-row" style="grid-template-columns: repeat(4,1fr);">
+                <div class="stats-row stats-row--4col">
                     <div class="stat-card stat-card--clickable" data-modal="modal-tarefas-ativas" title="Ver detalhes">
                         <div class="stat-label">Tarefas Ativas</div>
                         <div class="stat-value accent-qui">4</div>
@@ -787,7 +787,7 @@
                                 <button class="recipient-btn" data-target="turma">Por turma</button>
                             </div>
                         </div>
-                        <div class="form-group" id="turma-select-group" style="display:none;">
+                        <div class="form-group" id="turma-select-group">
                             <label class="form-label">Selecionar Turma(s)</label>
                             <div class="turma-chips">
                                 <span class="turma-chip">3º A</span>
@@ -801,12 +801,12 @@
                         </div>
                     </div>
 
-                    <div class="rt-panel" style="margin-top:18px;">
+                    <div class="rt-panel rt-panel--spaced">
                         <div class="prof-pub-header">
                             <span class="section-title">Tarefas publicadas recentemente</span>
                         </div>
                         <div id="prof-tasks-list" class="prof-pub-list">
-                            <p class="modal-stat-meta prof-tasks-empty" style="padding:14px 20px;">Nenhuma tarefa publicada ainda nesta sessão.</p>
+                            <p class="modal-stat-meta prof-tasks-empty">Nenhuma tarefa publicada ainda nesta sessão.</p>
                         </div>
                     </div>
                 </div>
@@ -816,11 +816,11 @@
                             <span class="section-title">Relatório de Tarefas</span>
                         </div>
                         <div class="rt-panel-controls">
-                            <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-group form-group--tight">
                                 <label class="form-label">Tarefa</label>
                                 <select class="form-input" id="rt-task-select"></select>
                             </div>
-                            <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-group form-group--tight">
                                 <label class="form-label">Turmas</label>
                                 <div class="tf-filter-group" id="rt-turma-filter">
                                     <button class="turma-filter-btn tf-filter-btn active" data-turma="3A">3º A</button>
@@ -828,7 +828,7 @@
                                     <button class="turma-filter-btn tf-filter-btn" data-turma="2A">2º A</button>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-group form-group--tight">
                                 <label class="form-label">Status da entrega</label>
                                 <div class="tf-filter-group" id="rt-status-filters">
                                     <button class="tf-filter-btn active" data-status="entregou">Entregaram</button>
@@ -840,7 +840,7 @@
                         <div class="rt-panel-summary">
                             <div class="rt-summary-stat" id="rt-summary"></div>
                             <div class="entrega-progress-bar-wrap">
-                                <div class="entrega-progress-bar" id="rt-progress-bar" style="width:0%;"></div>
+                                <div class="entrega-progress-bar" id="rt-progress-bar"></div>
                             </div>
                         </div>
 
@@ -853,7 +853,7 @@
     </div>
 
     <!-- ── MODAL DE DETALHES DA MATÉRIA ── -->
-    <div class="modal-overlay" id="modal-materia" style="display:none;">
+    <div class="modal-overlay" id="modal-materia">
         <div class="modal-content modal-materia-content">
             <!-- Cabeçalho colorido -->
             <div class="materia-modal-header" id="mm-header">
@@ -894,17 +894,17 @@
             <!-- Painel: Tópicos -->
             <div class="mm-panel" id="mm-panel-topicos">
                 <!-- Mural / último recado do professor -->
-                <div class="mm-mural-banner" id="mm-mural-banner" style="display:none;"></div>
+                <div class="mm-mural-banner" id="mm-mural-banner"></div>
                 <div id="mm-topicos-list" class="mm-topicos-list"></div>
             </div>
 
             <!-- Painel: Tarefas -->
-            <div class="mm-panel" id="mm-panel-tarefas" style="display:none;">
+            <div class="mm-panel" id="mm-panel-tarefas">
                 <div id="mm-tarefas-list"></div>
             </div>
 
             <!-- Painel: Arquivos / Links Úteis -->
-            <div class="mm-panel" id="mm-panel-arquivos" style="display:none;">
+            <div class="mm-panel" id="mm-panel-arquivos">
                 <div class="mm-arquivos-header">
                     <p class="section-title">Arquivos de apoio</p>
                 </div>
@@ -917,7 +917,7 @@
     <div id="toast-container" aria-live="polite"></div>
 
     <!-- ── MODAL: TAREFAS ATIVAS ── -->
-    <div class="modal-overlay" id="modal-tarefas-ativas" style="display:none;">
+    <div class="modal-overlay" id="modal-tarefas-ativas">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
                 <div class="modal-title">Tarefas Ativas</div>
@@ -935,7 +935,7 @@
 
 
     <!-- ── MODAL: ALUNOS DESTAQUES ── -->
-    <div class="modal-overlay" id="modal-alunos-ativos" style="display:none;">
+    <div class="modal-overlay" id="modal-alunos-ativos">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
                 <div class="modal-title">Alunos Destaques</div>
@@ -950,7 +950,7 @@
     </div>
 
     <!-- ── MODAL: ALUNOS PENDENTES ── -->
-    <div class="modal-overlay" id="modal-nao-realizadas" style="display:none;">
+    <div class="modal-overlay" id="modal-nao-realizadas">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
                 <div class="modal-title">Alunos Pendentes</div>
@@ -968,7 +968,7 @@
     </div>
 
     <!-- ── MODAL: HISTÓRICO DE TAREFAS ── -->
-    <div class="modal-overlay" id="modal-realizadas" style="display:none;">
+    <div class="modal-overlay" id="modal-realizadas">
         <div class="modal-content modal-wide">
             <div class="modal-header-row">
                 <div class="modal-title">Histórico de Tarefas</div>
