@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/aluno.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="../JS/script.js" defer></script>
+    <title>Estuda CEEP</title>
+</head>
+
+<body>
+
+    <!-- ── TOP HEADER ── -->
+    <header class="top-header">
+        <div class="top-header-brand">
+            <img id="top-header-logo" src="../IMG/CEEP-logo.png">
+            <div class="top-header-name">Estuda CEEP </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menu">☰</button>
+    </header>
+
+    <!-- Overlay do menu mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Principal</div>
+            <a class="nav-item active">Início</a>
+            <a class="nav-item">Agenda de Estudos</a>
+            <a class="nav-item">Tarefas</a>
+            <div class="nav-section-label">Ferramentas</div>
+            <a class="nav-item">Histórico</a>
+            <a class="nav-item">Matérias</a>
+            <div class="nav-section-label">Escola</div>
+            <a class="nav-item">Calendário Escolar</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar">MK</div>
+                <div>
+                    <div class="user-name">Patrícia</div>
+                    <div class="user-role">3º A</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT CONTAINER (SPA VIEWS) ── -->
+    <main>
+
+        <!-- 1. VIEW: INÍCIO (PÁGINA INICIAL) -->
+        <div id="view-inicio" class="page-view active">
+            <div class="content">
+
+                <!-- ── HERO: Saudação + Data ── -->
+                <div class="home-hero">
+                    <!-- Card de data automática -->
+                    <div class="date-hero-card">
+                        <div class="date-hero-weekday" id="hero-weekday">Carregando...</div>
+                        <div class="date-hero-date"    id="hero-date">—</div>
+                    </div>
+
+                    <!-- Saudação dinâmica -->
+                    <div class="greeting-block">
+                        <div class="greeting-label" id="greeting-label">Olá,</div>
+                        <div class="greeting-name" id="greeting-name"></div>
+                        <p class="greeting-sub" id="greeting-sub">Veja abaixo o que está no seu plano de hoje.</p>
+                    </div>
+                </div>
+
+                <!-- ── RESUMO RÁPIDO ── -->
+                <div class="summary-row">
+
+                    <!-- Card 1: Progresso do dia -->
+                    <div class="summary-card">
+                        <div class="summary-card-ring-wrap">
+                            <svg class="summary-card-ring" viewBox="0 0 72 72">
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="var(--qui)" stroke-width="6"
+                                    stroke-dasharray="176" stroke-dashoffset="176"
+                                    stroke-linecap="round" transform="rotate(-90 36 36)"
+                                    id="home-day-arc"/>
+                            </svg>
+                            <div class="summary-card-ring-pct" id="home-day-pct">0%</div>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Aulas Concluídas</div>
+                            <div class="summary-card-value" id="home-day-fraction">—</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Tarefas pendentes hoje -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--tasks" id="home-tasks-icon">
+                            <i data-lucide="square-check" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Tarefas pendentes</div>
+                            <div class="summary-card-value" id="home-tasks-count">—</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Ofensiva -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--streak">
+                            <span>🔥</span>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Ofensiva atual</div>
+                            <div class="summary-card-value accent-mat" id="home-streak-value">0 dias</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Horas planejadas hoje -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--hours">
+                            <i data-lucide="clock" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Horas de estudos hoje</div>
+                            <div class="summary-card-value" id="home-hours-value">—</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Seção: Grade de horários por dia -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Matérias do dia</h2>
+                    </div>
+
+                    <!-- Seletor de dias (agora com data real) -->
+                    <div class="days-week" id="inicio-days-week"></div>
+
+                    <!-- Grade de matérias filtrada pelo dia selecionado -->
+                    <div class="subject-grid" id="inicio-subject-grid">
+                        <!-- Populada pelo JS conforme o dia selecionado -->
+                    </div>
+
+                    <!-- Estado vazio (fim de semana / sem aulas) -->
+                    <div class="day-empty-state" id="day-empty-state">
+                        <div class="day-empty-title">Nenhuma aula hoje</div>
+                        <div class="day-empty-sub">Aproveite para descansar ou revisar o que estudou!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. VIEW: AGENDA DE ESTUDOS -->
+        <div id="view-agenda" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Agenda de Estudos</h1>
+                    </div>
+                </div>
+
+                <div class="agenda-ai-banner">
+                    <div>
+                        <div class="agenda-ai-title">✦ Plano sugerido disponível para esta semana</div>
+                        <div class="agenda-ai-sub">Baseado nas suas tarefas pendentes e histórico de estudos</div>
+                    </div>
+                    <button class="btn btn-primary" id="agenda-btn-apply-banner">Aplicar plano</button>
+                </div>
+
+                <div class="summary-row">
+
+                    <!-- Card 1: Horas planejadas -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--hours">
+                            <i data-lucide="clock" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Horas de Estudo</div>
+                            <div class="summary-card-value accent-qui" id="agenda-sum-horas">—</div>
+                            <div class="summary-card-sub">esta semana</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Sessões agendadas -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--sessions">
+                            <i data-lucide="calendar" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Aulas Planejadas</div>
+                            <div class="summary-card-value accent-port" id="agenda-sum-aulas">—</div>
+                            <div class="summary-card-sub" id="agenda-sum-aulas-sub">esta semana</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Ofensiva -->
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--streak">
+                            <span>🔥</span>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Ofensiva atual</div>
+                            <div class="summary-card-value accent-bio" id="agenda-streak-value">0 dias</div>
+                            <div class="summary-card-sub">seguidos estudando</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Meta semanal -->
+                    <div class="summary-card">
+                        <div class="summary-card-ring-wrap">
+                            <svg class="summary-card-ring" viewBox="0 0 72 72">
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="var(--mat)" stroke-width="6"
+                                    stroke-dasharray="176" stroke-dashoffset="176"
+                                    stroke-linecap="round" transform="rotate(-90 36 36)"
+                                    id="agenda-meta-arc"/>
+                            </svg>
+                            <div class="summary-card-ring-pct" id="agenda-sum-meta">—</div>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Meta de aulas</div>
+                            <div class="summary-card-value" id="agenda-sum-meta-val">—</div>
+                            <div class="summary-card-sub">meta de 15 aulas essas semana</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                 <div class="agenda-action-row">
+                    <button class="btn btn-primary" id="agenda-btn-apply">✦ Plano Sugerido (IA)</button>
+                    <button class="btn btn-secondary" id="agenda-btn-clear">Limpar dia</button>
+                    <button class="btn btn-secondary" id="agenda-btn-add">+ Adicionar aula</button>
+                </div>
+
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title" id="agenda-planner-title">Carregando...</h2>
+                        <div class="agenda-day-nav">
+                            <button class="agenda-nav-btn" id="agenda-nav-prev" aria-label="Dia anterior">&#8592;</button>
+                            <button class="agenda-nav-btn" id="agenda-nav-next" aria-label="Próximo dia">&#8594;</button>
+                        </div>
+                    </div>
+                    <div id="agenda-planner-area"></div>
+                </div>
+            </div>
+
+            <!-- Modal adicionar aula -->
+            <div class="modal-overlay" id="agenda-modal">
+                <div class="modal-content">
+                    <div class="modal-title">Adicionar aula</div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-subject">Matéria</label>
+                        <select id="agenda-modal-subject" class="form-input">
+                            <option value="mat">Matemática</option>
+                            <option value="por">Português</option>
+                            <option value="bio">Front-End</option>
+                            <option value="qui">Back-End</option>
+                            <option value="fis">Física</option>
+                            <option value="his">História</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-title">Título / Tópico</label>
+                        <input type="text" id="agenda-modal-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="agenda-modal-time">Horário</label>
+                        <select id="agenda-modal-time" class="form-input">
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="agenda-modal-cancel">Cancelar</button>
+                        <button type="button" class="btn btn-primary"   id="agenda-modal-confirm">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. VIEW: TAREFAS -->
+        <div id="view-tarefas" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Tarefas</h1>
+                    </div>
+                </div>
+
+                <!-- Stats rápidos -->
+                <div class="stats-row">
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--pending">
+                            <i data-lucide="circle-alert" width="26" height="26"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Pendentes</div>
+                            <div class="stat-value accent-mat" id="tf-stat-pend">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--done">
+                            <i data-lucide="circle-check-big" width="26" height="26"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Concluídas</div>
+                            <div class="stat-value accent-bio" id="tf-stat-conc">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--due" id="tf-stat-hoje-icon">
+                            <i data-lucide="calendar" width="26" height="26"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Vencem hoje</div>
+                            <div class="stat-value accent-qui" id="tf-stat-hoje">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <div class="tf-controls">
+                    <div class="tf-controls-left">
+                        <div class="filter-group" id="tf-status-filters">
+                            <button class="filter-btn active" data-filter="pendentes">Pendentes</button>
+                            <button class="filter-btn" data-filter="concluidas">Concluídas</button>
+                        </div>
+                        <div class="filter-divider"></div>
+                        <div class="filter-group" id="tf-subj-filters">
+                            <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                            <button class="tf-subj-btn" data-subj="mat">Mat</button>
+                            <button class="tf-subj-btn" data-subj="por">Port</button>
+                            <button class="tf-subj-btn" data-subj="bio">FE</button>
+                            <button class="tf-subj-btn" data-subj="qui">BE</button>
+                            <button class="tf-subj-btn" data-subj="fis">Fís</button>
+                            <button class="tf-subj-btn" data-subj="his">His</button>
+                        </div>
+                    </div>
+                    <div class="tf-controls-right">
+                        <select class="form-input tf-sort" id="tf-sort">
+                            <option value="prazo">Ordenar: Prazo</option>
+                            <option value="prioridade">Ordenar: Prioridade</option>
+                            <option value="materia">Ordenar: Matéria</option>
+                        </select>
+                        <button class="btn btn-primary tf-new-btn" id="tf-btn-new">+ Nova tarefa</button>
+                    </div>
+                </div>
+
+                <!-- Lista -->
+                <div class="section">
+                    <div id="tf-list"></div>
+                </div>
+            </div>
+
+            <!-- Modal nova tarefa -->
+            <div class="modal-overlay" id="tf-modal">
+                <div class="modal-content">
+                    <div class="modal-title">Nova Tarefa</div>
+                    <div class="form-group">
+                        <label class="form-label">Título da atividade</label>
+                        <input type="text" id="tf-modal-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrição / observação</label>
+                        <input type="text" id="tf-modal-desc" class="form-input">
+                    </div>
+                    <div class="tf-modal-row">
+                        <div class="form-group">
+                            <label class="form-label">Matéria</label>
+                            <select id="tf-modal-subject" class="form-input">
+                                <option value="mat">Matemática</option>
+                                <option value="por">Português</option>
+                                <option value="bio">Front-End</option>
+                                <option value="qui">Back-End</option>
+                                <option value="fis">Física</option>
+                                <option value="his">História</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prioridade</label>
+                            <select id="tf-modal-priority" class="form-input">
+                                <option value="baixa">Baixa</option>
+                                <option value="media" selected>Média</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Prazo de entrega</label>
+                        <input type="date" id="tf-modal-due" class="form-input">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="tf-modal-cancel">Cancelar</button>
+                        <button type="button" class="btn btn-primary"   id="tf-modal-confirm">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. VIEW: HISTÓRICO -->
+        <div id="view-historico" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Histórico de Estudos</h1>
+                        <p>Consulte suas estatísticas de foco e verifique seu progresso acadêmico.</p>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--hours">
+                            <i data-lucide="clock" width="26" height="26"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Tempo Mensal</div>
+                            <div class="stat-value accent-qui" id="hist-stat-mensal">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--done">
+                            <i data-lucide="user-check" width="26" height="26"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Frequência</div>
+                            <div class="stat-value accent-bio" id="hist-stat-freq">—</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--icon">
+                        <div class="summary-card-icon summary-card-icon--streak">
+                            <span>🔥</span>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="stat-label">Sequência de Estudo</div>
+                            <div class="stat-value accent-mat" id="hist-stat-sequencia">0 dias</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── GRÁFICO DE BARRAS INTERATIVO ── -->
+                <div class="hist-chart-card">
+                    <div class="hist-chart-header">
+                        <div>
+                            <h3 class="hist-chart-title">Distribuição de Estudos por Dia</h3>
+                            <p class="hist-chart-sub">Horas de foco registradas — passe o mouse nas barras para detalhes</p>
+                        </div>
+                        <div class="hist-chart-period-btns">
+                            <button class="hist-period-btn active" data-period="semana">Semana</button>
+                            <button class="hist-period-btn" data-period="mes">Mês</button>
+                        </div>
+                    </div>
+                    <div class="hist-chart-wrap">
+                        <div class="hist-chart-y-axis" id="hist-y-axis"></div>
+                        <div class="hist-chart-area">
+                            <div class="hist-bars-row" id="hist-bars-row"></div>
+                            <div class="hist-x-labels" id="hist-x-labels"></div>
+                        </div>
+                    </div>
+                    <div class="hist-tooltip" id="hist-tooltip"></div>
+                </div>
+
+                <!-- ── SESSÕES RECENTES: FILTROS + BUSCA ── -->
+                <div class="section">
+                    <div class="rt-panel">
+                        <div class="prof-pub-header prof-pub-header--no-border">
+                            <span class="section-title">Tarefas Realizadas</span>
+                        </div>
+
+                        <div class="rt-panel-controls rt-panel-controls--inline">
+                            <div class="form-group form-group--tight">
+                                <label class="form-label">Buscar</label>
+                                <div class="hist-search-wrap">
+                                    <i data-lucide="search" class="hist-search-icon" width="14" height="14"></i>
+                                    <input class="hist-search-input hist-search-input--full" id="hist-search" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group form-group--tight">
+                                <label class="form-label">Matéria</label>
+                                <div class="filter-group" id="hist-subj-filters">
+                                    <button class="tf-subj-btn active" data-subj="todas">Todas</button>
+                                    <button class="tf-subj-btn" data-subj="mat">Mat</button>
+                                    <button class="tf-subj-btn" data-subj="por">Port</button>
+                                    <button class="tf-subj-btn" data-subj="bio">FE</button>
+                                    <button class="tf-subj-btn" data-subj="qui">BE</button>
+                                    <button class="tf-subj-btn" data-subj="fis">Fís</button>
+                                    <button class="tf-subj-btn" data-subj="his">His</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rt-students-list" id="hist-sessions-list"></div>
+
+                        <div class="empty-state" id="hist-empty">
+                            <div class="empty-state-title">Nenhuma sessão encontrada</div>
+                            <div class="empty-state-sub">Tente outro filtro ou termo de busca.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. VIEW: MATÉRIAS -->
+        <div id="view-materias" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Matérias</h1>
+                        <p>Acompanhe o progresso em cada disciplina.</p>
+                    </div>
+                </div>
+
+                <!-- Stats rápidos de matérias -->
+                <div class="summary-row mat-stats-row">
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--done">
+                            <i data-lucide="square-check" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Matérias 100%</div>
+                            <div class="summary-card-value accent-bio" id="mat-stat-conc">0</div>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon summary-card-icon--pending">
+                            <i data-lucide="circle-alert" width="28" height="28"></i>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Com Pendências</div>
+                            <div class="summary-card-value accent-mat" id="mat-stat-pend">0</div>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-ring-wrap">
+                            <svg class="summary-card-ring" viewBox="0 0 72 72">
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                                <circle cx="36" cy="36" r="28" fill="none" stroke="var(--qui)" stroke-width="6"
+                                    stroke-dasharray="176" stroke-dashoffset="176"
+                                    stroke-linecap="round" transform="rotate(-90 36 36)"
+                                    id="mat-stat-avg-arc"/>
+                            </svg>
+                            <div class="summary-card-ring-pct" id="mat-stat-avg">—</div>
+                        </div>
+                        <div class="summary-card-body">
+                            <div class="summary-card-label">Média de Progresso geral das matérias</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros / busca -->
+                <div class="mat-filter-bar">
+                    <div class="mat-search-wrap">
+                        <i data-lucide="search" width="14" height="14"></i>
+                        <input class="mat-search-input" id="mat-search" type="text">
+                    </div>
+                    <div class="filter-group" id="mat-progress-filters">
+                        <button class="filter-btn active" data-mf="todas">Todas</button>
+                        <button class="filter-btn" data-mf="ok">Acima de 70%</button>
+                        <button class="filter-btn" data-mf="atencao">Precisa de atenção</button>
+                    </div>
+                    <div class="mat-view-toggle">
+                        <button class="mat-view-btn active" id="mat-view-grid" title="Grade">
+                            <i data-lucide="layout-grid" width="16" height="16"></i>
+                        </button>
+                        <button class="mat-view-btn" id="mat-view-list" title="Lista">
+                            <i data-lucide="list" width="16" height="16"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grade de matérias (renderizada pelo JS) -->
+                <div class="subject-grid" id="mat-subject-grid"></div>
+
+                <!-- Estado vazio -->
+                <div id="mat-empty" class="empty-state">
+                    <div class="empty-state-title">Nenhuma matéria encontrada</div>
+                    <div class="empty-state-sub">Tente outro filtro ou termo de busca.</div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- 7. VIEW: CALENDÁRIO ESCOLAR -->
+        <div id="view-calendario" class="page-view">
+            <div class="content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Calendário Escolar</h1>
+                    </div>
+                </div>
+
+                <!-- ── FILTRO POR CATEGORIA ── -->
+                <div class="cal-filter-bar" id="cal-filter-bar">
+                    <div class="cal-filter-row">
+                        <span class="cal-filter-label">Filtrar:</span>
+                        <button class="cal-filter-btn active" data-cat="todas">Todos</button>
+                        <button class="cal-filter-btn" data-cat="event-prazo">Prazos</button>
+                        <button class="cal-filter-btn" data-cat="event-prova">Provas</button>
+                        <button class="cal-filter-btn" data-cat="event-feriado">Feriados</button>
+                        <button class="cal-filter-btn" data-cat="event-evento">Eventos</button>
+                    </div>
+
+                    <div class="cal-legend">
+                        <span class="cal-legend-item"><span class="cal-dot cal-dot--prova"></span>Provas</span>
+                        <span class="cal-legend-item"><span class="cal-dot cal-dot--prazo"></span>Prazos</span>
+                        <span class="cal-legend-item"><span class="cal-dot cal-dot--evento"></span>Eventos</span>
+                        <span class="cal-legend-item"><span class="cal-dot cal-dot--recesso"></span>Feriados</span>
+                    </div>
+                </div>
+
+                <!-- ── MODAL DIA ── -->
+                <div class="cal-day-modal-overlay" id="cal-day-modal">
+                    <div class="cal-day-modal">
+                        <div class="cal-day-modal-header">
+                            <div>
+                                <div class="cal-day-modal-title" id="cal-day-modal-title">—</div>
+                                <div class="cal-day-modal-sub" id="cal-day-modal-sub"></div>
+                            </div>
+                            <button class="cal-day-modal-close" id="cal-day-modal-close">✕</button>
+                        </div>
+                        <div class="cal-day-modal-body" id="cal-day-modal-body"></div>
+                    </div>
+                </div>
+
+                <div class="cal-nav">
+                    <button class="btn btn-secondary cal-nav-btn" id="cal-prev">&#8592; Anterior</button>
+                    <span class="cal-month-label" id="cal-month-label">Junho 2025</span>
+                    <button class="btn btn-secondary cal-nav-btn" id="cal-next">Próximo &#8594;</button>
+                </div>
+
+                <div class="section">
+                    <div class="calendar-grid" id="school-calendar-grid">
+                        <div class="calendar-header-day">Seg</div>
+                        <div class="calendar-header-day">Ter</div>
+                        <div class="calendar-header-day">Qua</div>
+                        <div class="calendar-header-day">Qui</div>
+                        <div class="calendar-header-day">Sex</div>
+                        <div class="calendar-header-day">Sáb</div>
+                        <div class="calendar-header-day">Dom</div>
+                        <!-- Células geradas pelo JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. VIEW: ÁREA DO PROFESSOR -->
+        
+
+    </main>
+
+    <!-- ── MODAL DE DETALHES DA MATÉRIA ── -->
+    <div class="modal-overlay" id="materia-modal">
+        <div class="modal-content materia-modal-content">
+            <!-- Cabeçalho colorido -->
+            <div class="materia-modal-header" id="materia-modal-header">
+                <div class="materia-modal-header-inner">
+                    <div>
+                        <div class="materia-modal-tag" id="materia-modal-tag">Mat</div>
+                        <div class="materia-modal-name" id="materia-modal-name">Matemática</div>
+                        <div class="materia-modal-prof" id="materia-modal-prof">Prof. —</div>
+                    </div>
+                    <button class="modal-close-x materia-modal-close-btn" id="materia-modal-close">✕</button>
+                </div>
+                <!-- Progress ring -->
+                <div class="materia-modal-progress-row">
+                    <div class="materia-modal-progress-ring-wrap">
+                        <svg class="materia-modal-progress-ring" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
+                            <circle cx="40" cy="40" r="32" fill="none" stroke="white" stroke-width="6"
+                                stroke-dasharray="201" stroke-dashoffset="201"
+                                stroke-linecap="round" transform="rotate(-90 40 40)"
+                                id="materia-modal-ring-arc"/>
+                        </svg>
+                        <div class="materia-modal-progress-ring-pct" id="materia-modal-ring-pct">0%</div>
+                    </div>
+                    <div class="materia-modal-stats-mini">
+                        <div class="materia-modal-mini-stat"><span id="materia-modal-topics-done">0</span> tópicos concluídos</div>
+                        <div class="materia-modal-mini-stat"><span id="materia-modal-tasks-pend">0</span> tarefas pendentes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Abas internas -->
+            <div class="materia-modal-tabs">
+                <button class="materia-modal-tab active" data-mmtab="topicos">Tópicos</button>
+                <button class="materia-modal-tab" data-mmtab="tarefas">Tarefas</button>
+                <button class="materia-modal-tab" data-mmtab="arquivos">Arquivos</button>
+            </div>
+
+            <!-- Painel: Tópicos -->
+            <div class="materia-modal-panel" id="materia-modal-panel-topicos">
+                <!-- Mural / último recado do professor -->
+                <div class="materia-modal-mural-banner" id="materia-modal-mural-banner"></div>
+                <div id="materia-modal-topicos-list" class="materia-modal-topicos-list"></div>
+            </div>
+
+            <!-- Painel: Tarefas -->
+            <div class="materia-modal-panel" id="materia-modal-panel-tarefas">
+                <div id="materia-modal-tarefas-list"></div>
+            </div>
+
+            <!-- Painel: Arquivos / Links Úteis -->
+            <div class="materia-modal-panel" id="materia-modal-panel-arquivos">
+                <div class="materia-modal-arquivos-header">
+                    <p class="section-title">Arquivos de apoio</p>
+                </div>
+                <div id="materia-modal-arquivos-list" class="materia-modal-arquivos-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TOAST CONTAINER ── -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    
+</body>
+</html>

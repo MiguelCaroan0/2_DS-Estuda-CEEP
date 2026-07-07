@@ -1,0 +1,380 @@
+:root {
+    --fundo: #1E2A24;
+    --fundo-secundario: #16201B;
+    --branco: #FFFFFF;
+    --borda-cinza: #B9C2BC;
+    --board-line: #2E3D35;
+
+    --mat: #FF8A5B;
+    --port: #5FB3E8;
+    --hist: #C792EA;
+    --bio: #6FCF7A;
+    --qui: #FFD166;
+    --fis: #FF6B9D;
+
+    --sidebar-w: 240px;
+    --header-h: 80px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--fundo);
+    color: var(--branco);
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.svg-icons{
+    width: 15px;
+    height: 15px;
+}
+
+/* ── TOP HEADER ── */
+
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-h);    
+    background: var(--fundo-secundario);
+    border-bottom: 1px solid var(--board-line);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    z-index: 100;
+}
+
+.top-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#top-header-logo {
+    height: 56px;
+    width: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.top-header-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--branco);
+    text-transform: uppercase;
+    display: block;
+    line-height: 1;
+}
+
+
+/* ── SIDEBAR ── */
+
+.sidebar {
+    width: var(--sidebar-w);
+    background: var(--fundo-secundario);
+    border-right: 1px solid var(--board-line);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.sidebar-nav {
+    padding: 20px 0;
+    flex: 1;
+}
+
+.nav-section-label {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--borda-cinza);
+    padding: 0 24px;
+    margin: 16px 0 8px;
+    opacity: 0.6;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    font-size: 14px;
+    color: var(--borda-cinza);
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: var(--branco);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--qui);
+    border-radius: 0 3px 3px 0;
+}
+
+.sidebar-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--board-line);
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--qui);
+    color: #4A3A06;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--branco);
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 11px;
+    color: var(--borda-cinza);
+}
+
+
+/* ══════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE (≤ 768px)
+══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── Variáveis ── */
+    :root {
+        --header-h: 56px;
+        --sidebar-w: 0px;
+    }
+
+    /* ── Header ── */
+    .top-header {
+        padding: 0 16px;
+        justify-content: space-between;
+    }
+
+    #top-header-logo {
+        height: 38px;
+        width: 38px;
+    }
+
+    .top-header-name {
+        font-size: 15px;
+    }
+
+    /* ── Botão hamburguer ── */
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        color: var(--branco);
+        font-size: 22px;
+        line-height: 1;
+    }
+
+    /* ── Sidebar vira drawer deslizante ── */
+    .sidebar {
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        z-index: 200;
+        top: var(--header-h);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Overlay escuro atrás do drawer */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 199;
+    }
+
+    .sidebar-overlay.open {
+        display: block;
+    }
+
+    /* ── Main: sem margin-left ── */
+    main {
+        margin-left: 0;
+    }
+
+    /* ── Content: padding menor ── */
+    .content {
+        padding: 24px 16px 48px;
+    }
+
+    /* ── Títulos de página ── */
+    .page-title {
+        font-size: 26px;
+    }
+
+    /* ── Stats row: 2 colunas ── */
+    .stats-row,
+    #view-tarefas .stats-row,
+    #view-historico .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Resumo rápido do início: 2 colunas ── */
+    .summary-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Agenda summary: 2 colunas ── */
+    .agenda-summary-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── Grade de dias da semana: scroll horizontal ── */
+    #inicio-days-week,
+    .agenda-days-week {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+    }
+
+    .stats-row-week {
+        grid-template-columns: repeat(7, minmax(44px, 1fr));
+    }
+
+    /* ── Matérias: 1 coluna ── */
+    .mat-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    #mat-subject-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Home hero ── */
+    .home-hero {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* ── Subject grid do início: 1 coluna ── */
+    .subject-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Área do professor: stats em 2 colunas ── */
+    .prof-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px;
+    }
+
+    /* ── Modais: tela cheia ── */
+    .modal-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0;
+        border-radius: 16px 16px 0 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-overlay {
+        align-items: flex-end;
+    }
+
+    /* ── Agenda planner row: coluna de hora menor ── */
+    .agenda-planner-row {
+        grid-template-columns: 48px 1fr;
+    }
+
+    /* ── Filtros de turma: wrap ── */
+    .turma-filter-row,
+    .filter-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* ── Tabela de Relatório de Tarefas ── */
+    .rt-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* ── Calendário: menor ── */
+    .cal-grid {
+        gap: 4px;
+    }
+
+    .cal-day {
+        min-height: 44px;
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    /* ── Tarefas: lista compacta ── */
+    .task-item {
+        padding: 12px 14px;
+    }
+
+    /* ── Histórico: cards menores ── */
+    .hist-card {
+        padding: 14px;
+    }
+}
+
+/* ── Hamburguer: escondido no desktop ── */
+.mobile-menu-btn {
+    display: none;
+}
+
+/* ══════════════════════════════════════════════════
+

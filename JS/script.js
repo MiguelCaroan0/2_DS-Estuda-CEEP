@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ─── ÍCONES LUCIDE ───
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+
     // ─── SAUDAÇÃO DINÂMICA + RELÓGIO ───
     const weekdays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
     const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+    // Nome do usuário: preencha com o nome real (deixe vazio para não exibir).
+    const STUDENT_NAME = '';
 
     function updateClock() {
         const now = new Date();
@@ -28,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroWeekday) heroWeekday.textContent = weekdays[now.getDay()];
         if (heroDate) heroDate.textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
 
+        const greetingNameEl = document.getElementById('greeting-name');
+        if (greetingNameEl) greetingNameEl.textContent = STUDENT_NAME ? `${STUDENT_NAME}!` : '';
+
     }
 
     updateClock();
@@ -35,47 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── GRADE DE HORÁRIOS SEMANAL (INÍCIO) ───
     // Cada aula tem: subject, name, time, content (conteúdo da aula)
+    // Preencha os dias abaixo com as aulas reais do usuário.
     const timetable = {
-        1: [ // Segunda
-            { subject: 'mat',  name: 'Matemática', time: '07h15 – 08h00', content: 'Funções quadráticas e parábolas' },
-            { subject: 'mat',  name: 'Matemática', time: '08h00 – 08h45', content: 'Exercícios do ENEM — cap. 4' },
-            { subject: 'por',  name: 'Português',  time: '08h45 – 09h30', content: 'Figuras de linguagem' },
-            { subject: 'por',  name: 'Português',  time: '09h30 – 10h15', content: 'Redação dissertativa — estrutura' },
-            { subject: 'qui',  name: 'Back-End',   time: '10h15 – 11h00', content: 'Node.js — fundamentos e módulos' },
-            { subject: 'qui',  name: 'Back-End',   time: '11h00 – 11h45', content: 'APIs REST — métodos HTTP' },
-        ],
-        2: [ // Terça
-            { subject: 'bio',  name: 'Front-End',  time: '07h15 – 08h00', content: 'HTML semântico & CSS Grid' },
-            { subject: 'bio',  name: 'Front-End',  time: '08h00 – 08h45', content: 'JavaScript ES6+ — arrow functions e módulos' },
-            { subject: 'fis',  name: 'Física',     time: '08h45 – 09h30', content: 'Cinemática escalar — MRU e MRUV' },
-            { subject: 'fis',  name: 'Física',     time: '09h30 – 10h15', content: 'Dinâmica — 1ª e 2ª Lei de Newton' },
-            { subject: 'hist', name: 'História',   time: '10h15 – 11h00', content: 'Primeira Guerra Mundial — causas' },
-            { subject: 'hist', name: 'História',   time: '11h00 – 11h45', content: 'Revolução Russa — contexto' },
-        ],
-        3: [ // Quarta
-            { subject: 'mat',  name: 'Matemática', time: '07h15 – 08h00', content: 'Progressões aritméticas (PA)' },
-            { subject: 'mat',  name: 'Matemática', time: '08h00 – 08h45', content: 'Progressões geométricas (PG)' },
-            { subject: 'por',  name: 'Português',  time: '08h45 – 09h30', content: 'Crase e pontuação — regras' },
-            { subject: 'por',  name: 'Português',  time: '09h30 – 10h15', content: 'Concordância verbal e nominal' },
-            { subject: 'bio',  name: 'Front-End',  time: '10h15 – 11h00', content: 'React — componentes e props' },
-            { subject: 'bio',  name: 'Front-End',  time: '11h00 – 11h45', content: 'Responsividade e acessibilidade web' },
-        ],
-        4: [ // Quinta
-            { subject: 'fis',  name: 'Física',     time: '07h15 – 08h00', content: 'Energia cinética e potencial' },
-            { subject: 'fis',  name: 'Física',     time: '08h00 – 08h45', content: 'Trabalho e teorema trabalho-energia' },
-            { subject: 'qui',  name: 'Back-End',   time: '08h45 – 09h30', content: 'Banco de Dados SQL — consultas' },
-            { subject: 'qui',  name: 'Back-End',   time: '09h30 – 10h15', content: 'Autenticação JWT e middlewares' },
-            { subject: 'mat',  name: 'Matemática', time: '10h15 – 11h00', content: 'Logaritmos — definição e propriedades' },
-            { subject: 'por',  name: 'Português',  time: '11h00 – 11h45', content: 'Interpretação de texto — ENEM' },
-        ],
-        5: [ // Sexta
-            { subject: 'hist', name: 'História',   time: '07h15 – 08h00', content: 'Segunda Guerra Mundial — fases' },
-            { subject: 'hist', name: 'História',   time: '08h00 – 08h45', content: 'Guerra Fria — blocos e conflitos' },
-            { subject: 'mat',  name: 'Matemática', time: '08h45 – 09h30', content: 'Função logarítmica — gráficos' },
-            { subject: 'bio',  name: 'Front-End',  time: '09h30 – 10h15', content: 'Projeto prático — Landing Page' },
-            { subject: 'por',  name: 'Português',  time: '10h15 – 11h00', content: 'Simulado de redação' },
-            { subject: 'fis',  name: 'Física',     time: '11h00 – 11h45', content: 'Revisão — lista de exercícios ENEM' },
-        ],
+        1: [], // Segunda
+        2: [], // Terça
+        3: [], // Quarta
+        4: [], // Quinta
+        5: [], // Sexta
         6: [], // Sábado
         0: [], // Domingo
     };
@@ -180,10 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // — Card 1: Progresso do dia (aulas fixas + itens da agenda do aluno) —
         const circumference = 2 * Math.PI * 28;
 
-        const arc = document.getElementById('isc-day-arc');
-        const pctEl = document.getElementById('isc-day-pct');
-        const fractionEl = document.getElementById('isc-day-fraction');
-        const subEl = document.getElementById('isc-day-sub');
+        const arc = document.getElementById('home-day-arc');
+        const pctEl = document.getElementById('home-day-pct');
+        const fractionEl = document.getElementById('home-day-fraction');
+        const subEl = document.getElementById('home-day-sub');
 
         // Aulas fixas da grade horária (timetable)
         const todayAulas = timetable[todayDow] || [];
@@ -241,26 +218,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const vencendoHoje = pendentes.filter(t => t.due === todayStr);
         const atrasadas = pendentes.filter(t => t.due && t.due < todayStr);
 
-        const taskCountEl = document.getElementById('isc-tasks-count');
-        const taskSubEl   = document.getElementById('isc-tasks-sub');
-        const taskIcon    = document.getElementById('isc-tasks-icon');
+        const taskCountEl = document.getElementById('home-tasks-count');
+        const taskSubEl   = document.getElementById('home-tasks-sub');
+        const taskIcon    = document.getElementById('home-tasks-icon');
 
         if (taskCountEl) taskCountEl.textContent = pendentes.length;
         if (taskSubEl) {
             if (vencendoHoje.length > 0) {
                 taskSubEl.textContent = `⚠️ ${vencendoHoje.length} vencem hoje!`;
-                taskSubEl.className = 'isc-sub isc-tasks-sub--urgent';
+                taskSubEl.className = 'summary-card-sub home-tasks-sub--urgent';
             } else if (atrasadas.length > 0) {
                 taskSubEl.textContent = `${atrasadas.length} em atraso`;
-                taskSubEl.className = 'isc-sub isc-tasks-sub--urgent';
+                taskSubEl.className = 'summary-card-sub home-tasks-sub--urgent';
             } else {
                 taskSubEl.textContent = 'a fazer';
-                taskSubEl.className = 'isc-sub';
+                taskSubEl.className = 'summary-card-sub';
             }
         }
         if (taskIcon) {
             const urgent = vencendoHoje.length > 0 || atrasadas.length > 0;
-            taskIcon.className = `isc-icon-wrap isc-icon--tasks${urgent ? ' urgent' : ''}`;
+            taskIcon.className = `summary-card-icon summary-card-icon--tasks${urgent ? ' urgent' : ''}`;
         }
 
         // — Card 4: Horas planejadas hoje —
@@ -276,8 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const horas = Math.floor(totalMin / 60);
         const min = totalMin % 60;
 
-        const hoursEl = document.getElementById('isc-hours-value');
-        const hoursSub = document.getElementById('isc-hours-sub');
+        const hoursEl = document.getElementById('home-hours-value');
+        const hoursSub = document.getElementById('home-hours-sub');
         if (hoursEl) {
             if (totalMin === 0) {
                 hoursEl.textContent = '0h';
@@ -344,15 +321,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ─── AGENDA DE ESTUDOS ───
-    const AGENDA_DAYS = [
-        { label: 'Seg', num: '23', fullLabel: 'Segunda-feira, 23 jun', key: 'seg', dow: 1 },
-        { label: 'Ter', num: '24', fullLabel: 'Terça-feira, 24 jun', key: 'ter', dow: 2 },
-        { label: 'Qua', num: '25', fullLabel: 'Quarta-feira, 25 jun', key: 'qua', dow: 3 },
-        { label: 'Qui', num: '26', fullLabel: 'Quinta-feira, 26 jun', key: 'qui', dow: 4 },
-        { label: 'Sex', num: '27', fullLabel: 'Sexta-feira, 27 jun', key: 'sex', dow: 5 },
-        { label: 'Sáb', num: '28', fullLabel: 'Sábado, 28 jun', key: 'sab', dow: 6 },
-        { label: 'Dom', num: '29', fullLabel: 'Domingo, 29 jun', key: 'dom', dow: 0 },
-    ];
+    // Gera a semana atual (segunda a domingo) com base na data real de hoje,
+    // em vez de uma semana fixa de exemplo.
+    function buildCurrentAgendaWeek() {
+        const dowKeys = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+        const dowLabels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        const now = new Date();
+        const monday = new Date(now);
+        const diffToMonday = (now.getDay() + 6) % 7; // segunda = início da semana
+        monday.setDate(now.getDate() - diffToMonday);
+
+        const week = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(monday);
+            d.setDate(monday.getDate() + i);
+            const dow = d.getDay();
+            week.push({
+                label: dowLabels[dow],
+                num: String(d.getDate()),
+                fullLabel: `${weekdays[dow]}, ${d.getDate()} ${months[d.getMonth()].slice(0, 3)}`,
+                key: dowKeys[dow],
+                dow: dow,
+            });
+        }
+        // Reordena para sempre começar na segunda-feira
+        const segIdx = week.findIndex(d => d.key === 'seg');
+        return [...week.slice(segIdx), ...week.slice(0, segIdx)];
+    }
+
+    const AGENDA_DAYS = buildCurrentAgendaWeek();
 
     const AGENDA_SUBJECTS = {
         mat: { name: 'Matemática', tag: 'Mat', cssVar: '--mat' },
@@ -369,21 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const AI_PLAN = {
-        seg: [
-            { time: '14:00', subject: 'qui', title: 'APIs REST — exercícios' },
-        ],
-        ter: [
-            { time: '14:00', subject: 'his', title: 'Era Vargas — revisão' },
-        ],
-        qua: [
-            { time: '14:00', subject: 'bio', title: 'React - Componentes' },
-        ],
-        qui: [
-            { time: '14:00', subject: 'mat', title: 'Revisão geral — lista ENEM' },
-        ],
-        sex: [
-            { time: '14:00', subject: 'bio', title: 'Revisão Front-End — Responsividade' },
-        ],
+        seg: [],
+        ter: [],
+        qua: [],
+        qui: [],
+        sex: [],
         sab: [], dom: [],
     };
 
@@ -442,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let agendaSchedule = agendaCloneFixedSchool();
-    let agendaActiveDay = 'qua';
+    let agendaActiveDay = AGENDA_DAYS.find(d => d.dow === new Date().getDay())?.key || AGENDA_DAYS[0].key;
     let agendaInitialized = false;
 
     function agendaApplyAIPlan() {
@@ -687,17 +674,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const PRIO_LABEL = { alta: 'Alta', media: 'Média', baixa: 'Baixa' };
     const PRIO_ORDER = { alta: 0, media: 1, baixa: 2 };
 
-    let taskList = [
-        { id: 1, title: 'Resolver lista de parábolas (ENEM 2022)', desc: 'Vence seg, 29 jun · 20 questões · Integrado do Classroom', subject: 'mat', priority: 'alta', done: false, due: '2026-06-29' },
-        { id: 2, title: 'Escrever redação sobre mobilidade urbana', desc: 'Vence seg, 29 jun · mín. 30 linhas · Redação Paraná', subject: 'por', priority: 'alta', done: false, due: '2026-06-29' },
-        { id: 3, title: 'Exercícios de APIs REST', desc: 'Vence ter, 30 jun · Projeto Back-End', subject: 'qui', priority: 'media', done: false, due: '2026-06-30' },
-        { id: 4, title: 'Resumo: Cinemática vetorial', desc: 'Vence ter, 30 jun · 1 página · Caderno de Física', subject: 'fis', priority: 'media', done: false, due: '2026-06-30' },
-        { id: 5, title: 'Projeto React - Landing Page', desc: 'Vence qua, 01 jul · Atividade de Front-End', subject: 'bio', priority: 'baixa', done: false, due: '2026-07-01' },
-        { id: 6, title: 'Rever anotações — Funções quadráticas', desc: 'Concluída ontem', subject: 'mat', priority: 'media', done: true, due: '2025-06-24' },
-        { id: 7, title: 'Ler capítulo sobre Era Vargas', desc: 'Concluída seg, 23 jun', subject: 'his', priority: 'baixa', done: true, due: '2025-06-23' },
-        { id: 8, title: 'Exercícios — HTML & CSS', desc: 'Concluída seg, 23 jun', subject: 'bio', priority: 'media', done: true, due: '2025-06-23' },
-    ];
-    let nextTaskId = 9;
+    let taskList = [];
+    let nextTaskId = 1;
     let taskFilter = 'pendentes';
     let taskSubjFilter = 'todas';
     let taskSortBy = 'prazo';
@@ -801,9 +779,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!filtered.length) {
             listEl.innerHTML = `
-                <div class="tf-empty">
-                    <div class="tf-empty-title">Nenhuma tarefa aqui</div>
-                    <div class="tf-empty-sub">Tudo em ordem por este filtro!</div>
+                <div class="empty-state">
+                    <div class="empty-state-title">Nenhuma tarefa aqui</div>
+                    <div class="empty-state-sub">Tudo em ordem por este filtro!</div>
                 </div>`;
             return;
         }
@@ -857,10 +835,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!view) return;
 
         view.querySelector('#tf-status-filters').addEventListener('click', e => {
-            const btn = e.target.closest('.tf-filter-btn');
+            const btn = e.target.closest('.filter-btn');
             if (!btn) return;
             taskFilter = btn.dataset.filter;
-            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            view.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
             tarefasRender();
         });
 
@@ -904,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             taskFilter = 'pendentes';
             taskSubjFilter = 'todas';
-            view.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'pendentes'));
+            view.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'pendentes'));
             view.querySelectorAll('.tf-subj-btn').forEach(b => b.classList.toggle('active', b.dataset.subj === 'todas'));
 
             tarefasCloseModal();
@@ -924,38 +902,27 @@ document.addEventListener('DOMContentLoaded', () => {
         his: { name: 'História',   tag: 'His',  color: 'var(--hist)', cssClass: 'tag-his' },
     };
 
-    // Data: horas por matéria por dia (semana)
+    // Data: horas por matéria por dia (semana) — sem dados até haver registros reais
     const HIST_DATA_SEMANA = [
-        { label: 'Seg', today: false, subjects: { mat: 1.5, por: 0.5, bio: 0, qui: 1.0, fis: 0, his: 0 } },
-        { label: 'Ter', today: false, subjects: { mat: 0, por: 1.0, bio: 1.0, qui: 0, fis: 0.5, his: 1.0 } },
-        { label: 'Qua', today: false, subjects: { mat: 2.0, por: 0, bio: 0.5, qui: 0, fis: 0, his: 0 } },
-        { label: 'Qui', today: false, subjects: { mat: 0, por: 0.5, bio: 0, qui: 1.5, fis: 1.0, his: 0 } },
-        { label: 'Hoje', today: true, subjects: { mat: 1.0, por: 1.0, bio: 0.5, qui: 0, fis: 0, his: 0.5 } },
+        { label: 'Seg', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'Ter', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'Qua', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'Qui', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'Hoje', today: true, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
         { label: 'Sáb', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
         { label: 'Dom', today: false,  subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
     ];
 
-    // Data: horas por matéria por semana (mês)
+    // Data: horas por matéria por semana (mês) — sem dados até haver registros reais
     const HIST_DATA_MES = [
-        { label: 'S1', today: false, subjects: { mat: 4.0, por: 2.5, bio: 1.5, qui: 2.0, fis: 1.0, his: 1.0 } },
-        { label: 'S2', today: false, subjects: { mat: 3.5, por: 1.5, bio: 2.0, qui: 1.0, fis: 2.5, his: 2.0 } },
-        { label: 'S3', today: false, subjects: { mat: 5.0, por: 2.0, bio: 1.0, qui: 3.0, fis: 1.5, his: 0.5 } },
-        { label: 'S4', today: true,  subjects: { mat: 3.0, por: 3.0, bio: 2.5, qui: 2.5, fis: 1.5, his: 1.0 } },
+        { label: 'S1', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'S2', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'S3', today: false, subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
+        { label: 'S4', today: true,  subjects: { mat: 0, por: 0, bio: 0, qui: 0, fis: 0, his: 0 } },
     ];
 
-    // Sessões recentes
-    const HIST_SESSIONS = [
-        { title: 'Revisão de Funções e Gráficos', meta: '25 Jun', subject: 'mat' },
-        { title: 'Fichamento de Ditadura Militar', meta: '25 Jun', subject: 'his' },
-        { title: 'React - Componentes', meta: '25 Jun', subject: 'bio' },
-        { title: 'Node.js - APIs REST', meta: '24 Jun', subject: 'qui' },
-        { title: 'Redação Dissertativa — Simulado', meta: '24 Jun', subject: 'por' },
-        { title: 'Cinemática Escalar — Revisão', meta: '23 Jun', subject: 'fis' },
-        { title: 'Progressões Aritméticas e Geométricas', meta: '23 Jun', subject: 'mat' },
-        { title: 'Interpretação de Texto — ENEM 2023', meta: '22 Jun', subject: 'por' },
-        { title: 'Acessibilidade Web', meta: '22 Jun', subject: 'bio' },
-        { title: 'Era Vargas — Resumo e Mapa Mental', meta: '21 Jun', subject: 'his' },
-    ];
+    // Sessões recentes — sem dados de exemplo, populado a partir de registros reais
+    const HIST_SESSIONS = [];
 
     let histPeriod = 'semana';
     let histSubjFilter = 'todas';
@@ -1177,10 +1144,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ── Modal ──
         const dayModal       = document.getElementById('cal-day-modal');
-        const modalTitle     = document.getElementById('cal-modal-title');
-        const modalSub       = document.getElementById('cal-modal-sub');
-        const modalBody      = document.getElementById('cal-modal-body');
-        const modalClose     = document.getElementById('cal-modal-close');
+        const modalTitle     = document.getElementById('cal-day-modal-title');
+        const modalSub       = document.getElementById('cal-day-modal-sub');
+        const modalBody      = document.getElementById('cal-day-modal-body');
+        const modalClose     = document.getElementById('cal-day-modal-close');
 
         function openDayModal(year, month, day, events) {
             const date = new Date(year, month, day);
@@ -1191,12 +1158,12 @@ document.addEventListener('DOMContentLoaded', () => {
             modalSub.textContent   = isToday ? `${dayName2} · Hoje` : dayName2;
 
             if (events.length === 0) {
-                modalBody.innerHTML = `<div class="cal-modal-empty">Nenhum evento neste dia.</div>`;
+                modalBody.innerHTML = `<div class="cal-day-modal-empty">Nenhum evento neste dia.</div>`;
             } else {
                 modalBody.innerHTML = events.map(ev => `
-                    <div class="cal-modal-event ${ev.type}">
-                        <span class="cal-modal-event-type">${typeLabels[ev.type] || 'Evento'}</span>
-                        <span class="cal-modal-event-label">${ev.label}</span>
+                    <div class="cal-day-modal-event ${ev.type}">
+                        <span class="cal-day-modal-event-type">${typeLabels[ev.type] || 'Evento'}</span>
+                        <span class="cal-day-modal-event-label">${ev.label}</span>
                     </div>`).join('');
             }
 
@@ -1766,10 +1733,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const rtStatusFiltersEl = document.getElementById('rt-status-filters');
     if (rtStatusFiltersEl) {
         rtStatusFiltersEl.addEventListener('click', e => {
-            const btn = e.target.closest('.tf-filter-btn');
+            const btn = e.target.closest('.filter-btn');
             if (!btn) return;
             rtStatusFilter = btn.dataset.status;
-            rtStatusFiltersEl.querySelectorAll('.tf-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            rtStatusFiltersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
             renderRelatorioTarefas();
         });
     }
@@ -1950,109 +1917,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── MATÉRIAS — GRADE REATIVA + MODALS + ARQUIVOS
     // ══════════════════════════════════════════════
 
-    // Mural / avisos por matéria (último recado do professor)
-    const MATERIAS_MURAL = {
-        mat: { msg: 'Prova de Funções dia 02/07 — estudem os exercícios do cap. 4.', date: 'hoje' },
-        por: { msg: 'Redação sobre mobilidade urbana vence sexta. Mín. 30 linhas.', date: 'ontem' },
-        bio: { msg: 'Projeto React deve ser entregue via GitHub até sexta.', date: '2 dias atrás' },
-        qui: { msg: 'Documentação das APIs no Notion da turma.', date: '3 dias atrás' },
-        fis: { msg: 'Simulado de Cinemática marcado para qui, 03/07.', date: '4 dias atrás' },
-        his: { msg: 'Parabéns pela participação no seminário! Notas lançadas.', date: '1 semana atrás' },
-    };
+    // Mural / avisos por matéria (último recado do professor) — sem avisos de exemplo
+    const MATERIAS_MURAL = {};
 
+    // Dados das matérias — tópicos, professor e arquivos populados a partir de dados reais (vazio por padrão)
     const MATERIAS_DATA = {
         mat: {
             name: 'Matemática', tag: 'Mat', color: 'var(--mat)', colorHex: '#FF8A5B',
-            prof: 'Prof. Carlos Mendes',
-            topicos: [
-                { text: 'Funções quadráticas', done: true,  day: 'Seg' },
-                { text: 'Equações do 2º grau', done: true,  day: 'Seg' },
-                { text: 'Gráficos de parábola', done: false, day: 'Seg' },
-                { text: 'Exercícios do ENEM',   done: false, day: 'Seg' },
-                { text: 'Progressões aritméticas', done: false, day: 'Qua' },
-                { text: 'Progressões geométricas', done: false, day: 'Qua' },
-                { text: 'Logaritmos',           done: false, day: 'Sex' },
-                { text: 'Função logarítmica',   done: false, day: 'Sex' },
-            ],
-            arquivos: [
-                { id: 'mat-1', title: 'Slides — Funções Quadráticas', type: 'slide', url: 'https://docs.google.com/presentation', meta: 'Enviado por Prof. Carlos · 12 jun' },
-                { id: 'mat-2', title: 'Apostila ENEM — Matemática',   type: 'pdf',   url: 'https://drive.google.com',             meta: 'PDF · 48 págs · 08 jun' },
-                { id: 'mat-3', title: 'Videoaula: Progressões (Khan)', type: 'video', url: 'https://youtu.be',                    meta: 'YouTube · 22 min' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         },
         por: {
             name: 'Português', tag: 'Port', color: 'var(--port)', colorHex: '#5FB3E8',
-            prof: 'Profª. Patrícia Souza',
-            topicos: [
-                { text: 'Figuras de linguagem',   done: true,  day: 'Seg' },
-                { text: 'Redação dissertativa',   done: false, day: 'Seg' },
-                { text: 'Interpretação de texto', done: false, day: 'Seg' },
-                { text: 'Crase e pontuação',      done: false, day: 'Qua' },
-                { text: 'Concordância verbal',    done: false, day: 'Qua' },
-                { text: 'Simulado de redação',    done: false, day: 'Sex' },
-            ],
-            arquivos: [
-                { id: 'por-1', title: 'Guia de Redação Paraná 2025',    type: 'pdf',   url: 'https://drive.google.com', meta: 'PDF oficial · Secretaria de Educação' },
-                { id: 'por-2', title: 'Slides — Figuras de Linguagem',  type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Profª. Patrícia · 10 jun' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         },
         bio: {
             name: 'Front-End', tag: 'FE', color: 'var(--bio)', colorHex: '#6FCF7A',
-            prof: 'Profª. Paola Figueira',
-            topicos: [
-                { text: 'HTML & CSS',          done: true,  day: 'Ter' },
-                { text: 'JavaScript ES6+',     done: true,  day: 'Ter' },
-                { text: 'React - Componentes', done: false, day: 'Ter' },
-                { text: 'Responsividade',       done: false, day: 'Qua' },
-                { text: 'Acessibilidade Web',   done: false, day: 'Qua' },
-            ],
-            arquivos: [
-                { id: 'bio-1', title: 'Slides — HTML & CSS',        type: 'slide', url: 'https://docs.google.com',   meta: 'Enviado por Profª. Helena · 15 jun' },
-                { id: 'bio-2', title: 'Vídeo: Introdução ao React', type: 'video', url: 'https://youtu.be',          meta: 'YouTube · 22 min' },
-                { id: 'bio-3', title: 'MDN Web Docs — CSS',          type: 'link',  url: 'https://developer.mozilla.org', meta: 'Documentação oficial' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         },
         qui: {
             name: 'Back-End', tag: 'BE', color: 'var(--qui)', colorHex: '#FFD166',
-            prof: 'Profª. Paola Figueira',
-            topicos: [
-                { text: 'Node.js - Fundamentos', done: false, day: 'Seg' },
-                { text: 'APIs REST',             done: false, day: 'Seg' },
-                { text: 'Termoquímica',           done: false, day: 'Qui' },
-                { text: 'Cinética química',       done: false, day: 'Qui' },
-            ],
-            arquivos: [
-                { id: 'qui-1', title: 'Documentação Node.js',          type: 'link',  url: 'https://nodejs.org',        meta: 'Recurso online' },
-                { id: 'qui-2', title: 'Slides — APIs REST',            type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Prof. Ricardo · 18 jun' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         },
         fis: {
             name: 'Física', tag: 'Fís', color: 'var(--fis)', colorHex: '#FF6B9D',
-            prof: 'Prof. André Santos',
-            topicos: [
-                { text: 'Cinemática escalar',  done: true,  day: 'Ter' },
-                { text: 'Dinâmica (Newton)',   done: false, day: 'Ter' },
-                { text: 'Energia cinética',    done: false, day: 'Qui' },
-                { text: 'Energia potencial',   done: false, day: 'Qui' },
-            ],
-            arquivos: [
-                { id: 'fis-1', title: 'Slides — Cinemática',       type: 'slide', url: 'https://docs.google.com', meta: 'Enviado por Prof. André · 05 jun' },
-                { id: 'fis-2', title: 'Simulação: Leis de Newton', type: 'link',  url: 'https://phet.colorado.edu',meta: 'PhET Colorado' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         },
         his: {
             name: 'História', tag: 'His', color: 'var(--hist)', colorHex: '#C792EA',
-            prof: 'Profª. Júlia Lima',
-            topicos: [
-                { text: 'Primeira Guerra Mundial',  done: true, day: 'Ter' },
-                { text: 'Revolução Russa',          done: true, day: 'Ter' },
-                { text: 'Segunda Guerra Mundial',   done: true, day: 'Sex' },
-                { text: 'Guerra Fria',              done: true, day: 'Sex' },
-            ],
-            arquivos: [
-                { id: 'his-1', title: 'Documentário: Primeira Guerra', type: 'video', url: 'https://youtu.be',          meta: 'YouTube · 45 min' },
-                { id: 'his-2', title: 'Linha do Tempo — Séc. XX',      type: 'pdf',   url: 'https://drive.google.com', meta: 'PDF · Enviado por Profª. Júlia' },
-            ]
+            prof: '',
+            topicos: [],
+            arquivos: []
         }
     };
 
@@ -2223,17 +2127,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const pendCount = matCountPending(subj);
 
         const circumference = 2 * Math.PI * 32;
-        const arc = document.getElementById('mm-ring-arc');
+        const arc = document.getElementById('materia-modal-ring-arc');
         if (arc) {
             arc.style.strokeDashoffset = circumference - (pct / 100) * circumference;
         }
-        const pctEl = document.getElementById('mm-ring-pct');
+        const pctEl = document.getElementById('materia-modal-ring-pct');
         if (pctEl) pctEl.textContent = pct + '%';
 
-        const tdEl = document.getElementById('mm-topics-done');
+        const tdEl = document.getElementById('materia-modal-topics-done');
         if (tdEl) tdEl.textContent = `${doneCount}/${tops.length}`;
 
-        const tpEl = document.getElementById('mm-tasks-pend');
+        const tpEl = document.getElementById('materia-modal-tasks-pend');
         if (tpEl) tpEl.textContent = pendCount;
     }
 
@@ -2243,37 +2147,37 @@ document.addEventListener('DOMContentLoaded', () => {
         mmFileFormOpen = false;
 
         const m       = MATERIAS_DATA[subj];
-        const overlay = document.getElementById('modal-materia');
+        const overlay = document.getElementById('materia-modal');
         if (!overlay) return;
 
         // Esconde o form de adicionar link
-        const addForm = document.getElementById('mm-add-file-form');
+        const addForm = document.getElementById('materia-modal-add-file-form');
         if (addForm) addForm.style.display = 'none';
 
         // Cabeçalho com gradiente na cor da matéria
-        const header = document.getElementById('mm-header');
+        const header = document.getElementById('materia-modal-header');
         if (header) header.style.background =
             `linear-gradient(135deg, ${m.colorHex}dd, ${m.colorHex}88)`;
 
-        const tagEl  = document.getElementById('mm-tag');
-        const nameEl = document.getElementById('mm-name');
-        const profEl = document.getElementById('mm-prof');
+        const tagEl  = document.getElementById('materia-modal-tag');
+        const nameEl = document.getElementById('materia-modal-name');
+        const profEl = document.getElementById('materia-modal-prof');
         if (tagEl)  tagEl.textContent  = m.tag;
         if (nameEl) nameEl.textContent = m.name;
         if (profEl) profEl.textContent = m.prof;
 
         // Mural no modal (aba Tópicos — topo)
-        const muralEl = document.getElementById('mm-mural-banner');
+        const muralEl = document.getElementById('materia-modal-mural-banner');
         const mural   = MATERIAS_MURAL[subj];
         if (muralEl) {
             if (mural) {
                 muralEl.style.display = '';
-                muralEl.innerHTML = `<span class="mm-mural-icon">📌</span>
-                    <div class="mm-mural-body">
-                        <span class="mm-mural-label">Recado do professor</span>
-                        <span class="mm-mural-text">${mural.msg}</span>
+                muralEl.innerHTML = `<span class="materia-modal-mural-icon">📌</span>
+                    <div class="materia-modal-mural-body">
+                        <span class="materia-modal-mural-label">Recado do professor</span>
+                        <span class="materia-modal-mural-text">${mural.msg}</span>
                     </div>
-                    <span class="mm-mural-date">${mural.date}</span>`;
+                    <span class="materia-modal-mural-date">${mural.date}</span>`;
             } else {
                 muralEl.style.display = 'none';
             }
@@ -2281,7 +2185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         matUpdateModalHeader(subj);
         matRenderModalPanels(subj);
-        openModal('modal-materia');
+        openModal('materia-modal');
     }
 
     function matRenderModalPanels(subj) {
@@ -2289,29 +2193,29 @@ document.addEventListener('DOMContentLoaded', () => {
         matRenderTabTarefas(subj);
         matRenderTabArquivos(subj);
 
-        document.querySelectorAll('.mm-tab')
+        document.querySelectorAll('.materia-modal-tab')
             .forEach(t => t.classList.toggle('active', t.dataset.mmtab === matModalTab));
 
         ['topicos', 'tarefas', 'arquivos'].forEach(tab => {
-            const p = document.getElementById(`mm-panel-${tab}`);
+            const p = document.getElementById(`materia-modal-panel-${tab}`);
             if (p) p.style.display = (tab === matModalTab) ? '' : 'none';
         });
     }
 
     function matRenderTabTopicos(subj) {
-        const list = document.getElementById('mm-topicos-list');
+        const list = document.getElementById('materia-modal-topicos-list');
         if (!list) return;
         const tops = MATERIAS_DATA[subj].topicos;
         list.innerHTML = tops.map((t, i) => {
             const done = matTopicoDone(subj, i);
-            return `<div class="mm-topico-item${done ? ' done' : ''}" data-subj="${subj}" data-idx="${i}">
-                <div class="mm-topico-dot"></div>
-                <span class="mm-topico-text">${t.text}</span>
-                <span class="mm-topico-day">${t.day}</span>
+            return `<div class="materia-modal-topico-item${done ? ' done' : ''}" data-subj="${subj}" data-idx="${i}">
+                <div class="materia-modal-topico-dot"></div>
+                <span class="materia-modal-topico-text">${t.text}</span>
+                <span class="materia-modal-topico-day">${t.day}</span>
             </div>`;
         }).join('');
 
-        list.querySelectorAll('.mm-topico-item').forEach(item => {
+        list.querySelectorAll('.materia-modal-topico-item').forEach(item => {
             item.addEventListener('click', () => {
                 const s   = item.dataset.subj;
                 const idx = parseInt(item.dataset.idx);
@@ -2325,21 +2229,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function matRenderTabTarefas(subj) {
-        const wrap = document.getElementById('mm-tarefas-list');
+        const wrap = document.getElementById('materia-modal-tarefas-list');
         if (!wrap) return;
         const related = taskList.filter(t => t.subject === subj);
         if (!related.length) {
-            wrap.innerHTML = '<div class="mm-tarefa-empty">📭 Nenhuma tarefa para esta matéria.</div>';
+            wrap.innerHTML = '<div class="materia-modal-tarefa-empty">Nenhuma tarefa para esta matéria.</div>';
             return;
         }
         wrap.innerHTML = related.map(t => {
             const sc = TASK_SUBJECTS[t.subject] || { tag: t.subject };
             const dueClass = t.done ? '' : taskDueClass(t);
-            return `<div class="mm-tarefa-item${t.done ? ' done' : ''}">
+            return `<div class="materia-modal-tarefa-item${t.done ? ' done' : ''}">
                 <span class="task-tag tag-${t.subject}">${sc.tag}</span>
                 <div>
-                    <div class="mm-tarefa-title">${t.title}</div>
-                    <div class="mm-tarefa-meta ${dueClass}">${t.desc}</div>
+                    <div class="materia-modal-tarefa-title">${t.title}</div>
+                    <div class="materia-modal-tarefa-meta ${dueClass}">${t.desc}</div>
                 </div>
                 ${t.done ? '<span style="margin-left:auto;font-size:18px;">✅</span>' : ''}
             </div>`;
@@ -2347,34 +2251,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function matRenderTabArquivos(subj) {
-        const list = document.getElementById('mm-arquivos-list');
+        const list = document.getElementById('materia-modal-arquivos-list');
         if (!list) return;
         const arqs = getMatArquivos(subj);
         if (!arqs.length) {
-            list.innerHTML = `<div class="mm-arquivo-empty">
-                <div class="mm-arquivo-empty-icon">📂</div>
-                <div class="mm-arquivo-empty-text">Nenhum arquivo ainda.<br>Clique em "+ Adicionar link" para começar.</div>
+            list.innerHTML = `<div class="materia-modal-arquivo-empty">
+                <div class="materia-modal-arquivo-empty-text">Nenhum arquivo ainda.<br>Clique em "+ Adicionar link" para começar.</div>
             </div>`;
             return;
         }
         list.innerHTML = arqs.map(a => `
-            <div class="mm-arquivo-item" data-url="${a.url}">
-                <div class="mm-arquivo-icon">${TYPE_ICON[a.type] || '🔗'}</div>
-                <div class="mm-arquivo-info">
-                    <div class="mm-arquivo-title">${a.title}</div>
-                    <div class="mm-arquivo-meta">${TYPE_LABEL[a.type] || 'Link'} · ${a.meta}</div>
+            <div class="materia-modal-arquivo-item" data-url="${a.url}">
+                <div class="materia-modal-arquivo-icon">${TYPE_ICON[a.type] || '🔗'}</div>
+                <div class="materia-modal-arquivo-info">
+                    <div class="materia-modal-arquivo-title">${a.title}</div>
+                    <div class="materia-modal-arquivo-meta">${TYPE_LABEL[a.type] || 'Link'} · ${a.meta}</div>
                 </div>
             </div>`).join('');
 
         // Abrir link (exceto se clicar no botão remover)
-        list.querySelectorAll('.mm-arquivo-item').forEach(item => {
+        list.querySelectorAll('.materia-modal-arquivo-item').forEach(item => {
             item.addEventListener('click', e => {
-                if (e.target.closest('.mm-arquivo-del')) return;
+                if (e.target.closest('.materia-modal-arquivo-del')) return;
                 window.open(item.dataset.url, '_blank');
             });
         });
 
-        list.querySelectorAll('.mm-arquivo-del').forEach(btn => {
+        list.querySelectorAll('.materia-modal-arquivo-del').forEach(btn => {
             btn.addEventListener('click', e => {
                 e.stopPropagation();
                 const aid = btn.dataset.aid;
@@ -2389,50 +2292,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Tabs internas do modal ──
-    document.querySelector('.mm-tabs')?.addEventListener('click', e => {
+    document.querySelector('.materia-modal-tabs')?.addEventListener('click', e => {
         const btn = e.target.closest('[data-mmtab]');
         if (!btn || !matModalActive) return;
         matModalTab = btn.dataset.mmtab;
-        document.querySelectorAll('.mm-tab')
+        document.querySelectorAll('.materia-modal-tab')
             .forEach(t => t.classList.toggle('active', t === btn));
         ['topicos', 'tarefas', 'arquivos'].forEach(tab => {
-            const p = document.getElementById(`mm-panel-${tab}`);
+            const p = document.getElementById(`materia-modal-panel-${tab}`);
             if (p) p.style.display = (tab === matModalTab) ? '' : 'none';
         });
     });
 
     // ── Fechar modal ──
-    document.getElementById('mm-close')?.addEventListener('click', () => {
-        closeModal('modal-materia');
+    document.getElementById('materia-modal-close')?.addEventListener('click', () => {
+        closeModal('materia-modal');
     });
-    document.getElementById('modal-materia')?.addEventListener('click', function(e) {
-        if (e.target === this) closeModal('modal-materia');
+    document.getElementById('materia-modal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeModal('materia-modal');
     });
 
     // ── Formulário de adicionar arquivo ──
-    document.getElementById('mm-add-file-btn')?.addEventListener('click', () => {
+    document.getElementById('materia-modal-add-file-btn')?.addEventListener('click', () => {
         mmFileFormOpen = !mmFileFormOpen;
-        const form = document.getElementById('mm-add-file-form');
+        const form = document.getElementById('materia-modal-add-file-form');
         if (form) form.style.display = mmFileFormOpen ? '' : 'none';
     });
 
-    document.getElementById('mm-file-cancel')?.addEventListener('click', () => {
+    document.getElementById('materia-modal-file-cancel')?.addEventListener('click', () => {
         mmFileFormOpen = false;
-        const form = document.getElementById('mm-add-file-form');
+        const form = document.getElementById('materia-modal-add-file-form');
         if (form) form.style.display = 'none';
     });
 
-    document.getElementById('mm-file-types')?.addEventListener('click', e => {
+    document.getElementById('materia-modal-file-types')?.addEventListener('click', e => {
         const btn = e.target.closest('[data-type]');
         if (!btn) return;
         mmFileType = btn.dataset.type;
-        document.querySelectorAll('#mm-file-types [data-type]')
+        document.querySelectorAll('#materia-modal-file-types [data-type]')
             .forEach(b => b.classList.toggle('active', b === btn));
     });
 
-    document.getElementById('mm-file-confirm')?.addEventListener('click', () => {
-        const titleEl = document.getElementById('mm-file-title');
-        const urlEl   = document.getElementById('mm-file-url');
+    document.getElementById('materia-modal-file-confirm')?.addEventListener('click', () => {
+        const titleEl = document.getElementById('materia-modal-file-title');
+        const urlEl   = document.getElementById('materia-modal-file-url');
         const title   = titleEl?.value.trim();
         const url     = urlEl?.value.trim();
 
@@ -2453,7 +2356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (titleEl) titleEl.value = '';
         if (urlEl)   urlEl.value   = '';
         mmFileFormOpen = false;
-        const form = document.getElementById('mm-add-file-form');
+        const form = document.getElementById('materia-modal-add-file-form');
         if (form) form.style.display = 'none';
 
         matRenderTabArquivos(subj);

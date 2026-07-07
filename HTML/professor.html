@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/professor.css">
+    <script src="../JS/professor.js" defer></script>
+    <title>Estuda CEEP</title>
+</head>
+
+<body>
+
+    <header class="top-header">
+        <div class="top-header-brand">
+            <img id="top-header-logo" src="../IMG/CEEP-logo.png">
+            <div class="top-header-name">Estuda CEEP </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menu">☰</button>
+    </header>
+
+    <!-- ── SIDEBAR ── -->
+    <aside>
+        <nav>
+           
+            <a>Área do Professor</a>
+        </nav>
+
+        <div>
+            <div>
+                <div>MK</div>
+                <div>
+                    <div>Patrícia</div>
+                    <div>3º A</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <main>
+        <div id="view-professor">
+            <div>
+                <div>
+                    <div>
+                        <h1>Área do Professor</h1>
+                    </div>
+                </div>
+
+                <div>
+                    <div data-modal="modal-tarefas-ativas" title="Ver detalhes">
+                        <div>Tarefas Ativas</div>
+                        <div>4</div>
+                        <div>Ver detalhes →</div>
+                    </div>
+                    <div data-modal="modal-alunos-ativos" title="Ver detalhes">
+                        <div>Alunos Destaques</div>
+                        <div>9</div>
+                        <div>Ver detalhes →</div>
+                    </div>
+                    <div data-modal="modal-nao-realizadas" title="Ver detalhes">
+                        <div>Alunos Pendentes</div>
+                        <div>8</div>
+                        <div>Ver detalhes →</div>
+                    </div>
+                    <div data-modal="modal-realizadas" title="Ver detalhes">
+                        <div>Histórico de Tarefas</div>
+                        <div id="prof-historico-count">23</div>
+                        <div>Ver detalhes →</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <h2>Criar Tarefa para Turma</h2>
+                    </div>
+                    <div>
+                        <div>
+                            <div>
+                                <label>Título da Tarefa</label>
+                                <input type="text" id="prof-task-title">
+                            </div>
+                            <div>
+                                <label>Matéria</label>
+                                <select id="prof-task-subject">
+                                    <option value="mat">Matemática</option>
+                                    <option value="por">Português</option>
+                                    <option value="bio">Front-End</option>
+                                    <option value="qui">Back-End</option>
+                                    <option value="fis">Física</option>
+                                    <option value="his">História</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label>Prazo de Entrega</label>
+                                <input type="date" id="prof-task-due">
+                            </div>
+                            <div>
+                                <label>Plataforma / Origem</label>
+                                <select id="prof-task-platform">
+                                    <option value="interna">Estuda CEEP (interna)</option>
+                                    <option value="redacao-pr">Redação Paraná</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Descrição / Instruções</label>
+                            <textarea rows="3" id="prof-task-desc"></textarea>
+                        </div>
+                        <div>
+                            <label>Destinatários</label>
+                            <div>
+                                <button data-target="todos">Todos os alunos</button>
+                                <button data-target="turma">Por turma</button>
+                            </div>
+                        </div>
+                        <div id="turma-select-group">
+                            <label>Selecionar Turma(s)</label>
+                            <div>
+                                <span>3º A</span>
+                                <span>3º B</span>
+                                <span>2º A</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button>Salvar Rascunho</button>
+                            <button id="prof-publish-btn">Publicar Tarefa</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <span>Tarefas publicadas recentemente</span>
+                        </div>
+                        <div id="prof-tasks-list">
+                            <p>Nenhuma tarefa publicada ainda nesta sessão.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <span>Relatório de Tarefas</span>
+                        </div>
+                        <div>
+                            <div>
+                                <label>Tarefa</label>
+                                <select id="rt-task-select"></select>
+                            </div>
+                            <div>
+                                <label>Turmas</label>
+                                <div id="rt-turma-filter">
+                                    <button data-turma="3A">3º A</button>
+                                    <button data-turma="3B">3º B</button>
+                                    <button data-turma="2A">2º A</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label>Status da entrega</label>
+                                <div id="rt-status-filters">
+                                    <button data-status="entregou">Entregaram</button>
+                                    <button data-status="pendente">Não entregaram</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="rt-summary"></div>
+                            <div>
+                                <div id="rt-progress-bar"></div>
+                            </div>
+                        </div>
+
+                        <div id="rt-students-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── MODAL: TAREFAS ATIVAS ── -->
+        <div id="modal-tarefas-ativas">
+            <div>
+                <div>
+                    <div>Tarefas Ativas</div>
+                    <button data-close="modal-tarefas-ativas">✕</button>
+                </div>
+                <div id="modal-ativas-list">
+                    <!-- Renderizado pelo JS -->
+                </div>
+                <div>
+                    <button data-close="modal-tarefas-ativas">Fechar</button>
+                    <button id="modal-ta-nova-btn">+ Nova Tarefa</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ── MODAL: ALUNOS DESTAQUES ── -->
+        <div id="modal-alunos-ativos">
+            <div>
+                <div>
+                    <div>Alunos Destaques</div>
+                    <button data-close="modal-alunos-ativos">✕</button>
+                </div>
+                <p>Os 3 alunos com melhor desempenho de cada turma nos últimos 7 dias.</p>
+
+                <div id="modal-alunos-destaques-list">
+                    <!-- Renderizado pelo JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ── MODAL: ALUNOS PENDENTES ── -->
+        <div id="modal-nao-realizadas">
+            <div>
+                <div>
+                    <div>Alunos Pendentes</div>
+                    <button data-close="modal-nao-realizadas">✕</button>
+                </div>
+                <p>Alunos com entregas pendentes ou em atraso, agrupados por turma.</p>
+                <div id="modal-nao-realizadas-list">
+                    <!-- Renderizado pelo JS -->
+                </div>
+                <div>
+                    <button data-close="modal-nao-realizadas">Fechar</button>
+                    <button id="modal-nr-notificar-btn">Enviar lembrete a todos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── MODAL: HISTÓRICO DE TAREFAS ── -->
+        <div id="modal-realizadas">
+            <div>
+                <div>
+                    <div>Histórico de Tarefas</div>
+                    <button data-close="modal-realizadas">✕</button>
+                </div>
+                <p>Tarefas encerradas — filtre por turma para ver as entregas.</p>
+
+                <!-- Filtro por turma -->
+                <div id="modal-realizadas-turma-filter">
+                    <button data-turma="3A">3º A</button>
+                    <button data-turma="3B">3º B</button>
+                    <button data-turma="2A">2º A</button>
+                </div>
+
+                <div id="modal-realizadas-list">
+                    <!-- Renderizado pelo JS -->
+                </div>
+
+                <div>
+                    <button data-close="modal-realizadas">Fechar</button>
+                    <button id="modal-realizadas-export">Exportar relatório</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+</body>
+
+</html>
