@@ -1120,22 +1120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'event-aula':    'Aula',
         };
 
-        const schoolEvents = {
-            '2026-5-23': [{ label: 'Início Bimestre', type: 'event-evento' }],
-            '2026-5-24': [{ label: 'Redação', type: 'event-prazo' }, 
-            { label: 'Palestra contra violência', type: 'event-evento' }, {label: 'Prova Portugês', type: 'event-prova' }],
-            '2026-5-25': [{ label: 'ENEM Lista Mat', type: 'event-prazo' }, { label: 'Redação M.U.', type: 'event-prazo' }],
-            '2026-5-26': [{ label: 'Prova Matemática', type: 'event-prova' }],
-            '2026-5-27': [{ label: 'Prazo Redação PR', type: 'event-prazo' }],
-            '2026-5-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
-            '2026-6-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
-            '2026-6-8':  [{ label: 'Física: Vetores', type: 'event-prazo' }],
-            '2026-6-26': [{ label: 'Prova Matemática', type: 'event-prova' }, { label: 'Prazo: Redação PR', type: 'event-prazo' }, { label: 'Simulado Bio', type: 'event-prova' }],
-            '2026-6-27': [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
-            '2026-6-28': [{ label: 'Feriado Municipal', type: 'event-feriado' }],
-            '2026-7-1':  [{ label: 'Simulado ENEM', type: 'event-prova' }],
-            '2026-7-9':  [{ label: 'Prazo: Lista Física', type: 'event-prazo' }],
-        };
+        const schoolEvents = {};
 
         function eventMatchesFilter(type) {
             if (activeCalFilter === 'todas') return true;
@@ -1355,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalNrNotificar) {
         modalNrNotificar.addEventListener('click', () => {
             closeModal('modal-nao-realizadas');
-            setTimeout(() => showToast('Lembretes enviados para 7 alunos com pendências!', 'success'), 300);
+            setTimeout(() => showToast('Nenhum aluno com pendências para notificar.', 'info'), 300);
         });
     }
 
@@ -1426,84 +1411,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── PROFESSOR: TAREFAS ATIVAS (dados + render + ações) ───────────────────
 
     const TURMAS = {
-        '3A': { label: '3º A', total: 28 },
-        '3B': { label: '3º B', total: 29 },
-        '2A': { label: '2º A', total: 27 },
+        '3A': { label: '3º A', total: 0 },
+        '3B': { label: '3º B', total: 0 },
+        '2A': { label: '2º A', total: 0 },
     };
 
-    let ativasData = [
-        {
-            id: 'ta1', subject: 'mat', title: 'Lista de parábolas (ENEM 2022)',
-            due: '2026-06-30',
-            turmas: { '3A': { entregues: 24, total: 28 }, '3B': { entregues: 19, total: 29 } }
-        },
-        {
-            id: 'ta2', subject: 'por', title: 'Redação: Mobilidade Urbana',
-            due: '2026-06-30',
-            turmas: { '3A': { entregues: 28, total: 28 }, '3B': { entregues: 22, total: 29 }, '2A': { entregues: 17, total: 27 } }
-        },
-        {
-            id: 'ta3', subject: 'qui', title: 'APIs REST — exercícios',
-            due: '2026-06-30',
-            turmas: { '3A': { entregues: 8, total: 28 }, '3B': { entregues: 7, total: 29 } }
-        },
-        {
-            id: 'ta4', subject: 'fis', title: 'Resumo: Cinemática Vetorial',
-            due: '2026-06-30',
-            turmas: { '2A': { entregues: 5, total: 27 } }
-        },
-    ];
+    let ativasData = [];
 
-    let realizadasData = [
-        {
-            id: 'tr1', subject: 'bio', title: 'Resumo: HTML & CSS',
-            dueLabel: '24 Jun',
-            turmas: {
-                '3A': { entregues: 26, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro'] },
-                '3B': { entregues: 29, total: 29, alunos: ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves', 'Bianca Coelho', 'Carlos Viana'] },
-                '2A': { entregues: 27, total: 27, alunos: ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão', 'Yuri Gaspar', 'Zelia Fontes', 'Adão Bastos', 'Brenda Valente', 'Cláudio Serpa'] }
-            }
-        },
-        {
-            id: 'tr2', subject: 'mat', title: 'Funções Quadráticas — revisão',
-            dueLabel: '20 Jun',
-            turmas: {
-                '3A': { entregues: 26, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro'] },
-                '3B': { entregues: 27, total: 29, alunos: ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves'] }
-            }
-        },
-        {
-            id: 'tr3', subject: 'por', title: 'Análise literária — Dom Casmurro',
-            dueLabel: '18 Jun',
-            turmas: {
-                '3A': { entregues: 25, total: 28, alunos: ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho'] },
-                '2A': { entregues: 22, total: 27, alunos: ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão'] }
-            }
-        },
-    ];
+    let realizadasData = [];
 
     // Atualiza o card "Histórico de Tarefas" com a quantidade real de tarefas presentes neste card.
     const profHistoricoCountEl = document.getElementById('prof-historico-count');
     if (profHistoricoCountEl) profHistoricoCountEl.textContent = realizadasData.length;
 
     // ── Dados: Alunos Destaques (3 por turma) ──
-    const alunosDestaquesData = {
-        '3A': [
-            { initials: 'MK', name: 'Maria Kato', color: 'var(--mat)', meta: '28h estudadas · 100% de entregas', badge: 'Destaque' },
-            { initials: 'RC', name: 'Rafael Costa', color: 'var(--port)', meta: '24h estudadas · ofensiva de 9 dias', badge: 'Destaque' },
-            { initials: 'BN', name: 'Beatriz Nunes', color: 'var(--bio)', meta: '21h estudadas · 100% de entregas', badge: 'Ativo' },
-        ],
-        '3B': [
-            { initials: 'PO', name: 'Pedro Oliveira', color: 'var(--mat)', meta: '22h estudadas · ofensiva de 12 dias', badge: 'Destaque' },
-            { initials: 'AV', name: 'Amanda Vieira', color: 'var(--port)', meta: '19h estudadas · 100% de entregas', badge: 'Destaque' },
-            { initials: 'HC', name: 'Hugo Cardoso', color: 'var(--bio)', meta: '17h estudadas · 4 redações enviadas', badge: 'Ativo' },
-        ],
-        '2A': [
-            { initials: 'JL', name: 'Julia Lima', color: 'var(--mat)', meta: '18h estudadas · 3 redações enviadas', badge: 'Destaque' },
-            { initials: 'AF', name: 'Alice Fonseca', color: 'var(--port)', meta: '16h estudadas · ofensiva de 6 dias', badge: 'Ativo' },
-            { initials: 'BM', name: 'Bento Macedo', color: 'var(--bio)', meta: '14h estudadas · 100% de entregas', badge: 'Ativo' },
-        ],
-    };
+    const alunosDestaquesData = {};
 
     const alunosDestaquesExpanded = {};
 
@@ -1528,13 +1450,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="nr-turma-header nr-turma-toggle" data-turma="${tk}">
                         <div class="nr-turma-header-left">
                             <span class="nr-turma-label">${TURMA_LABELS[tk] || tk}</span>
-                            <span class="nr-turma-count">Top 3 da turma</span>
+                            <span class="nr-turma-count">Alunos da turma</span>
                         </div>
                         <span class="nr-turma-arrow">${isOpen ? '▲' : '▼'}</span>
                     </button>
                     <div class="modal-stat-list nr-turma-alunos" style="display:${isOpen ? 'block' : 'none'};">${itens}</div>
                 </div>`;
-        }).join('');
+        }).join('') || '<p class="modal-stat-meta" style="padding:16px">Nenhum aluno destaque cadastrado.</p>';
 
         wrap.querySelectorAll('.nr-turma-toggle').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1546,20 +1468,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Dados: Tarefas Não Realizadas (por turma) ──
-    const naoRealizadasData = {
-        '3A': [
-            { initials: 'AN', name: 'Ana Nascimento', color: 'var(--fis)', meta: '2 tarefas em atraso: Lista de Parábolas, Redação Paraná', status: 'error', label: 'Atraso' },
-            { initials: 'RP', name: 'Rafael Pires',   color: 'var(--qui)', meta: '1 tarefa pendente · Vence hoje', status: 'warn', label: 'Pendente' },
-        ],
-        '3B': [
-            { initials: 'LF', name: 'Lucas Ferreira', color: 'var(--mat)', meta: '1 tarefa em atraso: APIs REST', status: 'error', label: 'Atraso' },
-            { initials: 'BS', name: 'Bruna Santana',  color: 'var(--port)', meta: '2 tarefas pendentes · Último acesso há 3 dias', status: 'warn', label: 'Pendente' },
-        ],
-        '2A': [
-            { initials: 'MS', name: 'Mariana Santos', color: 'var(--port)', meta: '3 tarefas em atraso · Última atividade: há 5 dias', status: 'error', label: 'Atraso' },
-            { initials: 'TO', name: 'Thiago Oliveira',color: 'var(--qui)',  meta: '1 tarefa em atraso: Análise Dom Casmurro', status: 'error', label: 'Atraso' },
-        ],
-    };
+    const naoRealizadasData = {};
 
     const TAG_MAP = { mat: 'Mat', por: 'Port', bio: 'FE', qui: 'BE', fis: 'Fís', his: 'His' };
 
@@ -1590,9 +1499,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── RELATÓRIO DE TAREFAS (Área do Professor) ───
     // Lista completa de alunos por turma (usada para o relatório de entregas).
     const ROSTERS = {
-        '3A': ['Maria Kato', 'Pedro Alvares', 'Carla Dias', 'João Souza', 'Fernanda Lima', 'Rafael Costa', 'Beatriz Nunes', 'Lucas Teixeira', 'Ana Paula Silva', 'Thiago Moraes', 'Juliana Rocha', 'Bruno Ferreira', 'Camila Pereira', 'Diego Santos', 'Elisa Barbosa', 'Felipe Oliveira', 'Gabriela Martins', 'Henrique Gomes', 'Isabela Castro', 'Jorge Almeida', 'Karina Lopes', 'Leonardo Pires', 'Mariana Cunha', 'Nicolas Freitas', 'Olivia Carvalho', 'Paulo Ribeiro', 'Ana Nascimento', 'Rafael Pires'],
-        '3B': ['Amanda Vieira', 'Bernardo Faria', 'Cecilia Monteiro', 'Daniel Correia', 'Elena Rodrigues', 'Fábio Nascimento', 'Giovana Melo', 'Hugo Cardoso', 'Ingrid Tavares', 'Julio Mendes', 'Kelly Soares', 'Luana Batista', 'Marcos Andrade', 'Natalia Duarte', 'Orlando Ramos', 'Patricia Borges', 'Quincy Araújo', 'Renata Simões', 'Sávio Nogueira', 'Thalita Azevedo', 'Ulisses Machado', 'Valentina Cruz', 'Wagner Lima', 'Xênia Cavalcante', 'Yasmin Medeiros', 'Zara Pinto', 'André Esteves', 'Bianca Coelho', 'Carlos Viana'],
-        '2A': ['Alice Fonseca', 'Bento Macedo', 'Clara Henrique', 'David Quaresma', 'Eduarda Leite', 'Francisco Torres', 'Helena Braga', 'Iago Campos', 'Joana Guimarães', 'Kaio Rezende', 'Larissa Munhoz', 'Miguel Barreto', 'Nayara Peixoto', 'Oscar Sampaio', 'Priscila Neto', 'Rodrigo Ávila', 'Sabrina Queiroz', 'Tiago Lacerda', 'Úrsula Moreira', 'Vitor Salles', 'Wanda Magalhães', 'Xander Falcão', 'Yuri Gaspar', 'Zelia Fontes', 'Mariana Santos', 'Brenda Valente', 'Thiago Oliveira'],
+        '3A': [],
+        '3B': [],
+        '2A': [],
     };
 
     const RT_TURMA_LABEL = { '3A': '3º A', '3B': '3º B', '2A': '2º A' };
