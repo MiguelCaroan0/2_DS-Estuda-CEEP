@@ -1,17 +1,35 @@
-
-.login-content{
-    background-color: var(--fundo-secundario);
-    border: 1px solid var(--branco);
-    border-radius: 20px; 
-    width: 940px;
-    padding: 40px;
-    margin: auto;
+.login-page{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 
-.btn-login{
-    padding: 20px;
-
+.login-quest{
+    background-color: var(--fundo-secundario);
+    text-align: center;
+    width: 940px;
 }
+
+.login-logo{
+    width: 15%;
+}
+
+.login-title{
+    font-size: 35px;
+    color: var(--borda-cinza);
+}
+
+.login-subtitle{
+    font-size: 25px;
+    font-weight: bolder;
+    font-style: italic;
+    color: var(--borda-cinza);
+}
+
+.login-cards{
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+}
+
+
